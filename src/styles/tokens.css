@@ -1,0 +1,32 @@
+:root {
+  --canvas: #f3efe7;
+  --surface: #fbfaf6;
+  --surface-raised: #ffffff;
+  --ink: #1d1d1a;
+  --ink-soft: #45433d;
+  --muted: #706c63;
+  --border: #ded8cc;
+  --border-strong: #c8c0b2;
+  --terracotta: #b85f43;
+  --terracotta-soft: #f1ded5;
+  --teal: #246a63;
+  --teal-soft: #dcebe7;
+  --ochre: #b28a46;
+  --ochre-soft: #eee4cf;
+  --success: #35735b;
+  --warning: #8b5d1e;
+  --danger: #a64c43;
+  --danger-soft: #f2ddda;
+  --unknown: #67635c;
+  --focus: #246a63;
+  --rail: #1c211e;
+  --font-sans: 'Geist Variable', 'Segoe UI', sans-serif;
+  --font-serif: 'Instrument Serif', Georgia, serif;
+  color: var(--ink);
+  background: var(--canvas);
+  font-family: var(--font-sans);
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}

@@ -1,0 +1,10 @@
+node_modules
+.agents/skills
+.claude/skills
+dist
+coverage
+playwright-report
+test-results
+convex/_generated
+package-lock.json
+public/social/*.png
