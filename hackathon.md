@@ -12,11 +12,11 @@
 - **Auth:** Convex Auth
 - **AI models:** gpt-5.6-luna (configured; live API call not yet exercised)
 - **Started:** 2026-08-29T14:07:45.2228690Z
-- **Last updated:** 2026-08-29T22:30:05.1840243Z
+- **Last updated:** 2026-08-29T22:33:48Z
 
 ## Log
 
-### 2026-08-29 - working tree
+### 2026-08-29 - 4d51430
 
 Built the public landing page and complete fixture-labelled espresso-cup demo: structured brief, research, maker records, evidence viewer, outreach approval, deterministic comparison, System Pulse, and Mesh Passport. Added an immutable Convex demo baseline with isolated 24-hour visitor overlays, genuine operator authorization, privacy-limited analytics, and responsive static-hosting UI (`src/`, `convex/schema.ts`, `convex/demo.ts`).
 
