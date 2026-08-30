@@ -12,7 +12,7 @@
 - **Auth:** Convex Auth
 - **AI models:** gpt-5.6-luna (live Responses API brief compilation exercised)
 - **Started:** 2026-08-29T14:07:45.2228690Z
-- **Last updated:** 2026-08-30T04:06:17Z
+- **Last updated:** 2026-08-30T04:20:44Z
 
 ## Log
 
@@ -47,3 +47,11 @@ Moved the public Research surface from bundled content to a bounded Convex proje
 Published normalized baseline version 2 as a separate immutable project and retired version 1 without changing its project or claims. Session commands are scoped to one visitor-session incarnation, retired sessions rebind to the active baseline, and scheduled Convex state—not a client clock—controls expiry. The reviewer reports no Critical or Important findings after the fixes.
 
 Cloud and browser checks confirmed 6 fictional makers, 17 public fixture sources, 39 evidence-backed claims, one preserved conflict, no forbidden provider fields, a reactive Brief → Research replay, and a guarded direct Research route with no console errors. Verification passes 46 unit/Convex tests, formatting, lint, strict type checking, the production build, and all 7 applicable Playwright journeys and viewport captures. The E2E server now waits for Convex function synchronization before starting the frontend. This remains a fixture-labelled development deployment; captured-live replay and AgentMail send/reply are still pending.
+
+### 2026-08-30 - 8827929
+
+Audited the deployed landing and Research surfaces with Lighthouse, the browser accessibility tree, keyboard navigation, native browser issues, and focused DOM checks. The landing accessibility score moved from 96 to 100 after replacing borderline accent combinations with dedicated contrast tokens; desktop and mobile landing plus the Research workspace now score 100 with no accessibility failures, native issues, or orphaned inputs (`src/styles/tokens.css`, `src/styles/landing.css`, `src/components/ui/Button.tsx`).
+
+Added polite live status and progress semantics to research replay. The evidence dialog already moved and trapped focus correctly; it now restores focus to the exact source control after Escape or close, including when opened inside a maker drawer. A regression test covers that behavior (`src/pages/project/ResearchPage.tsx`, `src/components/evidence/EvidenceDialog.tsx`).
+
+Verification passes 47 unit/Convex tests, formatting, lint, strict type checking, the production build, and all 7 applicable Playwright desktop/mobile journeys and viewport captures. Reduced-motion CSS, semantic heading order, page language/title/viewport, and an isolated-browser public access check are verified.
