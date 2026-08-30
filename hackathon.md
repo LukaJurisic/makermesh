@@ -10,9 +10,9 @@
 - **Components:** @convex-dev/rate-limiter, @convex-dev/workflow, @firecrawl/firecrawl-convex, @agentmail/convex, @convex-dev/static-hosting
 - **Convex features:** schema, tables, indexes, queries, mutations, actions, HTTP actions, scheduled functions, crons, realtime queries
 - **Auth:** Convex Auth
-- **AI models:** gpt-5.6-luna (configured; live API call not yet exercised)
+- **AI models:** gpt-5.6-luna (live Responses API brief compilation exercised)
 - **Started:** 2026-08-29T14:07:45.2228690Z
-- **Last updated:** 2026-08-30T00:01:54Z
+- **Last updated:** 2026-08-30T03:21:58Z
 
 ## Log
 
@@ -31,3 +31,11 @@ Verification currently passes 37 unit/Convex tests, `convex dev --once`, and the
 Linked the repository to the Convex cloud project owned by `lukajurisic70`, created and selected the `disciplined-ladybug-82` development deployment, generated deployment-specific Auth and webhook secrets, kept every live-operation flag locked, pushed all functions/components/indexes, and seeded the sanitized demo baseline. Uploaded the fixture frontend through the official static-hosting component to `https://disciplined-ladybug-82.convex.site`.
 
 Browser verification confirmed cloud-backed session creation and brief approval, reactive navigation to research, the captured fixture label, and zero console errors. This is a development deployment only. The Firecrawl credential remains an intentionally disabled placeholder, and no real OpenAI, Firecrawl, or AgentMail operation is claimed.
+
+### 2026-08-29 - d6dec5c
+
+Configured deployment-only OpenAI, Firecrawl, and AgentMail access plus the server-side operator verifier. Patched the pinned official AgentMail component to cross Convex 1.45's typed environment boundary; clean installs reapply the patch, component access succeeds, and unsigned webhook traffic fails closed. No email was sent (`patches/`, `convex/convex.config.ts`, `convex/lib/agentMailClient.ts`).
+
+Ran the first controlled sponsor workflow through authenticated MakerMesh actions. OpenAI `gpt-5.6-luna` compiled and persisted the Harbour Coffee Lab brief, then Firecrawl searched for Moroccan ceramics suppliers and completed a durable five-page crawl without truncation. Convex stored private System Pulse activity and idempotent usage records; all brief, research, and outreach flags returned to `false` after the run (`convex/projects.ts`, `convex/researchFirecrawl.ts`).
+
+Verification passes 38 unit/Convex tests, formatting, lint, strict type checking, and the production build. The Convex reviewer reports no Critical or Important findings. AgentMail outbound delivery and inbound reply parsing remain intentionally unexercised until a controlled recipient address is supplied.
