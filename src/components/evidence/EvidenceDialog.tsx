@@ -1,6 +1,6 @@
 import * as Dialog from '@radix-ui/react-dialog';
 import {CalendarClock, ExternalLink, FileSearch, X} from 'lucide-react';
-import {useEffect} from 'react';
+import {useEffect, type RefObject} from 'react';
 import {Button} from '@/components/ui/Button';
 import type {SourceEvidence} from '@/domain/types';
 import {useDemo} from '@/app/useDemo';
@@ -8,10 +8,12 @@ import {useDemo} from '@/app/useDemo';
 export function EvidenceDialog({
   onOpenChange,
   open,
+  returnFocusRef,
   source,
 }: {
   onOpenChange: (open: boolean) => void;
   open: boolean;
+  returnFocusRef?: RefObject<HTMLElement | null>;
   source: SourceEvidence | null;
 }) {
   const {trackEvent} = useDemo();
@@ -19,11 +21,28 @@ export function EvidenceDialog({
     if (open && source) void trackEvent('evidence_opened');
   }, [open, source, trackEvent]);
   if (!source) return null;
+  const handleOpenChange = (next: boolean) => {
+    const returnTarget = returnFocusRef?.current;
+    onOpenChange(next);
+    if (!next && returnTarget) {
+      window.setTimeout(() => {
+        if (returnTarget.isConnected) returnTarget.focus();
+      }, 0);
+    }
+  };
   return (
-    <Dialog.Root open={open} onOpenChange={onOpenChange}>
+    <Dialog.Root open={open} onOpenChange={handleOpenChange}>
       <Dialog.Portal>
         <Dialog.Overlay className="fixed inset-0 z-[60] bg-[#15130f]/45 backdrop-blur-[2px]" />
-        <Dialog.Content className="fixed left-1/2 top-1/2 z-[70] max-h-[85vh] w-[calc(100%-2rem)] max-w-[680px] -translate-x-1/2 -translate-y-1/2 overflow-y-auto rounded-2xl border border-[var(--border)] bg-[var(--surface-raised)] p-6 shadow-[0_30px_90px_rgba(29,29,26,0.24)] outline-none sm:p-8">
+        <Dialog.Content
+          className="fixed left-1/2 top-1/2 z-[70] max-h-[85vh] w-[calc(100%-2rem)] max-w-[680px] -translate-x-1/2 -translate-y-1/2 overflow-y-auto rounded-2xl border border-[var(--border)] bg-[var(--surface-raised)] p-6 shadow-[0_30px_90px_rgba(29,29,26,0.24)] outline-none sm:p-8"
+          onCloseAutoFocus={(event) => {
+            const returnTarget = returnFocusRef?.current;
+            if (!returnTarget) return;
+            event.preventDefault();
+            if (returnTarget.isConnected) returnTarget.focus();
+          }}
+        >
           <div className="flex items-start justify-between gap-6">
             <div>
               <div className="mb-3 flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.1em] text-[var(--teal)]">

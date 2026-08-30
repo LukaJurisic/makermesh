@@ -12,7 +12,7 @@ test('judge can inspect the complete espresso-cup story', async ({page}) => {
   await expect(approveBrief).toBeEnabled();
   await approveBrief.click();
   await expect(page).toHaveURL(/\/research$/);
-  await expect(page.getByText('Brief approved', {exact: false})).toBeVisible();
+  await expect(page.getByText(/^Brief approved · Fixture activity/)).toBeVisible();
 
   await page.getByRole('button', {name: 'Start fixture replay'}).click();
   await expect(page.getByText('Fixture replay loaded')).toBeVisible();

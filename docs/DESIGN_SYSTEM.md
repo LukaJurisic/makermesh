@@ -33,15 +33,19 @@ Application surfaces begin with working context and status—not marketing banne
 --border: #ded8cc;
 --border-strong: #c8c0b2;
 --terracotta: #b85f43;
+--terracotta-contrast: #a64f36;
 --terracotta-soft: #f1ded5;
 --teal: #246a63;
 --teal-soft: #dcebe7;
+--teal-on-dark: #8fc9bf;
 --ochre: #b28a46;
 --ochre-soft: #eee4cf;
+--ochre-on-dark: #dfb878;
 --success: #35735b;
 --warning: #9a6a24;
 --danger: #a64c43;
 --unknown: #77736b;
+--unknown-on-dark: #c9c3b8;
 ```
 
 Warm neutrals occupy most of every viewport. Terracotta marks primary action, teal marks
@@ -86,6 +90,7 @@ Supplier imagery appears only with clear licensing or permission. Record every a
 ## Accessibility
 
 - WCAG AA contrast for core text and controls.
+- Dedicated contrast tokens preserve the accent palette on dark and small-text surfaces.
 - Visible focus rings, semantic headings, named controls, and keyboard-complete drawers.
 - `aria-live` progress for crawl, delivery, and extraction state.
 - Accessible table markup plus a narrow-screen structured alternative.

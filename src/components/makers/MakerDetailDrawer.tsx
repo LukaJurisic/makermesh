@@ -1,6 +1,6 @@
 import * as Tabs from '@radix-ui/react-tabs';
 import {ExternalLink, FileSearch, Languages, MapPin, ShieldQuestion} from 'lucide-react';
-import {useState} from 'react';
+import {useRef, useState} from 'react';
 import {Drawer} from '@/components/ui/Drawer';
 import {Button} from '@/components/ui/Button';
 import {FixtureBadge, StatusBadge} from '@/components/ui/StatusBadge';
@@ -17,6 +17,7 @@ export function MakerDetailDrawer({
   open: boolean;
 }) {
   const [selectedEvidence, setSelectedEvidence] = useState<SourceEvidence | null>(null);
+  const evidenceTriggerRef = useRef<HTMLElement | null>(null);
   if (!maker) return null;
 
   return (
@@ -94,12 +95,13 @@ export function MakerDetailDrawer({
                         <Button
                           size="sm"
                           variant="quiet"
-                          onClick={() =>
+                          onClick={(event) => {
+                            evidenceTriggerRef.current = event.currentTarget;
                             setSelectedEvidence(
                               maker.sources.find((item) => item.id === evaluation.evidenceId) ??
                                 null,
-                            )
-                          }
+                            );
+                          }}
                         >
                           <FileSearch className="size-3.5" /> Evidence
                         </Button>
@@ -133,7 +135,10 @@ export function MakerDetailDrawer({
                   <button
                     key={item.id}
                     type="button"
-                    onClick={() => setSelectedEvidence(item)}
+                    onClick={(event) => {
+                      evidenceTriggerRef.current = event.currentTarget;
+                      setSelectedEvidence(item);
+                    }}
                     className="source-row w-full text-left"
                   >
                     <div>
@@ -186,6 +191,7 @@ export function MakerDetailDrawer({
       <EvidenceDialog
         open={Boolean(selectedEvidence)}
         onOpenChange={(next) => !next && setSelectedEvidence(null)}
+        returnFocusRef={evidenceTriggerRef}
         source={selectedEvidence}
       />
     </>

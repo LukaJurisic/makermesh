@@ -9,7 +9,7 @@ const buttonVariants = cva(
     variants: {
       variant: {
         primary:
-          'border-[var(--terracotta)] bg-[var(--terracotta)] text-white hover:border-[#9f4f37] hover:bg-[#9f4f37]',
+          'border-[var(--terracotta-contrast)] bg-[var(--terracotta-contrast)] text-white hover:border-[#8f432e] hover:bg-[#8f432e]',
         secondary:
           'border-[var(--border-strong)] bg-[var(--surface-raised)] text-[var(--ink)] hover:border-[var(--ink-soft)]',
         quiet:

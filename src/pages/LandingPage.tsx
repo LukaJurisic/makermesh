@@ -175,19 +175,19 @@ export function LandingPage() {
           <div className="evidence-example">
             <div className="evidence-row">
               <span>Custom logo</span>
-              <strong className="text-[var(--teal)]">
+              <strong className="text-[var(--teal-on-dark)]">
                 <CheckCircle2 className="size-4" /> Maker confirmed
               </strong>
             </div>
             <div className="evidence-row">
               <span>Food-contact documents</span>
-              <strong className="text-[var(--teal)]">
+              <strong className="text-[var(--teal-on-dark)]">
                 <CheckCircle2 className="size-4" /> Can be shared
               </strong>
             </div>
             <div className="evidence-row">
               <span>Export packaging</span>
-              <strong className="text-[var(--unknown)]">
+              <strong className="text-[var(--unknown-on-dark)]">
                 <MailQuestion className="size-4" /> Unknown — ask next
               </strong>
             </div>

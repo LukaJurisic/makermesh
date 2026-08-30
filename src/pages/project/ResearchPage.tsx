@@ -7,7 +7,7 @@ import {
   RotateCw,
   Search,
 } from 'lucide-react';
-import {useState} from 'react';
+import {useRef, useState} from 'react';
 import {useNavigate} from 'react-router-dom';
 import {useDemo} from '@/app/useDemo';
 import {Button} from '@/components/ui/Button';
@@ -27,6 +27,7 @@ export function ResearchPage() {
     trackEvent,
   } = useDemo();
   const [selectedEvidence, setSelectedEvidence] = useState<SourceEvidence | null>(null);
+  const evidenceTriggerRef = useRef<HTMLButtonElement | null>(null);
   const replayLabel = baselineMode === 'captured_live' ? 'captured-live' : 'fixture';
   const statusLabel =
     baselineMode === 'captured_live' ? 'Captured-live research' : 'Captured fixture';
@@ -72,7 +73,11 @@ export function ResearchPage() {
             </p>
             <p className="mt-2 font-medium text-[var(--ink)]">{research.theme}</p>
           </div>
-          <span className="inline-flex items-center gap-2 rounded-full bg-[var(--ochre-soft)] px-3 py-1.5 text-xs font-semibold text-[var(--warning)]">
+          <span
+            className="inline-flex items-center gap-2 rounded-full bg-[var(--ochre-soft)] px-3 py-1.5 text-xs font-semibold text-[var(--warning)]"
+            role="status"
+            aria-live="polite"
+          >
             <LoaderCircle className={`size-4 ${researchStarted ? '' : 'animate-spin'}`} />{' '}
             {researchStarted ? `${statusLabel} complete` : 'Ready to replay'}
           </span>
@@ -92,7 +97,14 @@ export function ResearchPage() {
             </div>
           ))}
         </div>
-        <div className="h-1 bg-[var(--border)]">
+        <div
+          className="h-1 bg-[var(--border)]"
+          role="progressbar"
+          aria-label="Research replay progress"
+          aria-valuemin={0}
+          aria-valuemax={100}
+          aria-valuenow={researchStarted ? 100 : 18}
+        >
           <div
             className={`h-full bg-[var(--teal)] transition-[width] duration-700 ${researchStarted ? 'w-full' : 'w-[18%]'}`}
           />
@@ -117,7 +129,10 @@ export function ResearchPage() {
               <button
                 key={source.id}
                 type="button"
-                onClick={() => setSelectedEvidence(source)}
+                onClick={(event) => {
+                  evidenceTriggerRef.current = event.currentTarget;
+                  setSelectedEvidence(source);
+                }}
                 className="source-row w-full text-left"
               >
                 <span className="flex size-9 shrink-0 items-center justify-center rounded-lg bg-[var(--surface)] text-[var(--teal)]">
@@ -178,6 +193,7 @@ export function ResearchPage() {
       <EvidenceDialog
         open={Boolean(selectedEvidence)}
         onOpenChange={(next) => !next && setSelectedEvidence(null)}
+        returnFocusRef={evidenceTriggerRef}
         source={selectedEvidence}
       />
     </div>

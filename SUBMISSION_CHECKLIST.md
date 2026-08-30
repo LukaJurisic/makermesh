@@ -16,22 +16,22 @@
 - [x] OpenAI Responses performs strict structured extraction.
 - [ ] AgentMail sends and receives one controlled real email thread.
 - [ ] Provider execution is visible through stored System Pulse events.
-- [ ] No real supplier is publicly negatively graded or ranked.
+- [x] No real supplier is publicly negatively graded or ranked.
 
 ## Quality
 
-- [x] Type checking, linting, formatting, 46 unit/Convex tests, E2E, and build pass.
+- [x] Type checking, linting, formatting, 47 unit/Convex tests, E2E, and build pass.
 - [x] Visual checks pass at 1440×900, 1280×800, 768×1024, and 390×844.
-- [ ] Keyboard, focus, screen-reader status, contrast, and reduced motion are verified.
+- [x] Keyboard, focus, screen-reader status, contrast, and reduced motion are verified.
 - [x] Demo reset is idempotent and public sessions do not interfere.
 - [x] Repository secret scan is clean.
 
 ## Submission artifacts
 
 - [x] Development frontend is deployed through Convex static hosting at `convex.site`.
-- [ ] Public URL passes an incognito test.
+- [x] Public URL passes an isolated-browser test.
 - [x] Root `hackathon.md` reflects current repository evidence.
-- [ ] README names only integrations that were exercised.
+- [x] README names only integrations that were exercised and labels pending work.
 - [ ] Walkthrough is under 2:58 and primarily clicks through the product.
 - [x] Social preview, share card, LinkedIn composer, X composer, and copy summary are ready.
 - [ ] Build is shared with required sponsor tags.

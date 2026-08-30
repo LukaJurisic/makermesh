@@ -71,6 +71,11 @@ describe('ResearchPage', () => {
     expect(screen.getByText('Convex-backed source')).toBeInTheDocument();
     expect(screen.getByText('Convex-backed Maker')).toBeInTheDocument();
     expect(screen.getByRole('button', {name: /start captured-live replay/i})).toBeInTheDocument();
+    expect(screen.getByRole('status')).toHaveTextContent('Ready to replay');
+    expect(screen.getByRole('progressbar', {name: 'Research replay progress'})).toHaveAttribute(
+      'aria-valuenow',
+      '18',
+    );
     expect(screen.queryByText('Atlas Clay Studio')).not.toBeInTheDocument();
   });
 
