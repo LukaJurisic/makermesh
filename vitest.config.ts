@@ -7,7 +7,7 @@ export default defineConfig({
     tsconfigPaths: true,
   },
   test: {
-    include: ['src/**/*.test.ts', 'convex/**/*.test.ts'],
+    include: ['src/**/*.test.{ts,tsx}', 'convex/**/*.test.ts'],
     environment: 'jsdom',
     setupFiles: ['./src/test/setup.ts'],
     testTimeout: 10_000,

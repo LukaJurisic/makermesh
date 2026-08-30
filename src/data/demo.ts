@@ -1,6 +1,7 @@
 import type {
   ActivityEvent,
   Maker,
+  PublicResearchSnapshot,
   Requirement,
   RequirementEvaluation,
   RequirementOutcome,
@@ -457,3 +458,53 @@ export const demoMetrics = {
   questions: demoMakers.reduce((sum, maker) => sum + maker.openQuestionCount, 0),
   replies: 1,
 };
+
+export const demoResearch = {
+  theme: 'custom Moroccan ceramics · handcrafted ceramic espresso cups',
+  brief: {
+    version: 1,
+    rawRequest: demoBrief.rawRequest,
+    productName: demoBrief.product,
+    productCategory: 'custom Moroccan ceramics',
+    quantity: demoBrief.quantity,
+    unit: 'cups',
+    destination: demoBrief.destination,
+    budget: 3_500,
+    budgetCurrency: 'CAD',
+    budgetBasis: 'Product budget before freight, customs, taxes, and duties',
+    deadlineDays: 42,
+    customization: 'Custom café logo by approved decal or hand-painted method',
+    dimensions: [{label: 'Capacity', value: 8, unit: 'oz'}],
+    materials: ['Ceramic'],
+    finish: ['Matte sand', 'Off-white'],
+    assumptions: demoBrief.assumptions,
+    promptVersion: 'fixture.manual.v1',
+    extractionModel: null,
+    approvedAt: Date.parse('2026-08-29T14:34:19.000Z'),
+  },
+  requirements: demoRequirements.map((requirement, displayOrder) => ({
+    ...requirement,
+    displayOrder,
+  })),
+  makers: demoMakers.map((maker, index) => ({
+    slug: maker.slug,
+    name: maker.name,
+    location: maker.location,
+    summary: maker.summary,
+    languages: maker.languages,
+    visual: maker.visual,
+    demoSupplier: maker.demoSupplier,
+    stage: index === 0 ? ('replied' as const) : ('discovered' as const),
+    openQuestionCount: maker.openQuestionCount,
+    publicSourceCount: maker.sources.length,
+    publicClaimCount: maker.evaluations.filter((evaluation) => evaluation.hasActiveEvidence).length,
+  })),
+  sources: demoMakers.flatMap((maker) =>
+    maker.sources.map((item) => ({
+      ...item,
+      makerSlug: maker.slug,
+      maker: maker.name,
+    })),
+  ),
+  claims: [],
+} satisfies PublicResearchSnapshot;

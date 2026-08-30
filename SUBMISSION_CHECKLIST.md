@@ -20,7 +20,7 @@
 
 ## Quality
 
-- [x] Type checking, linting, formatting, 38 unit/Convex tests, E2E, and build pass.
+- [x] Type checking, linting, formatting, 46 unit/Convex tests, E2E, and build pass.
 - [x] Visual checks pass at 1440×900, 1280×800, 768×1024, and 390×844.
 - [ ] Keyboard, focus, screen-reader status, contrast, and reduced motion are verified.
 - [x] Demo reset is idempotent and public sessions do not interfere.

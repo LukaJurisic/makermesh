@@ -12,17 +12,26 @@ import {useNavigate} from 'react-router-dom';
 import {useDemo} from '@/app/useDemo';
 import {Button} from '@/components/ui/Button';
 import {EvidenceDialog} from '@/components/evidence/EvidenceDialog';
-import {demoMakers, demoMetrics} from '@/data/demo';
 import type {SourceEvidence} from '@/domain/types';
 
 export function ResearchPage() {
   const navigate = useNavigate();
-  const {backendReady, researchStarted, startResearch, trackEvent} = useDemo();
+  const {
+    backendReady,
+    baselineMode,
+    briefApproved,
+    metrics,
+    research,
+    researchStarted,
+    startResearch,
+    trackEvent,
+  } = useDemo();
   const [selectedEvidence, setSelectedEvidence] = useState<SourceEvidence | null>(null);
-  const sources = demoMakers.flatMap((maker) =>
-    maker.sources.map((source) => ({...source, maker: maker.name})),
-  );
+  const replayLabel = baselineMode === 'captured_live' ? 'captured-live' : 'fixture';
+  const statusLabel =
+    baselineMode === 'captured_live' ? 'Captured-live research' : 'Captured fixture';
   const startReplay = async () => {
+    if (!briefApproved) return;
     await startResearch();
     await trackEvent('research_started');
   };
@@ -38,14 +47,18 @@ export function ResearchPage() {
             operations.
           </p>
         </div>
-        <Button onClick={startReplay} disabled={!backendReady || researchStarted}>
-          {researchStarted ? (
+        <Button onClick={startReplay} disabled={!backendReady || !briefApproved || researchStarted}>
+          {!briefApproved ? (
             <>
-              <CheckCircle2 className="size-4" /> Fixture replay loaded
+              <Search className="size-4" /> Approve brief first
+            </>
+          ) : researchStarted ? (
+            <>
+              <CheckCircle2 className="size-4" /> {statusLabel} replay loaded
             </>
           ) : (
             <>
-              <Search className="size-4" /> Start fixture replay
+              <Search className="size-4" /> Start {replayLabel} replay
             </>
           )}
         </Button>
@@ -55,23 +68,21 @@ export function ResearchPage() {
         <div className="grid gap-5 border-b border-[var(--border)] p-5 md:grid-cols-[1fr_auto] md:items-center">
           <div>
             <p className="text-xs font-semibold uppercase tracking-[0.1em] text-[var(--muted)]">
-              Current focused query
+              Research theme
             </p>
-            <p className="mt-2 font-medium text-[var(--ink)]">
-              custom restaurant tableware Morocco · handmade café ceramics wholesale
-            </p>
+            <p className="mt-2 font-medium text-[var(--ink)]">{research.theme}</p>
           </div>
           <span className="inline-flex items-center gap-2 rounded-full bg-[var(--ochre-soft)] px-3 py-1.5 text-xs font-semibold text-[var(--warning)]">
             <LoaderCircle className={`size-4 ${researchStarted ? '' : 'animate-spin'}`} />{' '}
-            {researchStarted ? 'Captured fixture complete' : 'Ready to replay'}
+            {researchStarted ? `${statusLabel} complete` : 'Ready to replay'}
           </span>
         </div>
         <div className="grid divide-y divide-[var(--border)] sm:grid-cols-4 sm:divide-x sm:divide-y-0">
           {[
-            ['Pages discovered', demoMetrics.sources],
-            ['Pages analyzed', demoMetrics.sources],
-            ['Candidates', demoMetrics.makers],
-            ['Duplicates merged', 2],
+            ['Sources available', metrics.sources],
+            ['Sources analyzed', metrics.sources],
+            ['Candidates', metrics.makers],
+            ['Claims retained', metrics.claims],
           ].map(([label, value]) => (
             <div key={label} className="p-5">
               <p className="text-[28px] font-semibold tabular-nums tracking-[-0.04em] text-[var(--ink)]">
@@ -102,7 +113,7 @@ export function ResearchPage() {
             </Button>
           </div>
           <div className="divide-y divide-[var(--border)]">
-            {sources.map((source) => (
+            {research.sources.map((source) => (
               <button
                 key={source.id}
                 type="button"
@@ -118,7 +129,7 @@ export function ResearchPage() {
                       {source.title}
                     </p>
                     <span className="rounded-full bg-[var(--ochre-soft)] px-2 py-0.5 text-[10px] font-semibold uppercase tracking-[0.08em] text-[var(--warning)]">
-                      Fixture
+                      {source.fixture ? 'Fixture' : 'Captured live'}
                     </span>
                   </div>
                   <p className="mt-1 truncate text-xs text-[var(--muted)]">
@@ -139,16 +150,16 @@ export function ResearchPage() {
             </p>
           </div>
           <ol className="divide-y divide-[var(--border)]">
-            {demoMakers.map((maker, index) => (
-              <li key={maker.id} className="flex items-center gap-3 py-3.5">
+            {research.makers.map((maker, index) => (
+              <li key={maker.slug} className="flex items-center gap-3 py-3.5">
                 <span className="flex size-8 items-center justify-center rounded-full bg-[var(--teal-soft)] text-xs font-semibold tabular-nums text-[var(--teal)]">
                   {String(index + 1).padStart(2, '0')}
                 </span>
                 <div className="min-w-0 flex-1">
                   <p className="truncate text-sm font-semibold text-[var(--ink)]">{maker.name}</p>
                   <p className="mt-0.5 text-xs text-[var(--muted)]">
-                    {maker.location} · {maker.sources.length} source
-                    {maker.sources.length === 1 ? '' : 's'}
+                    {maker.location} · {maker.publicSourceCount} source
+                    {maker.publicSourceCount === 1 ? '' : 's'}
                   </p>
                 </div>
                 <CheckCircle2 className="size-4 text-[var(--teal)]" />

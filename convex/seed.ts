@@ -33,6 +33,16 @@ export const ensureDemoBaseline = internalMutation({
       if (!project || project.dataMode !== 'demo_baseline' || !project.demoMode) {
         throw new Error('Existing demo baseline does not reference a sanitized demo project.');
       }
+      const linkedBrief = project.currentApprovedBriefId
+        ? await ctx.db.get(project.currentApprovedBriefId)
+        : null;
+      if (
+        !linkedBrief ||
+        linkedBrief.projectId !== project._id ||
+        linkedBrief.approvedAt === undefined
+      ) {
+        throw new Error('Existing demo baseline has no valid approved sourcing brief link.');
+      }
       const metrics = await ctx.db
         .query('projectMetrics')
         .withIndex('by_projectId', (query) => query.eq('projectId', project._id))
@@ -92,6 +102,7 @@ export const ensureDemoBaseline = internalMutation({
       promptVersion: 'fixture.manual.v1',
       createdAt: DEMO_TIMESTAMP,
     });
+    await ctx.db.patch(projectId, {currentApprovedBriefId: briefId});
 
     const requirementIds = new Map<string, Id<'requirements'>>();
     for (const [
@@ -230,7 +241,8 @@ export const ensureDemoBaseline = internalMutation({
         evidenceState,
         sourceId: atlasSourceId,
         agentMailMessageId: 'demo-message-redacted',
-        supportingExcerpt: 'Controlled fictional supplier wording retained for the demo.',
+        supportingExcerpt:
+          'Controlled fictional French reply supporting the Atlas Clay Studio demonstration record.',
         observedAt: DEMO_TIMESTAMP,
         extractionModel: 'fixture-manual',
         promptVersion: 'supplier-reply.fixture.v1',
@@ -253,7 +265,8 @@ export const ensureDemoBaseline = internalMutation({
           status: 'confirmed',
           evidenceState: 'public_source',
           sourceId,
-          supportingExcerpt: 'Fictional public-source-style evidence for interface development.',
+          supportingExcerpt:
+            'Fictional source-style excerpt with partial observed capabilities and explicit unknown commercial terms.',
           observedAt: DEMO_TIMESTAMP,
           extractionModel: 'fixture-manual',
           promptVersion: 'supplier-extract.fixture.v1',

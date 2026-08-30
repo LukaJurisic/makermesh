@@ -3,7 +3,7 @@ import {type PropsWithChildren, useCallback, useEffect, useMemo, useRef, useStat
 import {api} from '../../convex/_generated/api';
 import {DEFAULT_RANKING_WEIGHTS} from '@/domain/comparison';
 import type {ActivityEvent, ProjectStage, RankingWeights} from '@/domain/types';
-import {demoActivity, demoMetrics} from '@/data/demo';
+import {demoActivity, demoMetrics, demoResearch} from '@/data/demo';
 import {DemoContext, type DemoContextValue} from './demoContextCore';
 
 const providerNames = {
@@ -39,13 +39,12 @@ function commandId(prefix: string) {
 
 export function DemoProvider({children}: PropsWithChildren) {
   const [sessionId] = useSessionId();
-  const [now, setNow] = useState(() => Date.now());
   const [backendError, setBackendError] = useState<string | null>(null);
   const [fallbackMode, setFallbackMode] = useState(false);
   const [fallbackState, setFallbackState] = useState<LocalDemoState>(initialState);
   const creatingSession = useRef(false);
 
-  const session = useSessionQuery(api.demo.getSession, {now});
+  const session = useSessionQuery(api.demo.getSession, {});
   const createSession = useSessionMutation(api.demo.createSession);
   const approveBriefMutation = useSessionMutation(api.demo.approveBrief);
   const startResearchMutation = useSessionMutation(api.demo.startResearchReplay);
@@ -55,11 +54,6 @@ export function DemoProvider({children}: PropsWithChildren) {
   const setWeightsMutation = useSessionMutation(api.demo.setPreferenceWeights);
   const resetMutation = useSessionMutation(api.demo.resetOwnDemo);
   const trackEventMutation = useSessionMutation(api.demo.trackProductEvent);
-
-  useEffect(() => {
-    const timer = window.setInterval(() => setNow(Date.now()), 60_000);
-    return () => window.clearInterval(timer);
-  }, []);
 
   useEffect(() => {
     if (!sessionId || session !== null || fallbackMode || creatingSession.current) return;
@@ -126,6 +120,36 @@ export function DemoProvider({children}: PropsWithChildren) {
         : demoActivity,
     [session],
   );
+  const research = useMemo(() => {
+    if (!session) return demoResearch;
+    const makerNames = new Map(session.research.makers.map((maker) => [maker.slug, maker.name]));
+    return {
+      ...session.research,
+      requirements: session.research.requirements.map((requirement) => ({
+        ...requirement,
+        ...(requirement.unit === null ? {unit: undefined} : {unit: requirement.unit}),
+      })),
+      sources: session.research.sources.map((source) => ({
+        id: source.sourceKey,
+        makerSlug: source.makerSlug,
+        maker: makerNames.get(source.makerSlug) ?? 'Maker record',
+        title: source.title,
+        url: source.url,
+        domain: source.domain,
+        excerpt: source.excerpt,
+        excerptTruncated: source.excerptTruncated,
+        observedAt: source.observedAt,
+        sourceType: source.sourceType,
+        evidenceState:
+          source.sourceType === 'supplier_email'
+            ? ('supplier_claimed' as const)
+            : ('public_source' as const),
+        fixture: source.fixture,
+        state: source.state,
+        truncated: source.truncated,
+      })),
+    };
+  }, [session]);
 
   const value = useMemo<DemoContextValue>(
     () => ({
@@ -138,6 +162,8 @@ export function DemoProvider({children}: PropsWithChildren) {
       weights: state.weights,
       metrics,
       activity,
+      research,
+      baselineMode: session?.baseline.sourceMode ?? (fallbackMode ? 'fallback' : 'fixture'),
       baselineLabel:
         session?.baseline.captureLabel ??
         (fallbackMode
@@ -226,6 +252,7 @@ export function DemoProvider({children}: PropsWithChildren) {
       execute,
       fallbackMode,
       metrics,
+      research,
       resetMutation,
       session,
       setStageMutation,

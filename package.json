@@ -7,6 +7,7 @@
     "dev": "vite",
     "dev:convex": "convex dev",
     "dev:all": "convex dev --start \"npm run dev\"",
+    "dev:e2e": "convex dev --start \"npm run build && npm run preview\"",
     "convex:once": "convex dev --once",
     "typecheck": "tsc -b --pretty false",
     "build": "tsc -b && vite build",

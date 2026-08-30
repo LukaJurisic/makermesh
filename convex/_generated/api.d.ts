@@ -23,6 +23,7 @@ import type * as model_evaluateRequirement from "../model/evaluateRequirement.js
 import type * as model_operatorVerifier from "../model/operatorVerifier.js";
 import type * as model_outreachState from "../model/outreachState.js";
 import type * as model_projectState from "../model/projectState.js";
+import type * as model_publicDemoResearch from "../model/publicDemoResearch.js";
 import type * as model_replyScope from "../model/replyScope.js";
 import type * as model_requireOperator from "../model/requireOperator.js";
 import type * as model_validators from "../model/validators.js";
@@ -55,6 +56,7 @@ declare const fullApi: ApiFromModules<{
   "model/operatorVerifier": typeof model_operatorVerifier;
   "model/outreachState": typeof model_outreachState;
   "model/projectState": typeof model_projectState;
+  "model/publicDemoResearch": typeof model_publicDemoResearch;
   "model/replyScope": typeof model_replyScope;
   "model/requireOperator": typeof model_requireOperator;
   "model/validators": typeof model_validators;

@@ -7,6 +7,7 @@ import type {MutationCtx} from './_generated/server';
 import {components, internal} from './_generated/api';
 import {internalMutation, mutation, query} from './_generated/server';
 import {DEMO_BASELINE_SLUG, DEMO_PROJECT_SLUG} from './fixtures/demoData';
+import {loadPublicDemoResearch, publicDemoResearchValidator} from './model/publicDemoResearch';
 import {
   productEventTypeValidator,
   projectStageValidator,
@@ -22,6 +23,15 @@ const DEFAULT_WEIGHTS = {
   leadTime: 10,
   price: 0,
 } as const;
+
+type DemoCommandScope =
+  | 'approve_brief'
+  | 'start_research_replay'
+  | 'approve_fixture_outreach'
+  | 'apply_fixture_reply'
+  | 'set_stage'
+  | 'set_preference_weights'
+  | 'reset_demo';
 
 const publicDemoLimiter = new RateLimiter(components.rateLimiter, {
   sessionCreateGlobal: {kind: 'token bucket', rate: 1_000, period: MINUTE, capacity: 5_000},
@@ -84,6 +94,7 @@ const sessionResultValidator = v.object({
       fixture: v.boolean(),
     }),
   ),
+  research: publicDemoResearchValidator,
   state: stateValidator,
 });
 
@@ -129,16 +140,21 @@ async function beginCommand(
   ctx: MutationCtx,
   sessionId: string,
   commandId: string,
-  scope: string,
+  scope: DemoCommandScope,
   expiresAt: number,
 ) {
   validateCommandId(commandId);
-  const key = `demo:${sessionId}:${commandId}`;
+  const key = `demo:${sessionId}:${expiresAt}:${commandId}`;
   const existing = await ctx.db
     .query('idempotencyRecords')
     .withIndex('by_key', (query) => query.eq('key', key))
     .unique();
-  if (existing) return false;
+  if (existing) {
+    if (existing.scope !== scope || existing.subjectKey !== sessionId) {
+      throw new Error('Command identifier was already used for a different operation.');
+    }
+    return false;
+  }
   const session = await ctx.db
     .query('demoSessions')
     .withIndex('by_sessionId', (query) => query.eq('sessionId', sessionId))
@@ -190,7 +206,13 @@ export const createSession = mutation({
       .withIndex('by_sessionId', (query) => query.eq('sessionId', args.sessionId))
       .unique();
     if (existing && existing.status === 'active' && existing.expiresAt > now) {
-      return {sessionId: args.sessionId, expiresAt: existing.expiresAt, created: false};
+      const existingBaseline = await ctx.db.get(existing.baselineId);
+      if (
+        existingBaseline?.status === 'published' &&
+        existingBaseline.slug === DEMO_BASELINE_SLUG
+      ) {
+        return {sessionId: args.sessionId, expiresAt: existing.expiresAt, created: false};
+      }
     }
     const creationLimit = await publicDemoLimiter.limit(ctx, 'sessionCreateGlobal');
     if (!creationLimit.ok) {
@@ -204,10 +226,19 @@ export const createSession = mutation({
       .order('desc')
       .first();
     if (!baseline) throw new Error('Published demo baseline is missing.');
-    const atlas = await ctx.db
-      .query('supplierEntities')
-      .withIndex('by_slug', (query) => query.eq('slug', 'atlas-clay-studio'))
-      .unique();
+    const baselineAppearances = await ctx.db
+      .query('projectSuppliers')
+      .withIndex('by_projectId_and_stage', (query) =>
+        query.eq('projectId', baseline.baselineProjectId),
+      )
+      .take(11);
+    if (baselineAppearances.length > 10) throw new Error('Demo baseline maker limit exceeded.');
+    const baselineSuppliers = await Promise.all(
+      baselineAppearances.map((appearance) => ctx.db.get(appearance.supplierId)),
+    );
+    const atlas = baselineSuppliers.find(
+      (supplier) => supplier?.slug === 'atlas-clay-studio' && supplier.demoSupplier,
+    );
     if (!atlas) throw new Error('Atlas demonstration supplier is missing.');
 
     const expiresAt = now + SESSION_DURATION_MS;
@@ -258,21 +289,21 @@ export const createSession = mutation({
 });
 
 export const getSession = query({
-  args: {...SessionIdArg, now: v.number()},
+  args: {...SessionIdArg},
   returns: v.union(v.null(), sessionResultValidator),
   handler: async (ctx, args) => {
-    if (!Number.isFinite(args.now)) return null;
     const session = await ctx.db
       .query('demoSessions')
       .withIndex('by_sessionId', (query) => query.eq('sessionId', args.sessionId))
       .unique();
-    if (!session || session.status !== 'active' || session.expiresAt <= args.now) return null;
+    if (!session || session.status !== 'active') return null;
     const state = await ctx.db
       .query('demoSessionState')
       .withIndex('by_sessionId', (query) => query.eq('sessionId', args.sessionId))
       .unique();
     const baseline = await ctx.db.get(session.baselineId);
     if (!state || !baseline) return null;
+    if (baseline.status !== 'published' || baseline.slug !== DEMO_BASELINE_SLUG) return null;
     const project = await ctx.db.get(baseline.baselineProjectId);
     if (
       !project ||
@@ -281,6 +312,8 @@ export const getSession = query({
       !project.demoMode
     )
       return null;
+    const research = await loadPublicDemoResearch(ctx, project);
+    if (!research) return null;
     const metrics = await ctx.db
       .query('projectMetrics')
       .withIndex('by_projectId', (query) => query.eq('projectId', project._id))
@@ -326,6 +359,7 @@ export const getSession = query({
           : {}),
         fixture: event.safeMetadata.fixture === true,
       })),
+      research,
       state: toState(state),
     };
   },

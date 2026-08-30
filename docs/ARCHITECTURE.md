@@ -61,10 +61,16 @@ in the index, and no potentially unbounded path uses a full-table scan.
 
 ## Immutable baseline and visitor overlay
 
-One sanitized captured-live snapshot supplies evidence, provider events, and the
-fictional email loop. An anonymous session stores only its replay cursor, selected maker,
-viewed evidence, approved demo steps, comparison weights, and presentation preference.
-The overlay expires after 24 hours. Resetting a demo clears or replaces only that overlay.
+One immutable, versioned sanitized baseline supplies evidence, provider events, and the
+fictional email loop. `demo.getSession` projects a flat, bounded public research DTO rather
+than returning raw documents: it omits private sources, provider IDs, email data, scores,
+and real-supplier workflow state. Claims survive only when their exact excerpt occurs in a
+returned public source. New corrections publish a new baseline project and retire the old
+baseline without mutating its claims.
+
+An anonymous session stores only its replay cursor, selected maker, viewed evidence,
+approved demo steps, comparison weights, and presentation preference. The overlay expires
+after 24 hours. Resetting a demo clears or replaces only that overlay.
 Session creation uses a generous replenishing safety budget. If that budget or the local
 session backend is unavailable, the browser transparently labels and uses the captured
 fixture fallback so judges can still inspect the complete product without provider calls.

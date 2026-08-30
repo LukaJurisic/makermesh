@@ -86,16 +86,19 @@ environment variables.
 
 ## Demo and deployment
 
-The public demo will read an immutable sanitized captured-live baseline and store only a
-small 24-hour visitor overlay. A transparently labelled local captured-fixture fallback
-keeps the demo inspectable if anonymous session capacity is unavailable. Atlas Clay Studio
-is explicitly fictional. Deployment, public GitHub publication, and any real outreach
-require separate user approval.
+The public demo reads an immutable, versioned sanitized baseline and stores only a small
+24-hour visitor overlay. Research content is projected through a bounded public Convex DTO;
+private sources, provider identifiers, real-supplier workflow state, and unsupported claims
+fail closed. A transparently labelled local fixture fallback keeps the demo inspectable if
+anonymous session capacity is unavailable. Atlas Clay Studio is explicitly fictional.
+Production deployment, public GitHub publication, and any real outreach require separate
+user approval.
 
 Current status: the fixture-backed vertical slice is available on the verified Convex
 development deployment at <https://disciplined-ladybug-82.convex.site>. OpenAI and
-Firecrawl have completed a controlled live run. The controlled AgentMail send/reply,
-captured-live public replay, and production deployment remain pending.
+Firecrawl have completed a controlled live run. The deployed Research page now reads its
+brief, makers, public sources, and supported claims from Convex baseline v2. The controlled
+AgentMail send/reply, captured-live public replay, and production deployment remain pending.
 
 ## Limitations
 

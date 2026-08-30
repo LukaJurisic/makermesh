@@ -1,5 +1,10 @@
 import {createContext} from 'react';
-import type {ActivityEvent, ProjectStage, RankingWeights} from '@/domain/types';
+import type {
+  ActivityEvent,
+  ProjectStage,
+  PublicResearchSnapshot,
+  RankingWeights,
+} from '@/domain/types';
 import type {demoMetrics} from '@/data/demo';
 
 export interface DemoContextValue {
@@ -12,6 +17,8 @@ export interface DemoContextValue {
   weights: RankingWeights;
   metrics: typeof demoMetrics;
   activity: ActivityEvent[];
+  research: PublicResearchSnapshot;
+  baselineMode: 'fixture' | 'captured_live' | 'fallback';
   baselineLabel: string;
   backendReady: boolean;
   backendError: string | null;

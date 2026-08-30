@@ -52,3 +52,12 @@ Pin the official `@agentmail/convex` component at `0.1.0` and apply a minimal
 1.45's typed component-environment boundary. The patch changes no inbox, thread, delivery,
 or webhook business logic and must be removed when the upstream package ships the same
 declaration.
+
+## 2026-08-29 — Versioned public research projection
+
+Public demo sessions read research through a purpose-built, bounded Convex DTO rather than
+raw baseline documents or bundled frontend records. Only public-safe sources and claims
+with exact evidence substrings are returned. Real suppliers receive neutral observed-only
+records without grades, private workflow state, email evidence, or unprovenanced languages.
+Corrections create a new baseline project/version and retire the prior snapshot instead of
+mutating published evidence.

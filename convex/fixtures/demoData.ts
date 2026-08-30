@@ -1,5 +1,5 @@
 export const DEMO_BASELINE_SLUG = 'espresso-cup-demo';
-export const DEMO_BASELINE_VERSION = 1;
+export const DEMO_BASELINE_VERSION = 2;
 export const DEMO_PROJECT_SLUG = 'harbour-coffee-lab';
 export const DEMO_TIMESTAMP = Date.parse('2026-08-29T14:34:19.000Z');
 
