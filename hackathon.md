@@ -3,16 +3,16 @@
 - **Project:** MakerMesh
 - **Event:** Convex All Gas Hackathon sponsored by OpenAI, Firecrawl, and AgentMail
 - **What it does:** Compiles a sourcing brief into an evidence-backed maker network, identifies unanswered requirements, and structures buyer-approved supplier replies.
-- **Live app:** not deployed
+- **Live app:** development fixture — https://disciplined-ladybug-82.convex.site (production not deployed)
 - **Repo:** none
 - **Frontend:** Convex static hosting
-- **Convex deployment:** not deployed
+- **Convex deployment:** development — disciplined-ladybug-82 (production not deployed)
 - **Components:** @convex-dev/rate-limiter, @convex-dev/workflow, @firecrawl/firecrawl-convex, @agentmail/convex, @convex-dev/static-hosting
 - **Convex features:** schema, tables, indexes, queries, mutations, actions, HTTP actions, scheduled functions, crons, realtime queries
 - **Auth:** Convex Auth
 - **AI models:** gpt-5.6-luna (configured; live API call not yet exercised)
 - **Started:** 2026-08-29T14:07:45.2228690Z
-- **Last updated:** 2026-08-29T22:33:48Z
+- **Last updated:** 2026-08-30T00:00:47Z
 
 ## Log
 
@@ -25,3 +25,9 @@ Mounted Firecrawl, AgentMail, workflow, rate-limiter, and static-hosting compone
 Hardened every provider boundary after repeated `convex-reviewer` passes: current-brief state guards, exact reply and quote evidence, message-content hashes, scoped leases and attempts, bounded public sessions, controlled-sender quarantine, Firecrawl resume reconciliation, atomic OpenAI execution claims, and monotonic mail delivery state. The final reviewer reports no Critical or Important findings. The public demo also has a transparently labelled captured-fixture fallback if anonymous session capacity is unavailable.
 
 Verification currently passes 37 unit/Convex tests, `convex dev --once`, and the self-contained desktop/mobile Playwright journey plus required viewport captures (`convex/*.test.ts`, `src/domain/comparison.test.ts`, `e2e/`).
+
+### 2026-08-29 - working tree
+
+Linked the repository to the Convex cloud project owned by `lukajurisic70`, created and selected the `disciplined-ladybug-82` development deployment, generated deployment-specific Auth and webhook secrets, kept every live-operation flag locked, pushed all functions/components/indexes, and seeded the sanitized demo baseline. Uploaded the fixture frontend through the official static-hosting component to `https://disciplined-ladybug-82.convex.site`.
+
+Browser verification confirmed cloud-backed session creation and brief approval, reactive navigation to research, the captured fixture label, and zero console errors. This is a development deployment only. The Firecrawl credential remains an intentionally disabled placeholder, and no real OpenAI, Firecrawl, or AgentMail operation is claimed.

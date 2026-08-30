@@ -10,7 +10,7 @@
 
 ## Product and sponsor loop
 
-- [ ] Public product opens without an invitation.
+- [x] Public development fixture opens without an invitation.
 - [x] Convex runs the local database, functions, durable state, and realtime sync.
 - [ ] Firecrawl performs real search and one durable crawl.
 - [ ] OpenAI Responses performs strict structured extraction.
@@ -28,7 +28,7 @@
 
 ## Submission artifacts
 
-- [ ] Frontend is deployed through Convex static hosting at `convex.site`.
+- [x] Development frontend is deployed through Convex static hosting at `convex.site`.
 - [ ] Public URL passes an incognito test.
 - [x] Root `hackathon.md` reflects current repository evidence.
 - [ ] README names only integrations that were exercised.

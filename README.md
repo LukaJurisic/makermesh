@@ -90,8 +90,9 @@ keeps the demo inspectable if anonymous session capacity is unavailable. Atlas C
 is explicitly fictional. Deployment, public GitHub publication, and any real outreach
 require separate user approval.
 
-Current status: local fixture-backed vertical slice complete; live provider credentials
-and production deployment remain pending.
+Current status: the fixture-backed vertical slice is available on the verified Convex
+development deployment at <https://disciplined-ladybug-82.convex.site>. Live provider
+credentials, controlled sponsor smoke tests, and the production deployment remain pending.
 
 ## Limitations
 

@@ -19,6 +19,10 @@ flowchart LR
 There is no separate application server, database, cache, queue, object store, or realtime
 gateway.
 
+The current cloud target is the development deployment `disciplined-ladybug-82`; its
+sanitized fixture frontend is served through the static-hosting component at
+`https://disciplined-ladybug-82.convex.site`. No production deployment exists yet.
+
 ## Frontend
 
 - React 19, TypeScript strict mode, Vite, React Router.
