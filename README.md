@@ -62,7 +62,7 @@ environment variables.
 - `npm run dev` — start Vite
 - `npm run dev:convex` — start Convex development
 - `npm run dev:all` — run Convex and Vite together
-- `npm run typecheck` — strict TypeScript check
+- `npm run typecheck` — strict root and Convex TypeScript checks
 - `npm run lint` — Oxlint
 - `npm run test` — unit and integration tests
 - `npm run test:e2e` — Playwright product flow with its own anonymous local Convex backend
@@ -97,8 +97,11 @@ user approval.
 Current status: the fixture-backed vertical slice is available on the verified Convex
 development deployment at <https://disciplined-ladybug-82.convex.site>. OpenAI and
 Firecrawl have completed a controlled live run. The deployed Research page now reads its
-brief, makers, public sources, and supported claims from Convex baseline v2. The controlled
-AgentMail send/reply, captured-live public replay, and production deployment remain pending.
+brief, makers, public sources, and supported claims from Convex. Baseline v3 attaches an
+inspectable captured-live OpenAI/Firecrawl research proof to that fictional sanitized market
+replay and labels the boundary explicitly; it does not claim that the displayed suppliers
+came from the live crawl. The controlled AgentMail send/reply and production deployment
+remain pending.
 
 ## Limitations
 

@@ -18,7 +18,7 @@ import {useMemo, useState} from 'react';
 import {Link, NavLink, Outlet, useLocation, useNavigate, useSearchParams} from 'react-router-dom';
 import {Brand} from '@/components/brand/Logo';
 import {Button} from '@/components/ui/Button';
-import {FixtureBadge} from '@/components/ui/StatusBadge';
+import {CapturedResearchBadge, FixtureBadge} from '@/components/ui/StatusBadge';
 import type {ProjectStage} from '@/domain/types';
 import {useDemo} from '@/app/useDemo';
 import {cn} from '@/lib/cn';
@@ -45,6 +45,7 @@ export function AppShell() {
     backendError,
     backendReady,
     baselineLabel,
+    baselineMode,
     briefApproved,
     metrics,
     resetDemo,
@@ -246,7 +247,7 @@ export function AppShell() {
         </div>
 
         <div className="border-b border-[var(--border)] bg-[var(--surface)] px-5 py-2.5 sm:px-7">
-          <FixtureBadge />
+          {baselineMode === 'captured_live' ? <CapturedResearchBadge /> : <FixtureBadge />}
           <span className="ml-3 text-xs text-[var(--muted)]">
             {backendReady ? baselineLabel : 'Connecting to the Convex demo baseline…'}
           </span>

@@ -280,8 +280,8 @@ describe('Convex demo baseline and overlays', () => {
         version: 3,
         baselineProjectId: active!.baselineProjectId,
         capturedAt: 2,
-        sourceMode: 'captured_live',
-        captureLabel: 'Captured from a controlled live run; downstream supplier data is fictional.',
+        sourceMode: 'fixture',
+        captureLabel: 'Replacement immutable fixture baseline.',
         status: 'published',
       });
     });
@@ -292,7 +292,7 @@ describe('Convex demo baseline and overlays', () => {
     ).resolves.toMatchObject({created: true});
     const rebound = await t.query(api.demo.getSession, {sessionId: testSessionId});
     expect(rebound?.baseline.version).toBe(3);
-    expect(rebound?.baseline.sourceMode).toBe('captured_live');
+    expect(rebound?.baseline.sourceMode).toBe('fixture');
   });
 
   it('makes retried commands no-ops and resets only the caller overlay', async () => {

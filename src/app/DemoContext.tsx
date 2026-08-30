@@ -13,6 +13,15 @@ const providerNames = {
   agentmail: 'AgentMail',
 } as const;
 
+function formatEventTime(timestamp: number) {
+  return new Intl.DateTimeFormat('en-CA', {
+    hour: '2-digit',
+    minute: '2-digit',
+    second: '2-digit',
+    hour12: false,
+  }).format(new Date(timestamp));
+}
+
 type LocalDemoState = {
   briefApproved: boolean;
   researchStarted: boolean;
@@ -108,16 +117,23 @@ export function DemoProvider({children}: PropsWithChildren) {
                 : event.status === 'queued' || event.status === 'cancelled'
                   ? 'waiting'
                   : event.status,
-            occurredAt: new Intl.DateTimeFormat('en-CA', {
-              hour: '2-digit',
-              minute: '2-digit',
-              second: '2-digit',
-              hour12: false,
-            }).format(new Date(event.occurredAt)),
+            occurredAt: formatEventTime(event.occurredAt),
             ...(event.latencyMs !== undefined ? {latency: `${event.latencyMs}ms`} : {}),
             fixture: event.fixture,
           }))
         : demoActivity,
+    [session],
+  );
+  const captureProofEvents = useMemo(
+    () =>
+      session?.baseline.captureEvents.map((event, index) => ({
+        id: `capture-proof-${index + 1}`,
+        provider: providerNames[event.provider],
+        operation: event.operation,
+        label: event.label,
+        occurredAt: formatEventTime(event.occurredAt),
+        ...('resultCount' in event ? {resultCount: event.resultCount} : {}),
+      })) ?? [],
     [session],
   );
   const research = useMemo(() => {
@@ -162,6 +178,7 @@ export function DemoProvider({children}: PropsWithChildren) {
       weights: state.weights,
       metrics,
       activity,
+      captureProofEvents,
       research,
       baselineMode: session?.baseline.sourceMode ?? (fallbackMode ? 'fallback' : 'fixture'),
       baselineLabel:
@@ -249,6 +266,7 @@ export function DemoProvider({children}: PropsWithChildren) {
       approveOutreachMutation,
       activity,
       backendError,
+      captureProofEvents,
       execute,
       fallbackMode,
       metrics,

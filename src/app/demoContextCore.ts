@@ -1,6 +1,7 @@
 import {createContext} from 'react';
 import type {
   ActivityEvent,
+  CaptureProofEvent,
   ProjectStage,
   PublicResearchSnapshot,
   RankingWeights,
@@ -17,6 +18,7 @@ export interface DemoContextValue {
   weights: RankingWeights;
   metrics: typeof demoMetrics;
   activity: ActivityEvent[];
+  captureProofEvents: CaptureProofEvent[];
   research: PublicResearchSnapshot;
   baselineMode: 'fixture' | 'captured_live' | 'fallback';
   baselineLabel: string;

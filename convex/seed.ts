@@ -54,11 +54,19 @@ export const ensureDemoBaseline = internalMutation({
           .withIndex('by_slug_and_status', (query) =>
             query.eq('slug', DEMO_BASELINE_SLUG).eq('status', 'published'),
           )
-          .take(20);
-        for (const baseline of published) {
-          if (baseline._id !== existing._id) await ctx.db.patch(baseline._id, {status: 'retired'});
+          .take(2);
+        if (published.length > 1) {
+          throw new Error('Multiple published demo baselines require manual reconciliation.');
         }
-        await ctx.db.patch(existing._id, {status: 'published'});
+        const current = published[0];
+        if (!current) {
+          await ctx.db.patch(existing._id, {status: 'published'});
+        } else if (current.version < existing.version) {
+          await ctx.db.patch(current._id, {status: 'retired'});
+          await ctx.db.patch(existing._id, {status: 'published'});
+        } else if (current.version === existing.version) {
+          throw new Error('Published demo baseline version conflicts with fixture seed history.');
+        }
       }
       return {
         created: false,

@@ -14,8 +14,10 @@ requirements, preferences, and explicit unknowns. Approve the brief.
 
 ## 0:35–1:05 — Research
 
-Start the controlled live or honestly labelled captured-live run. Show Firecrawl query,
-pages analyzed, progressive suppliers, System Pulse, and one source excerpt.
+Start the controlled live run or the honestly labelled captured-live research proof. In
+fallback mode, say that the OpenAI/Firecrawl events came from the controlled run while the
+displayed maker network remains a fictional sanitized replay. Show the query, pages
+analyzed, progressive suppliers, System Pulse, and one source excerpt.
 
 ## 1:05–1:28 — Question gaps
 

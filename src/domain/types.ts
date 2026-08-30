@@ -112,6 +112,15 @@ export interface ActivityEvent {
   fixture: boolean;
 }
 
+export interface CaptureProofEvent {
+  id: string;
+  provider: 'OpenAI' | 'Firecrawl';
+  operation: 'compile_brief' | 'search_and_durable_crawl';
+  label: string;
+  occurredAt: string;
+  resultCount?: number;
+}
+
 export interface PublicResearchMaker {
   slug: string;
   name: string;

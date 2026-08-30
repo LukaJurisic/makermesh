@@ -61,3 +61,12 @@ with exact evidence substrings are returned. Real suppliers receive neutral obse
 records without grades, private workflow state, email evidence, or unprovenanced languages.
 Corrections create a new baseline project/version and retire the prior snapshot instead of
 mutating published evidence.
+
+## 2026-08-30 — Captured proof is not captured market data
+
+The public reliability fallback attaches auditable OpenAI and Firecrawl provenance to the
+fictional sanitized market replay. It is named and rendered as a “live research proof,” not
+a captured supplier network. Two provider events are shown separately from all fixture
+makers, sources, claims, metrics, quotes, AgentMail events, and Passport content. Publishing
+the proof creates a new immutable baseline version and proves that no outreach state exists
+on the controlled source project.

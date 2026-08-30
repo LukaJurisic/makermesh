@@ -113,6 +113,22 @@ export const scalarValueValidator = v.union(v.string(), v.number(), v.boolean(),
 
 export const safeMetadataValidator = v.record(v.string(), scalarValueValidator);
 
+export const captureEventValidator = v.union(
+  v.object({
+    provider: v.literal('openai'),
+    operation: v.literal('compile_brief'),
+    label: v.string(),
+    occurredAt: v.number(),
+  }),
+  v.object({
+    provider: v.literal('firecrawl'),
+    operation: v.literal('search_and_durable_crawl'),
+    label: v.string(),
+    occurredAt: v.number(),
+    resultCount: v.number(),
+  }),
+);
+
 export const productEventTypeValidator = v.union(
   v.literal('landing_viewed'),
   v.literal('demo_opened'),

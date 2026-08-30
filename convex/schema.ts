@@ -3,6 +3,7 @@ import {defineSchema, defineTable} from 'convex/server';
 import {v} from 'convex/values';
 import {
   claimStatusValidator,
+  captureEventValidator,
   dataModeValidator,
   discoveryStatusValidator,
   evidenceStateValidator,
@@ -406,11 +407,18 @@ export default defineSchema({
     sourceMode: v.union(v.literal('fixture'), v.literal('captured_live')),
     captureLabel: v.string(),
     snapshotStorageId: v.optional(v.id('_storage')),
+    captureScope: v.optional(v.literal('research_only')),
+    captureSourceProjectId: v.optional(v.id('projects')),
+    captureSourceBriefId: v.optional(v.id('briefs')),
+    captureSourceOpenAIOperationId: v.optional(v.id('externalOperations')),
+    captureSourceRunId: v.optional(v.id('discoveryRuns')),
+    captureEvents: v.optional(v.array(captureEventValidator)),
     status: v.union(v.literal('draft'), v.literal('published'), v.literal('retired')),
   })
     .index('by_slug_and_status', ['slug', 'status'])
     .index('by_slug_and_version', ['slug', 'version'])
-    .index('by_baselineProjectId', ['baselineProjectId']),
+    .index('by_baselineProjectId', ['baselineProjectId'])
+    .index('by_captureSourceRunId', ['captureSourceRunId']),
 
   demoSessions: defineTable({
     sessionId: v.string(),

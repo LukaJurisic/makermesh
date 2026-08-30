@@ -9,6 +9,7 @@ import {internalMutation, mutation, query} from './_generated/server';
 import {DEMO_BASELINE_SLUG, DEMO_PROJECT_SLUG} from './fixtures/demoData';
 import {loadPublicDemoResearch, publicDemoResearchValidator} from './model/publicDemoResearch';
 import {
+  captureEventValidator,
   productEventTypeValidator,
   projectStageValidator,
   rankingWeightsValidator,
@@ -56,8 +57,11 @@ const sessionResultValidator = v.object({
   baseline: v.object({
     version: v.number(),
     sourceMode: v.union(v.literal('fixture'), v.literal('captured_live')),
+    captureScope: v.union(v.null(), v.literal('research_only')),
+    contentMode: v.literal('fictional_fixture'),
     captureLabel: v.string(),
     capturedAt: v.number(),
+    captureEvents: v.array(captureEventValidator),
   }),
   project: v.object({
     title: v.string(),
@@ -304,6 +308,22 @@ export const getSession = query({
     const baseline = await ctx.db.get(session.baselineId);
     if (!state || !baseline) return null;
     if (baseline.status !== 'published' || baseline.slug !== DEMO_BASELINE_SLUG) return null;
+    const captureEvents = baseline.captureEvents ?? [];
+    if (
+      baseline.sourceMode === 'captured_live' &&
+      (baseline.captureScope !== 'research_only' ||
+        !baseline.captureSourceProjectId ||
+        !baseline.captureSourceBriefId ||
+        !baseline.captureSourceOpenAIOperationId ||
+        !baseline.captureSourceRunId ||
+        captureEvents.length !== 2 ||
+        captureEvents[0]?.provider !== 'openai' ||
+        captureEvents[0]?.operation !== 'compile_brief' ||
+        captureEvents[1]?.provider !== 'firecrawl' ||
+        captureEvents[1]?.operation !== 'search_and_durable_crawl')
+    ) {
+      return null;
+    }
     const project = await ctx.db.get(baseline.baselineProjectId);
     if (
       !project ||
@@ -332,8 +352,11 @@ export const getSession = query({
       baseline: {
         version: baseline.version,
         sourceMode: baseline.sourceMode,
+        captureScope: baseline.captureScope ?? null,
+        contentMode: 'fictional_fixture' as const,
         captureLabel: baseline.captureLabel,
         capturedAt: baseline.capturedAt,
+        captureEvents,
       },
       project: {
         title: project.title,

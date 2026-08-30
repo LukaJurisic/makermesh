@@ -1,8 +1,7 @@
 import {v} from 'convex/values';
 import {mutation} from './_generated/server';
+import {CONTROLLED_SMOKE_SLUG} from './model/controlledDemo';
 import {requireOperator} from './model/requireOperator';
-
-const CONTROLLED_SMOKE_SLUG = 'harbour-coffee-lab-live-smoke';
 
 export const ensureControlledSmokeProject = mutation({
   args: {},

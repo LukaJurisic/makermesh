@@ -68,6 +68,12 @@ and real-supplier workflow state. Claims survive only when their exact excerpt o
 returned public source. New corrections publish a new baseline project and retire the old
 baseline without mutating its claims.
 
+A research-only captured proof stores private source links to the controlled live project,
+approved brief, completed OpenAI operation, and completed Firecrawl run. The public DTO
+returns none of those IDs: it returns exactly two bounded provider events plus
+`contentMode: fictional_fixture`. System Pulse renders the live integration proof separately
+from the fictional maker, metric, quote, email, and Passport activity.
+
 An anonymous session stores only its replay cursor, selected maker, viewed evidence,
 approved demo steps, comparison weights, and presentation preference. The overlay expires
 after 24 hours. Resetting a demo clears or replaces only that overlay.

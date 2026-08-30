@@ -15,12 +15,12 @@
 - [x] Firecrawl performs real search and one durable crawl.
 - [x] OpenAI Responses performs strict structured extraction.
 - [ ] AgentMail sends and receives one controlled real email thread.
-- [ ] Provider execution is visible through stored System Pulse events.
+- [x] Controlled OpenAI/Firecrawl execution is visible as separate stored System Pulse proof.
 - [x] No real supplier is publicly negatively graded or ranked.
 
 ## Quality
 
-- [x] Type checking, linting, formatting, 47 unit/Convex tests, E2E, and build pass.
+- [x] Root and Convex type checking, linting, formatting, 52 unit/Convex tests, E2E, and build pass.
 - [x] Visual checks pass at 1440×900, 1280×800, 768×1024, and 390×844.
 - [x] Keyboard, focus, screen-reader status, contrast, and reduced motion are verified.
 - [x] Demo reset is idempotent and public sessions do not interfere.
