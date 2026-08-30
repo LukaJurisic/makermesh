@@ -12,7 +12,7 @@
 - **Auth:** Convex Auth
 - **AI models:** gpt-5.6-luna (live Responses API brief compilation exercised)
 - **Started:** 2026-08-29T14:07:45.2228690Z
-- **Last updated:** 2026-08-30T04:20:44Z
+- **Last updated:** 2026-08-30T04:47:58Z
 
 ## Log
 
@@ -55,3 +55,11 @@ Audited the deployed landing and Research surfaces with Lighthouse, the browser 
 Added polite live status and progress semantics to research replay. The evidence dialog already moved and trapped focus correctly; it now restores focus to the exact source control after Escape or close, including when opened inside a maker drawer. A regression test covers that behavior (`src/pages/project/ResearchPage.tsx`, `src/components/evidence/EvidenceDialog.tsx`).
 
 Verification passes 47 unit/Convex tests, formatting, lint, strict type checking, the production build, and all 7 applicable Playwright desktop/mobile journeys and viewport captures. Reduced-motion CSS, semantic heading order, page language/title/viewport, and an isolated-browser public access check are verified.
+
+### 2026-08-30 - 9a62cc5
+
+Published baseline version 3 as a captured live research proof attached to the fictional sanitized market replay. The operator-only capture mutation correlates one completed OpenAI brief operation and non-cached usage record with one completed durable Firecrawl run and usage record, stores private provenance IDs, and publishes only two bounded provider events. It rejects wrong projects, manual briefs, partial or cached work, and any AgentMail, outreach, thread, quote, or reply-derived state (`convex/demoCapture.ts`, `convex/schema.ts`).
+
+The public session returns no capture source IDs. It exposes `research_only` and `fictional_fixture` labels plus the two provider events, while the 17-source, 6-maker, 39-claim, one-reply market stays explicitly fixture data. System Pulse and the project banner render the live research proof separately from fictional maker and AgentMail activity. Re-running fixture seed cannot replace a newer captured baseline.
+
+Cloud and browser verification confirmed OpenAI and Firecrawl proof events, the explicit fictional/no-outreach label, fixture metrics unchanged, no private IDs, and zero console errors. Lighthouse remains 100 on the captured Research surface. Verification passes 52 tests plus root and Convex TypeScript checks, formatting, lint, and the production build. The controlled AgentMail send/reply remains pending.
