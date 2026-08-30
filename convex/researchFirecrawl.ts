@@ -629,6 +629,13 @@ export const onCrawlComplete = internalMutation({
     if (operation.status === 'completed') return null;
     const now = Date.now();
     const terminalStatus = args.status === 'completed' ? 'completed' : args.status;
+    if (
+      operation.status === terminalStatus &&
+      run.status === args.status &&
+      (args.status === 'failed' || args.status === 'cancelled')
+    ) {
+      return null;
+    }
     await ctx.db.patch(args.context.operationId, {
       status: terminalStatus,
       ...(args.status === 'failed' ? {errorCode: 'FIRECRAWL_CRAWL_FAILED'} : {}),
@@ -658,6 +665,21 @@ export const onCrawlComplete = internalMutation({
       occurredAt: now,
       publicSafe: false,
     });
+    const existingUsage = await ctx.db
+      .query('usageEvents')
+      .withIndex('by_discoveryRunId', (index) => index.eq('discoveryRunId', run._id))
+      .unique();
+    const usageFields = {
+      projectId: args.context.projectId,
+      discoveryRunId: run._id,
+      provider: 'firecrawl',
+      operation: 'search_and_durable_crawl',
+      status: terminalStatus,
+      cached: false,
+      occurredAt: now,
+    } as const;
+    if (existingUsage) await ctx.db.replace(existingUsage._id, usageFields);
+    else await ctx.db.insert('usageEvents', usageFields);
     const project = scopedProject;
     if (project && project.dataMode === 'live') {
       if (args.status === 'completed' && project.status === 'error') {
@@ -673,6 +695,59 @@ export const onCrawlComplete = internalMutation({
       }
     }
     return null;
+  },
+});
+
+export const reconcileUsageEvent = internalMutation({
+  args: {discoveryRunId: v.id('discoveryRuns')},
+  returns: v.boolean(),
+  handler: async (ctx, args) => {
+    const run = await ctx.db.get(args.discoveryRunId);
+    if (!run || !['completed', 'partially_completed', 'failed', 'cancelled'].includes(run.status)) {
+      throw new Error('Only a terminal discovery run can be reconciled.');
+    }
+    const existing = await ctx.db
+      .query('usageEvents')
+      .withIndex('by_discoveryRunId', (index) => index.eq('discoveryRunId', run._id))
+      .unique();
+    const now = Date.now();
+    const status =
+      run.status === 'failed'
+        ? ('failed' as const)
+        : run.status === 'cancelled'
+          ? ('cancelled' as const)
+          : ('completed' as const);
+    if (existing) {
+      if (existing.status === status) return false;
+      await ctx.db.patch(existing._id, {status, occurredAt: run.completedAt ?? now});
+      return true;
+    }
+    const legacy = await ctx.db
+      .query('usageEvents')
+      .withIndex('by_projectId_and_occurredAt', (index) =>
+        index.eq('projectId', run.projectId).eq('occurredAt', run.completedAt ?? now),
+      )
+      .take(10);
+    const legacyFirecrawl = legacy.find(
+      (event) =>
+        !event.discoveryRunId &&
+        event.provider === 'firecrawl' &&
+        event.operation === 'search_and_durable_crawl',
+    );
+    if (legacyFirecrawl) {
+      await ctx.db.patch(legacyFirecrawl._id, {discoveryRunId: run._id, status});
+      return true;
+    }
+    await ctx.db.insert('usageEvents', {
+      projectId: run.projectId,
+      discoveryRunId: run._id,
+      provider: 'firecrawl',
+      operation: 'search_and_durable_crawl',
+      status,
+      cached: false,
+      occurredAt: run.completedAt ?? now,
+    });
+    return true;
   },
 });
 

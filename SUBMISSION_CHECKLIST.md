@@ -12,15 +12,15 @@
 
 - [x] Public development fixture opens without an invitation.
 - [x] Convex runs the local database, functions, durable state, and realtime sync.
-- [ ] Firecrawl performs real search and one durable crawl.
-- [ ] OpenAI Responses performs strict structured extraction.
+- [x] Firecrawl performs real search and one durable crawl.
+- [x] OpenAI Responses performs strict structured extraction.
 - [ ] AgentMail sends and receives one controlled real email thread.
 - [ ] Provider execution is visible through stored System Pulse events.
 - [ ] No real supplier is publicly negatively graded or ranked.
 
 ## Quality
 
-- [x] Type checking, linting, formatting, 37 unit/Convex tests, E2E, and build pass.
+- [x] Type checking, linting, formatting, 38 unit/Convex tests, E2E, and build pass.
 - [x] Visual checks pass at 1440×900, 1280×800, 768×1024, and 390×844.
 - [ ] Keyboard, focus, screen-reader status, contrast, and reduced motion are verified.
 - [x] Demo reset is idempotent and public sessions do not interfere.

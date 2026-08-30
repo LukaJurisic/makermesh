@@ -358,13 +358,16 @@ export default defineSchema({
 
   usageEvents: defineTable({
     projectId: v.id('projects'),
+    discoveryRunId: v.optional(v.id('discoveryRuns')),
     provider: v.union(v.literal('openai'), v.literal('firecrawl'), v.literal('agentmail')),
     operation: v.string(),
     status: operationStatusValidator,
     latencyMs: v.optional(v.number()),
     cached: v.boolean(),
     occurredAt: v.number(),
-  }).index('by_projectId_and_occurredAt', ['projectId', 'occurredAt']),
+  })
+    .index('by_projectId_and_occurredAt', ['projectId', 'occurredAt'])
+    .index('by_discoveryRunId', ['discoveryRunId']),
 
   projectMetrics: defineTable({
     projectId: v.id('projects'),

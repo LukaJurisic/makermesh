@@ -44,3 +44,11 @@ Every paid operation is scoped by provider, project, current brief, material-inp
 attempt, and lease. Inbound mail must match the configured inbox, controlled sender,
 approved draft, and current brief. Email-derived answers and quote fields persist only
 with exact excerpts from the hashed analyzed message.
+
+## 2026-08-29 — AgentMail component environment compatibility
+
+Pin the official `@agentmail/convex` component at `0.1.0` and apply a minimal
+`patch-package` shim so its documented API key, webhook secret, and base URL cross Convex
+1.45's typed component-environment boundary. The patch changes no inbox, thread, delivery,
+or webhook business logic and must be removed when the upstream package ships the same
+declaration.

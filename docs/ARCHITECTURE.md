@@ -40,6 +40,9 @@ sanitized fixture frontend is served through the static-hosting component at
 - Scheduled functions continue extraction, parsing, expiry, and bounded retries.
 - `@convex-dev/rate-limiter` protects operator login and public API budgets.
 - Firecrawl and AgentMail retain their provider-specific durable state in the official components.
+- AgentMail `0.1.0` is pinned with a narrow `patch-package` compatibility shim that declares
+  and binds its documented component environment variables for Convex 1.45. Remove the
+  patch when an upstream release contains the same typed-env declaration.
 
 ## Application tables
 

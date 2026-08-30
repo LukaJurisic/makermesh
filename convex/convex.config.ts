@@ -38,7 +38,13 @@ app.use(firecrawl, {
     FIRECRAWL_WEBHOOK_SECRET: app.env.FIRECRAWL_WEBHOOK_SECRET,
   },
 });
-app.use(agentmail);
+app.use(agentmail, {
+  env: {
+    AGENTMAIL_API_KEY: app.env.AGENTMAIL_API_KEY,
+    AGENTMAIL_WEBHOOK_SECRET: app.env.AGENTMAIL_WEBHOOK_SECRET,
+    AGENTMAIL_BASE_URL: app.env.AGENTMAIL_BASE_URL,
+  },
+});
 app.use(staticHosting);
 
 export default app;

@@ -139,6 +139,30 @@ describe('Firecrawl boundary', () => {
       ctx.db.get('discoveryRuns', first.discoveryRunId),
     );
     expect(beforeValidCallback).toMatchObject({status: 'queued', resultCount: 0});
+    const failedCallback = {
+      crawlId: 'crawl-test-001',
+      jobId: 'job-test-001',
+      status: 'failed' as const,
+      pageCount: 0,
+      context: {
+        projectId,
+        briefId,
+        operationId: first.operationId,
+        discoveryRunId: first.discoveryRunId,
+        attempt: first.attempt,
+      },
+    };
+    await t.mutation(internal.researchFirecrawl.onCrawlComplete, failedCallback);
+    await t.mutation(internal.researchFirecrawl.onCrawlComplete, failedCallback);
+    await t.run(async (ctx) => {
+      await ctx.db.patch(first.operationId, {status: 'running', errorCode: undefined});
+      await ctx.db.patch(first.discoveryRunId, {
+        status: 'crawling',
+        errorCode: undefined,
+        completedAt: undefined,
+      });
+      await ctx.db.patch(projectId, {status: 'researching'});
+    });
     await t.mutation(internal.researchFirecrawl.onCrawlComplete, {
       crawlId: 'crawl-test-001',
       jobId: 'job-test-001',
@@ -152,12 +176,36 @@ describe('Firecrawl boundary', () => {
         attempt: first.attempt,
       },
     });
-    const {run, project} = await t.run(async (ctx) => ({
+    await t.mutation(internal.researchFirecrawl.onCrawlComplete, {
+      crawlId: 'crawl-test-001',
+      jobId: 'job-test-001',
+      status: 'completed',
+      pageCount: 5,
+      context: {
+        projectId,
+        briefId,
+        operationId: first.operationId,
+        discoveryRunId: first.discoveryRunId,
+        attempt: first.attempt,
+      },
+    });
+    const {run, project, usage} = await t.run(async (ctx) => ({
       run: await ctx.db.get('discoveryRuns', first.discoveryRunId),
       project: await ctx.db.get('projects', projectId),
+      usage: await ctx.db
+        .query('usageEvents')
+        .withIndex('by_discoveryRunId', (index) => index.eq('discoveryRunId', first.discoveryRunId))
+        .take(10),
     }));
     expect(run).toMatchObject({status: 'completed', resultCount: 5});
     expect(project?.status).toBe('reviewing_candidates');
+    expect(usage).toEqual([
+      expect.objectContaining({
+        provider: 'firecrawl',
+        operation: 'search_and_durable_crawl',
+        status: 'completed',
+      }),
+    ]);
     await expect(
       t.mutation(internal.researchFirecrawl.markCrawlStarted, {
         operationId: first.operationId,
@@ -266,6 +314,22 @@ describe('Firecrawl boundary', () => {
         requestHash: ids.requestHash,
       }),
     ).rejects.toThrow('resume limit');
+  });
+});
+
+describe('controlled smoke project boundary', () => {
+  it('requires an operator and creates the live project idempotently', async () => {
+    const {t} = await setup();
+    await expect(t.mutation(api.projects.ensureControlledSmokeProject, {})).rejects.toThrow(
+      'Unauthenticated',
+    );
+    const operator = await withOperator(t);
+    const first = await operator.mutation(api.projects.ensureControlledSmokeProject, {});
+    const second = await operator.mutation(api.projects.ensureControlledSmokeProject, {});
+    expect(first.created).toBe(true);
+    expect(second).toEqual({projectId: first.projectId, created: false});
+    const project = await t.run((ctx) => ctx.db.get('projects', first.projectId));
+    expect(project).toMatchObject({status: 'draft', dataMode: 'live', demoMode: true});
   });
 });
 

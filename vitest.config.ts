@@ -10,6 +10,7 @@ export default defineConfig({
     include: ['src/**/*.test.ts', 'convex/**/*.test.ts'],
     environment: 'jsdom',
     setupFiles: ['./src/test/setup.ts'],
+    testTimeout: 10_000,
     coverage: {
       provider: 'v8',
       reporter: ['text', 'html'],

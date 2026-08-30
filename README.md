@@ -35,9 +35,11 @@ React + Vite on Convex static hosting
 ```
 
 Convex is the sole backend and system of record. The official Firecrawl and AgentMail
-components are mounted and their guarded application wrappers are implemented. OpenAI
-Responses Structured Output actions are also implemented. Provider credentials are not
-configured, so live sponsor execution remains unverified and is not claimed.
+components are mounted and their guarded application wrappers are implemented. A live
+OpenAI Responses structured-brief call and a durable five-page Firecrawl crawl have been
+exercised on the cloud development deployment. AgentMail authentication, inbox creation,
+component access, and signed webhook rejection are verified; outbound and inbound mail
+remain unexercised and are not claimed.
 See [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) for the detailed design.
 
 ## Local setup
@@ -91,8 +93,9 @@ is explicitly fictional. Deployment, public GitHub publication, and any real out
 require separate user approval.
 
 Current status: the fixture-backed vertical slice is available on the verified Convex
-development deployment at <https://disciplined-ladybug-82.convex.site>. Live provider
-credentials, controlled sponsor smoke tests, and the production deployment remain pending.
+development deployment at <https://disciplined-ladybug-82.convex.site>. OpenAI and
+Firecrawl have completed a controlled live run. The controlled AgentMail send/reply,
+captured-live public replay, and production deployment remain pending.
 
 ## Limitations
 

@@ -29,6 +29,7 @@ import type * as model_validators from "../model/validators.js";
 import type * as openaiActions from "../openaiActions.js";
 import type * as openaiStore from "../openaiStore.js";
 import type * as operatorAuth from "../operatorAuth.js";
+import type * as projects from "../projects.js";
 import type * as researchFirecrawl from "../researchFirecrawl.js";
 import type * as seed from "../seed.js";
 
@@ -60,6 +61,7 @@ declare const fullApi: ApiFromModules<{
   openaiActions: typeof openaiActions;
   openaiStore: typeof openaiStore;
   operatorAuth: typeof operatorAuth;
+  projects: typeof projects;
   researchFirecrawl: typeof researchFirecrawl;
   seed: typeof seed;
 }>;
