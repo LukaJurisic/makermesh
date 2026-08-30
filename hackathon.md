@@ -12,7 +12,7 @@
 - **Auth:** Convex Auth
 - **AI models:** gpt-5.6-luna (live Responses API brief compilation exercised)
 - **Started:** 2026-08-29T14:07:45.2228690Z
-- **Last updated:** 2026-08-30T03:21:58Z
+- **Last updated:** 2026-08-30T04:06:17Z
 
 ## Log
 
@@ -39,3 +39,11 @@ Configured deployment-only OpenAI, Firecrawl, and AgentMail access plus the serv
 Ran the first controlled sponsor workflow through authenticated MakerMesh actions. OpenAI `gpt-5.6-luna` compiled and persisted the Harbour Coffee Lab brief, then Firecrawl searched for Moroccan ceramics suppliers and completed a durable five-page crawl without truncation. Convex stored private System Pulse activity and idempotent usage records; all brief, research, and outreach flags returned to `false` after the run (`convex/projects.ts`, `convex/researchFirecrawl.ts`).
 
 Verification passes 38 unit/Convex tests, formatting, lint, strict type checking, and the production build. The Convex reviewer reports no Critical or Important findings. AgentMail outbound delivery and inbound reply parsing remain intentionally unexercised until a controlled recipient address is supplied.
+
+### 2026-08-30 - 78023a4
+
+Moved the public Research surface from bundled content to a bounded Convex projection of the published demo baseline. The query returns the approved brief, neutral maker records, public-safe sources, and only claims whose exact excerpt appears in the returned evidence. It omits private sources, mail/provider identifiers, stored scores, and real-supplier workflow data (`convex/model/publicDemoResearch.ts`, `convex/demo.ts`, `src/app/DemoContext.tsx`, `src/pages/project/ResearchPage.tsx`).
+
+Published normalized baseline version 2 as a separate immutable project and retired version 1 without changing its project or claims. Session commands are scoped to one visitor-session incarnation, retired sessions rebind to the active baseline, and scheduled Convex state—not a client clock—controls expiry. The reviewer reports no Critical or Important findings after the fixes.
+
+Cloud and browser checks confirmed 6 fictional makers, 17 public fixture sources, 39 evidence-backed claims, one preserved conflict, no forbidden provider fields, a reactive Brief → Research replay, and a guarded direct Research route with no console errors. Verification passes 46 unit/Convex tests, formatting, lint, strict type checking, the production build, and all 7 applicable Playwright journeys and viewport captures. The E2E server now waits for Convex function synchronization before starting the frontend. This remains a fixture-labelled development deployment; captured-live replay and AgentMail send/reply are still pending.
