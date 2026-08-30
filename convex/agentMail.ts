@@ -8,6 +8,13 @@ import type {MutationCtx} from './_generated/server';
 import {env, internalMutation, mutation, query} from './_generated/server';
 import {promptRegistry} from './ai/prompts';
 import {agentMail} from './lib/agentMailClient';
+import {requireControlledDraftScope} from './model/controlledOutreach';
+import {
+  hashListIncludes,
+  mailboxHash,
+  normalizeMailbox,
+  sha256Hex,
+} from './model/mailboxAllowlist';
 import {mergeProviderDeliveryStatus} from './model/outreachState';
 import {
   isCurrentApprovedBrief,
@@ -67,26 +74,9 @@ function mapOutboundStatus(status: string) {
   }
 }
 
-async function sha256Hex(value: string) {
-  const digest = new Uint8Array(
-    await crypto.subtle.digest('SHA-256', new TextEncoder().encode(value)),
-  );
-  return [...digest].map((byte) => byte.toString(16).padStart(2, '0')).join('');
-}
-
 async function recipientIsAllowlisted(recipient: string) {
-  const configured = env.CONTROLLED_OUTREACH_ALLOWLIST_HASHES;
-  if (!configured) return false;
-  const digest = await sha256Hex(recipient.trim().toLocaleLowerCase('en-US'));
-  return configured
-    .split(',')
-    .map((value) => value.trim().toLocaleLowerCase('en-US'))
-    .some((value) => value.length === 64 && value === digest);
-}
-
-function normalizeMailbox(value: string) {
-  const bracketed = /<([^<>]+)>/u.exec(value)?.[1] ?? value;
-  return bracketed.trim().toLocaleLowerCase('en-US');
+  const digest = await mailboxHash(recipient);
+  return hashListIncludes(env.CONTROLLED_OUTREACH_ALLOWLIST_HASHES, digest);
 }
 
 async function senderMatchesControlledRecipient(sender: string, recipient: string) {
@@ -94,11 +84,8 @@ async function senderMatchesControlledRecipient(sender: string, recipient: strin
   if (normalizedSender === normalizeMailbox(recipient)) return recipientIsAllowlisted(recipient);
   const configured = env.CONTROLLED_REPLY_ALIAS_ALLOWLIST_HASHES;
   if (!configured) return false;
-  const digest = await sha256Hex(normalizedSender);
-  return configured
-    .split(',')
-    .map((value) => value.trim().toLocaleLowerCase('en-US'))
-    .some((value) => value.length === 64 && value === digest);
+  const digest = await mailboxHash(normalizedSender);
+  return hashListIncludes(configured, digest);
 }
 
 async function recordInboundDecision(
@@ -144,10 +131,13 @@ export const sendApproved = mutation({
     if (draft.status !== 'approved' || !draft.approvedAt) {
       throw new Error('Explicit outreach approval is required.');
     }
-    const project = await ctx.db.get(draft.projectId);
+    const controlledScope = await requireControlledDraftScope(ctx, draft);
+    const project = controlledScope.project;
     requireLiveProjectStatus(project, ['outreach_ready', 'awaiting_replies'], 'Real outreach');
     await requireCurrentApprovedBrief(ctx, project, draft.briefId);
-    if (env.ALLOW_REAL_OUTREACH !== 'true') throw new Error('Real outreach is locked.');
+    if (env.ALLOW_CONTROLLED_DEMO_OUTREACH !== 'true') {
+      throw new Error('Controlled demo outreach is locked.');
+    }
     if (!(await recipientIsAllowlisted(draft.recipient))) {
       throw new Error('Recipient is not on the controlled outreach allowlist.');
     }

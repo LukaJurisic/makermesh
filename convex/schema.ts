@@ -278,6 +278,11 @@ export default defineSchema({
     questionKeys: v.array(v.string()),
     status: outreachStatusValidator,
     idempotencyKey: v.string(),
+    draftKind: v.optional(v.literal('controlled_demo')),
+    templateVersion: v.optional(v.string()),
+    recipientHash: v.optional(v.string()),
+    contentHash: v.optional(v.string()),
+    recipientInboxId: v.optional(v.string()),
     agentMailOutboundId: v.optional(v.string()),
     approvedAt: v.optional(v.number()),
     sentAt: v.optional(v.number()),
@@ -418,7 +423,12 @@ export default defineSchema({
     .index('by_slug_and_status', ['slug', 'status'])
     .index('by_slug_and_version', ['slug', 'version'])
     .index('by_baselineProjectId', ['baselineProjectId'])
-    .index('by_captureSourceRunId', ['captureSourceRunId']),
+    .index('by_captureSourceRunId', ['captureSourceRunId'])
+    .index('by_captureProjectId_briefId_scope', [
+      'captureSourceProjectId',
+      'captureSourceBriefId',
+      'captureScope',
+    ]),
 
   demoSessions: defineTable({
     sessionId: v.string(),
