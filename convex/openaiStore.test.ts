@@ -2,11 +2,29 @@
 /// <reference types="vite/client" />
 
 import {convexTest} from 'convex-test';
-import {describe, expect, it} from 'vitest';
+import {afterEach, describe, expect, it, vi} from 'vitest';
 import {api, internal} from './_generated/api';
+import {CONTROLLED_SMOKE_SLUG} from './model/controlledDemo';
+import {
+  buildControlledTemplate,
+  CONTROLLED_ATLAS_NAME,
+  CONTROLLED_ATLAS_SLUG,
+  CONTROLLED_ATLAS_SUMMARY,
+  CONTROLLED_ATLAS_VISUAL_PATH,
+  CONTROLLED_LANGUAGE,
+  CONTROLLED_RECIPIENT_COUNT,
+  CONTROLLED_RECIPIENT_SOURCE,
+  CONTROLLED_TEMPLATE_VERSION,
+  controlledDraftContentHash,
+  FROZEN_CONTROLLED_ASSUMPTIONS,
+} from './model/controlledOutreach';
+import {FROZEN_CONTROLLED_REQUIREMENTS} from './model/controlledScenario';
 import schema from './schema';
 
 const modules = import.meta.glob('./**/*.ts');
+const controlledRecipient = 'controlled@example.test';
+
+afterEach(() => vi.unstubAllEnvs());
 
 async function sha256Hex(value: string) {
   const digest = new Uint8Array(
@@ -20,8 +38,8 @@ async function liveProject() {
   const projectId = await t.run((ctx) =>
     ctx.db.insert('projects', {
       title: 'OpenAI fixture project',
-      slug: 'openai-fixture-project',
-      buyerName: 'Controlled buyer',
+      slug: CONTROLLED_SMOKE_SLUG,
+      buyerName: 'Harbour Coffee Lab — fictional demonstration buyer',
       destination: 'Toronto, Canada',
       defaultCurrency: 'CAD',
       status: 'draft',
@@ -35,40 +53,43 @@ async function liveProject() {
   return {t, projectId};
 }
 
+const hardRequirements = FROZEN_CONTROLLED_REQUIREMENTS.filter(
+  (requirement) => requirement.type === 'hard',
+).map(({type: _type, weight: _weight, displayOrder: _displayOrder, ...requirement}) => requirement);
+const softPreferences = FROZEN_CONTROLLED_REQUIREMENTS.filter(
+  (requirement) => requirement.type === 'soft',
+).map(({type: _type, displayOrder: _displayOrder, ...requirement}) => requirement);
+
 const briefFixture = {
-  product: {name: 'Espresso cups', description: 'Handcrafted eight-ounce cups'},
-  category: 'custom Moroccan ceramics',
+  product: {
+    name: 'Custom Moroccan ceramic espresso cups for Harbour Coffee Lab',
+    description: 'A controlled 200-cup sourcing request for a fictional Toronto buyer.',
+  },
+  category: 'Custom Moroccan ceramics',
   quantity: {value: 200, unit: 'cups'},
-  dimensions: [{label: 'capacity', value: 8, unit: 'oz'}],
+  dimensions: [{label: 'Capacity', value: 8, unit: 'ounces'}],
   materials: ['ceramic'],
-  finish: ['matte sand'],
-  customization: ['café logo'],
+  finish: [
+    'Preferred: matte sand or off-white base',
+    'Preferred: dark green or ink-blue detailing',
+    'Preferred: visible artisanal variation',
+  ],
+  customization: [
+    'Harbour Coffee Lab custom cafe logo must be supported',
+    'Logo application method and artwork specifications are not yet defined',
+  ],
   destination: 'Toronto, Canada',
   deadlineDays: 42,
-  budget: {amount: 3_500, currency: 'CAD', basis: 'product only'},
-  hardRequirements: [
-    {
-      key: 'moq_max',
-      label: 'Maximum MOQ',
-      description: 'MOQ must not exceed 250.',
-      operator: 'lte',
-      targetValue: 250,
-      unit: 'units',
-    },
-  ],
-  softPreferences: [
-    {
-      key: 'handmade',
-      label: 'Handmade',
-      description: 'Small-batch process preferred.',
-      operator: 'equals',
-      targetValue: true,
-      unit: null,
-      weight: 100,
-    },
-  ],
+  budget: {
+    amount: 3_500,
+    currency: 'CAD',
+    basis:
+      'Target product-only budget before freight, customs, taxes, and duties; not a landed-cost basis. Original supplier currencies must be preserved.',
+  },
+  hardRequirements,
+  softPreferences,
   openClarifyingQuestions: ['Packaging method?'],
-  assumptions: ['Freight excluded'],
+  assumptions: [...FROZEN_CONTROLLED_ASSUMPTIONS],
 };
 
 describe('OpenAI fixture persistence', () => {
@@ -164,7 +185,7 @@ describe('OpenAI fixture persistence', () => {
         .take(20);
       return {approvedAt: brief?.approvedAt, requirementCount: requirements.length};
     });
-    expect(beforeApproval).toEqual({approvedAt: undefined, requirementCount: 2});
+    expect(beforeApproval).toEqual({approvedAt: undefined, requirementCount: 17});
 
     const userId = await t.run(async (ctx) => {
       const userId = await ctx.db.insert('users', {name: 'Operator'});
@@ -190,6 +211,20 @@ describe('OpenAI fixture persistence', () => {
 
   it('normalizes a supplier reply idempotently and recalculates with deterministic code', async () => {
     const {t, projectId} = await liveProject();
+    const fixture = await t.mutation(internal.seed.ensureDemoBaseline, {});
+    const recipientHash = await sha256Hex(controlledRecipient);
+    const senderInboxIdHash = await sha256Hex('makermesh-sender-inbox');
+    const recipientInboxIdHash = await sha256Hex('atlas-controlled-inbox');
+    const senderEmailHash = await sha256Hex('makermesh@example.test');
+    const senderDisplayNameHash = await sha256Hex('MakerMesh');
+    vi.stubEnv('AGENTMAIL_INBOX_ID', 'makermesh-sender-inbox');
+    vi.stubEnv('AGENTMAIL_DEMO_SUPPLIER_INBOX_ID', 'atlas-controlled-inbox');
+    vi.stubEnv('CONTROLLED_OUTREACH_ALLOWLIST_HASHES', recipientHash);
+    vi.stubEnv('CONTROLLED_DEMO_SUPPLIER_RECIPIENT_HASH', recipientHash);
+    vi.stubEnv('CONTROLLED_DEMO_SENDER_EMAIL_HASH', senderEmailHash);
+    vi.stubEnv('CONTROLLED_DEMO_SENDER_DISPLAY_NAME_HASH', senderDisplayNameHash);
+    const template = buildControlledTemplate();
+    const contentHash = await controlledDraftContentHash(controlledRecipient);
     const briefOperation = await t.mutation(internal.openaiStore.reserve, {
       projectId,
       operation: 'compile_brief',
@@ -216,15 +251,30 @@ describe('OpenAI fixture persistence', () => {
     const messageId = 'message-fixture-openai-001';
     const sourceContentHash = await sha256Hex(originalText);
     const {supplierId, operationId} = await t.run(async (ctx) => {
+      await ctx.db.insert('idempotencyRecords', {
+        key: [
+          'agentmail:demo-mailbox-binding:v2',
+          senderInboxIdHash,
+          senderEmailHash,
+          senderDisplayNameHash,
+          recipientInboxIdHash,
+          recipientHash,
+        ].join(':'),
+        scope: 'agentmail_demo_mailbox_binding',
+        subjectKey: recipientHash,
+        expiresAt: Date.now() + 15 * 60 * 1000,
+        createdAt: 1,
+      });
       const supplierId = await ctx.db.insert('supplierEntities', {
-        canonicalName: 'Reply Fixture Studio',
-        slug: 'reply-fixture-studio',
+        canonicalName: CONTROLLED_ATLAS_NAME,
+        slug: CONTROLLED_ATLAS_SLUG,
         country: 'Morocco',
         city: 'Safi',
-        languages: ['French'],
-        summary: 'Fixture',
+        languages: ['French', 'English'],
+        summary: CONTROLLED_ATLAS_SUMMARY,
         demoSupplier: true,
         consentStatus: 'preview_only',
+        visualPath: CONTROLLED_ATLAS_VISUAL_PATH,
         createdAt: 1,
         updatedAt: 1,
       });
@@ -244,6 +294,49 @@ describe('OpenAI fixture persistence', () => {
         currentApprovedBriefId: briefId,
         status: 'awaiting_replies',
         updatedAt: 2,
+      });
+      const discoveryRunId = await ctx.db.insert('discoveryRuns', {
+        projectId,
+        briefId,
+        provider: 'firecrawl',
+        query: 'controlled ceramics research',
+        crawlUrl: 'https://example.com/controlled-ceramics',
+        status: 'completed',
+        idempotencyKey: `firecrawl:${projectId}:reply-proof`,
+        externalReference: 'controlled-crawl-reference',
+        startedAt: 1,
+        completedAt: 2,
+        resultCount: 5,
+      });
+      await ctx.db.patch(fixture.baselineId, {status: 'retired'});
+      await ctx.db.insert('demoBaselines', {
+        slug: 'espresso-cup-demo',
+        version: 3,
+        baselineProjectId: fixture.projectId,
+        capturedAt: 2,
+        sourceMode: 'captured_live',
+        captureLabel: 'Controlled reply extraction fixture.',
+        captureScope: 'research_only',
+        captureSourceProjectId: projectId,
+        captureSourceBriefId: briefId,
+        captureSourceOpenAIOperationId: briefOperation.operationId,
+        captureSourceRunId: discoveryRunId,
+        captureEvents: [
+          {
+            provider: 'openai',
+            operation: 'compile_brief',
+            label: 'OpenAI structured the controlled sourcing brief',
+            occurredAt: 1,
+          },
+          {
+            provider: 'firecrawl',
+            operation: 'search_and_durable_crawl',
+            label: 'Firecrawl completed a durable crawl with 5 pages stored',
+            occurredAt: 2,
+            resultCount: 5,
+          },
+        ],
+        status: 'published',
       });
       const newerBriefId = await ctx.db.insert('briefs', {
         projectId,
@@ -278,15 +371,22 @@ describe('OpenAI fixture persistence', () => {
         projectId,
         briefId,
         supplierId,
-        recipient: 'controlled@example.test',
-        recipientSource: 'test',
-        subject: 'Controlled reply fixture',
-        bodyEnglish: 'Test',
-        bodyLocalized: 'Test',
-        language: 'fr',
-        questionKeys: ['moq_max', 'handmade'],
+        recipient: controlledRecipient,
+        recipientSource: CONTROLLED_RECIPIENT_SOURCE,
+        subject: template.subject,
+        bodyEnglish: template.bodyEnglish,
+        bodyLocalized: template.bodyLocalized,
+        language: CONTROLLED_LANGUAGE,
+        questionKeys: template.questionKeys,
         status: 'replied',
         idempotencyKey: 'reply-fixture-draft-001',
+        draftKind: 'controlled_demo',
+        templateVersion: CONTROLLED_TEMPLATE_VERSION,
+        recipientHash,
+        recipientInboxId: 'atlas-controlled-inbox',
+        recipientCount: CONTROLLED_RECIPIENT_COUNT,
+        contentHash,
+        approvedContentHash: contentHash,
         approvedAt: 2,
         sentAt: 2,
         agentMailOutboundId: 'outbound-fixture-001',
@@ -341,7 +441,7 @@ describe('OpenAI fixture persistence', () => {
       }),
     ).rejects.toThrow('not available');
     const reply = {
-      supplierIdentitySignals: ['Reply Fixture Studio'],
+      supplierIdentitySignals: [CONTROLLED_ATLAS_NAME],
       answers: [
         {
           requirementKey: 'moq_max',
@@ -351,8 +451,8 @@ describe('OpenAI fixture persistence', () => {
           supportingExcerpt: 'Notre minimum est de 150 unités.',
         },
         {
-          requirementKey: 'handmade',
-          normalizedValue: true,
+          requirementKey: 'production_style',
+          normalizedValue: 'handmade',
           displayValue: 'Handmade small batch',
           status: 'confirmed',
           supportingExcerpt: 'Production artisanale en petite série.',
@@ -453,9 +553,9 @@ describe('OpenAI fixture persistence', () => {
       sourceContentHash,
     });
     expect(persisted.projectSupplier).toMatchObject({
-      eligibility: 'eligible',
-      preferenceFit: 100,
-      evidenceCoverage: 100,
+      eligibility: 'provisionally_unqualified',
+      preferenceFit: 17,
+      evidenceCoverage: 12,
       commercialCompleteness: 88,
       openQuestionCount: 1,
     });

@@ -32,9 +32,14 @@ type Env = {
   readonly CONVEX_SITE_URL: string;
   readonly AGENTMAIL_API_KEY: string | undefined;
   readonly AGENTMAIL_BASE_URL: string | undefined;
+  readonly AGENTMAIL_DEMO_SUPPLIER_INBOX_ID: string | undefined;
   readonly AGENTMAIL_INBOX_ID: string | undefined;
   readonly AGENTMAIL_WEBHOOK_SECRET: string | undefined;
+  readonly ALLOW_CONTROLLED_DEMO_OUTREACH: string | undefined;
   readonly ALLOW_REAL_OUTREACH: string | undefined;
+  readonly CONTROLLED_DEMO_SENDER_DISPLAY_NAME_HASH: string | undefined;
+  readonly CONTROLLED_DEMO_SENDER_EMAIL_HASH: string | undefined;
+  readonly CONTROLLED_DEMO_SUPPLIER_RECIPIENT_HASH: string | undefined;
   readonly CONTROLLED_OUTREACH_ALLOWLIST_HASHES: string | undefined;
   readonly CONTROLLED_REPLY_ALIAS_ALLOWLIST_HASHES: string | undefined;
   readonly DEMO_MODE: string | undefined;

@@ -1,5 +1,6 @@
 import type {Id} from '../_generated/dataModel';
 import type {QueryCtx} from '../_generated/server';
+import {requireControlledDraftScope} from './controlledOutreach';
 import {requireCurrentApprovedBrief, requireLiveProjectStatus} from './projectState';
 
 export async function loadReplyOperationScope(
@@ -34,6 +35,7 @@ export async function loadReplyOperationScope(
   ) {
     throw new Error('Supplier reply outreach scope is invalid.');
   }
+  await requireControlledDraftScope(ctx, draft);
   const thread = await ctx.db
     .query('mailThreads')
     .withIndex('by_outreachDraftId', (index) =>

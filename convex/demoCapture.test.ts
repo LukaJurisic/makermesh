@@ -6,6 +6,7 @@ import type {SessionId} from 'convex-helpers/server/sessions';
 import rateLimiterTest from '@convex-dev/rate-limiter/test';
 import {describe, expect, it} from 'vitest';
 import {api, internal} from './_generated/api';
+import {CONTROLLED_SMOKE_SLUG} from './model/controlledDemo';
 import schema from './schema';
 
 const modules = import.meta.glob('./**/*.ts');
@@ -25,7 +26,7 @@ async function setupCaptureProof() {
     });
     const projectId = await ctx.db.insert('projects', {
       title: 'Controlled live research proof',
-      slug: 'harbour-coffee-lab-live-smoke',
+      slug: CONTROLLED_SMOKE_SLUG,
       buyerName: 'Harbour Coffee Lab — fictional demonstration buyer',
       destination: 'Toronto, Canada',
       defaultCurrency: 'CAD',
@@ -206,7 +207,7 @@ describe('captured live research proof', () => {
     ).rejects.toThrow('controlled research-only project scope');
 
     await t.run(async (ctx) => {
-      await ctx.db.patch(ids.projectId, {slug: 'harbour-coffee-lab-live-smoke'});
+      await ctx.db.patch(ids.projectId, {slug: CONTROLLED_SMOKE_SLUG});
       await ctx.db.patch(ids.briefId, {promptVersion: 'fixture.manual.v1'});
     });
     await expect(

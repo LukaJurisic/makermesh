@@ -351,10 +351,10 @@ describe('AgentMail boundary', () => {
     const operator = await withOperator(t);
     await expect(
       operator.mutation(api.agentMail.sendApproved, {outreachDraftId: draftId}),
-    ).rejects.toThrow('Explicit outreach approval');
+    ).rejects.toThrow('Controlled outreach draft scope is invalid');
   });
 
-  it('processes one associated inbound callback without duplicating app state', async () => {
+  it('quarantines a legacy generic inbound callback without duplicating app state', async () => {
     const {t} = await setup();
     const recipient = 'controlled-reply@example.test';
     vi.stubEnv('AGENTMAIL_INBOX_ID', 'inbox-test');
@@ -501,8 +501,14 @@ describe('AgentMail boundary', () => {
         threadStatus: thread?.status,
         draftStatus: draft?.status,
         idempotent: Boolean(idempotency),
+        decisionScope: idempotency?.scope,
       };
     });
-    expect(result).toEqual({threadStatus: 'replied', draftStatus: 'replied', idempotent: true});
+    expect(result).toEqual({
+      threadStatus: 'delivered',
+      draftStatus: 'delivered',
+      idempotent: true,
+      decisionScope: 'agentmail_quarantine',
+    });
   });
 });

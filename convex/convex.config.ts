@@ -22,6 +22,8 @@ const app = defineApp({
     AGENTMAIL_BASE_URL: v.optional(v.string()),
     CONTROLLED_OUTREACH_ALLOWLIST_HASHES: v.optional(v.string()),
     CONTROLLED_DEMO_SUPPLIER_RECIPIENT_HASH: v.optional(v.string()),
+    CONTROLLED_DEMO_SENDER_EMAIL_HASH: v.optional(v.string()),
+    CONTROLLED_DEMO_SENDER_DISPLAY_NAME_HASH: v.optional(v.string()),
     CONTROLLED_REPLY_ALIAS_ALLOWLIST_HASHES: v.optional(v.string()),
     DEMO_MODE: v.optional(v.string()),
     ALLOW_REAL_OUTREACH: v.optional(v.string()),

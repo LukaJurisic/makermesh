@@ -8,11 +8,15 @@ import type {MutationCtx} from './_generated/server';
 import {env, internalMutation, mutation, query} from './_generated/server';
 import {promptRegistry} from './ai/prompts';
 import {agentMail} from './lib/agentMailClient';
-import {requireControlledDraftScope} from './model/controlledOutreach';
+import {
+  requireControlledDraftScope,
+  requireFreshControlledDraftScope,
+} from './model/controlledOutreach';
 import {
   hashListIncludes,
   mailboxHash,
   normalizeMailbox,
+  parseSingleMailboxHeader,
   sha256Hex,
 } from './model/mailboxAllowlist';
 import {mergeProviderDeliveryStatus} from './model/outreachState';
@@ -59,6 +63,13 @@ const deliveryStatusValidator = v.union(
   }),
 );
 
+const sendStatusValidator = v.union(
+  v.literal('queued'),
+  v.literal('sent'),
+  v.literal('delivered'),
+  v.literal('replied'),
+);
+
 function mapOutboundStatus(status: string) {
   switch (status) {
     case 'pending':
@@ -80,7 +91,12 @@ async function recipientIsAllowlisted(recipient: string) {
 }
 
 async function senderMatchesControlledRecipient(sender: string, recipient: string) {
-  const normalizedSender = normalizeMailbox(sender);
+  let normalizedSender: string;
+  try {
+    normalizedSender = parseSingleMailboxHeader(sender);
+  } catch {
+    return false;
+  }
   if (normalizedSender === normalizeMailbox(recipient)) return recipientIsAllowlisted(recipient);
   const configured = env.CONTROLLED_REPLY_ALIAS_ALLOWLIST_HASHES;
   if (!configured) return false;
@@ -122,19 +138,27 @@ async function recordInboundDecision(
 
 export const sendApproved = mutation({
   args: {outreachDraftId: v.id('outreachDrafts')},
-  returns: v.string(),
-  handler: async (ctx, args): Promise<string> => {
+  returns: v.object({status: sendStatusValidator, reused: v.boolean()}),
+  handler: async (ctx, args) => {
     await requireOperator(ctx);
     const draft = await ctx.db.get(args.outreachDraftId);
     if (!draft) throw new Error('Outreach draft not found.');
-    if (draft.agentMailOutboundId) return draft.agentMailOutboundId;
-    if (draft.status !== 'approved' || !draft.approvedAt) {
-      throw new Error('Explicit outreach approval is required.');
-    }
-    const controlledScope = await requireControlledDraftScope(ctx, draft);
+    const controlledScope = await requireFreshControlledDraftScope(ctx, draft);
     const project = controlledScope.project;
     requireLiveProjectStatus(project, ['outreach_ready', 'awaiting_replies'], 'Real outreach');
     await requireCurrentApprovedBrief(ctx, project, draft.briefId);
+    if (draft.agentMailOutboundId) {
+      if (!['queued', 'sent', 'delivered', 'replied'].includes(draft.status)) {
+        throw new Error('Existing controlled outbound state is inconsistent.');
+      }
+      return {
+        status: draft.status as 'queued' | 'sent' | 'delivered' | 'replied',
+        reused: true,
+      };
+    }
+    if (draft.status !== 'approved' || !draft.approvedAt) {
+      throw new Error('Explicit outreach approval is required.');
+    }
     if (env.ALLOW_CONTROLLED_DEMO_OUTREACH !== 'true') {
       throw new Error('Controlled demo outreach is locked.');
     }
@@ -181,7 +205,7 @@ export const sendApproved = mutation({
       occurredAt: now,
       publicSafe: false,
     });
-    return outboundId;
+    return {status: 'queued' as const, reused: false};
   },
 });
 
@@ -192,6 +216,7 @@ export const getDeliveryStatus = query({
     await requireOperator(ctx);
     const draft = await ctx.db.get(args.outreachDraftId);
     if (!draft?.agentMailOutboundId) return null;
+    await requireControlledDraftScope(ctx, draft);
     const status = await agentMail.status(ctx, draft.agentMailOutboundId as OutboundId);
     if (!status) return null;
     return {
@@ -209,6 +234,7 @@ export const syncDeliveryStatus = mutation({
     await requireOperator(ctx);
     const draft = await ctx.db.get(args.outreachDraftId);
     if (!draft?.agentMailOutboundId) return null;
+    await requireControlledDraftScope(ctx, draft);
     const providerStatus = await agentMail.status(ctx, draft.agentMailOutboundId as OutboundId);
     if (!providerStatus) return null;
     const applicationStatus = mapOutboundStatus(providerStatus.status);
@@ -304,6 +330,14 @@ export const onMessageReceived = internalMutation({
       .unique();
     if (!project || !draft) return null;
 
+    let controlledScopeIsValid = false;
+    try {
+      await requireControlledDraftScope(ctx, draft);
+      controlledScopeIsValid = true;
+    } catch {
+      controlledScopeIsValid = false;
+    }
+
     const associationsMatch = Boolean(
       brief &&
       projectSupplier &&
@@ -330,19 +364,21 @@ export const onMessageReceived = internalMutation({
     const hasAnalyzableText = Boolean(originalText?.trim());
     const belowThreadQuota = (mailThread.inboundProcessedCount ?? 0) < 3;
 
-    const quarantineReason = !associationsMatch
-      ? 'scope_mismatch'
-      : !scopeIsCurrent
-        ? 'stale_project_or_brief'
-        : !draftCanReceive
-          ? 'draft_not_receiving'
-          : !senderMatches
-            ? 'sender_mismatch'
-            : !hasAnalyzableText
-              ? 'message_text_missing'
-              : !belowThreadQuota
-                ? 'thread_quota_reached'
-                : null;
+    const quarantineReason = !controlledScopeIsValid
+      ? 'controlled_scope_invalid'
+      : !associationsMatch
+        ? 'scope_mismatch'
+        : !scopeIsCurrent
+          ? 'stale_project_or_brief'
+          : !draftCanReceive
+            ? 'draft_not_receiving'
+            : !senderMatches
+              ? 'sender_mismatch'
+              : !hasAnalyzableText
+                ? 'message_text_missing'
+                : !belowThreadQuota
+                  ? 'thread_quota_reached'
+                  : null;
     if (quarantineReason) {
       await recordInboundDecision(ctx, {
         key: idempotencyKey,
