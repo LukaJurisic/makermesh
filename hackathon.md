@@ -12,7 +12,7 @@
 - **Auth:** Convex Auth
 - **AI models:** gpt-5.6-luna (live Responses API brief compilation exercised)
 - **Started:** 2026-08-29T14:07:45.2228690Z
-- **Last updated:** 2026-08-30T04:47:58Z
+- **Last updated:** 2026-08-31T03:56:32Z
 
 ## Log
 
@@ -63,3 +63,11 @@ Published baseline version 3 as a captured live research proof attached to the f
 The public session returns no capture source IDs. It exposes `research_only` and `fictional_fixture` labels plus the two provider events, while the 17-source, 6-maker, 39-claim, one-reply market stays explicitly fixture data. System Pulse and the project banner render the live research proof separately from fictional maker and AgentMail activity. Re-running fixture seed cannot replace a newer captured baseline.
 
 Cloud and browser verification confirmed OpenAI and Firecrawl proof events, the explicit fictional/no-outreach label, fixture metrics unchanged, no private IDs, and zero console errors. Lighthouse remains 100 on the captured Research surface. Verification passes 52 tests plus root and Convex TypeScript checks, formatting, lint, and the production build. The controlled AgentMail send/reply remains pending.
+
+### 2026-08-31 - 3262d70
+
+Ran a fresh authenticated OpenAI brief compilation and bounded five-page Firecrawl crawl for the exact frozen espresso-cup request, then published captured-live research proof version 4 without altering the fictional public market. The public live-operation flags were relocked after each call.
+
+Added a controlled AgentMail approval boundary for the fictional Atlas Clay Studio inbox. MakerMesh verifies the project-owned sender and recipient against short-lived hashed provider attestations, freezes all 17 approved requirements and the bilingual template bytes, quarantines generic or mutated inbound scope, and keeps preparation separate from approval and sending (`convex/controlledOutreach.ts`, `convex/model/controlledOutreach.ts`, `convex/agentMail.ts`). A real provider identity check succeeded and one draft was prepared; it remains unapproved and no email was sent.
+
+Verification passes 64 tests, formatting, lint, root and Convex strict type checks, and the production build. Independent security and Convex reviews report no remaining Critical or Important findings.
