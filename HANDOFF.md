@@ -5,6 +5,23 @@ Purpose: review the existing work, then finish the sponsor loop and submission.
 
 ## Current release — September 19
 
+### Next implementation: reviewed purchasing-decision experience
+
+After inspecting public hackathon listings, the user selected the interactive decision
+direction and authorized recommended defaults for strategy/design/copy reviews. Those
+reviews are complete in [strategy](docs/designs/DECISION_STRATEGY_2026-09-19.md) and
+[design and copy](docs/designs/DECISION_EXPERIENCE_2026-09-19.md). Five independent review
+findings were resolved; follow-up review passed. This feature is NOT implemented yet.
+
+Build timing constraint → exact French evidence → clarification draft → decision export
+in Compare. Original request is 200 cups with a 42-day hard production limit; quoted
+30–35 days starts AFTER SAMPLE APPROVAL. Changed quantity requires renewed price/capacity/
+timing confirmation, never a binding extension of the old quote. Keep the fictional captured
+boundary visible. Make direct Compare entry and its next-step banner coherent. Quantity
+exploration is secondary; core verification takes priority. Publication/eligibility gates
+below remain separate and unanswered. No new emails or paid provider calls were made by
+these reviews. Deferred work is recorded in TODOS.md.
+
 The refreshed frontend and custom research backend are deployed to the existing approved
 development site. Custom ceramics requests compile, require brief approval, search and
 extract attributed public source spans. Four live requests completed; no additional email
