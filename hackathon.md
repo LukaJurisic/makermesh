@@ -17,6 +17,21 @@
 
 ## Log
 
+### 2026-09-19 — interactive purchasing decision
+
+Implemented a local scenario over the captured fictional Atlas quote using Luna subagents
+for domain logic, UI and regression tests, followed by primary-agent integration/review.
+The buyer can tighten the production limit, inspect the exact French sentence, prepare
+clarification questions and download a Markdown decision brief. The original 200-cup
+quote and 42-day brief remain unchanged; 30–35 days starts after sample approval. A changed
+quantity makes price/capacity/timing reconfirmation explicit rather than inventing a quote.
+Custom research links to this separate example without attaching Atlas evidence to real leads.
+
+Verification: 119 tests and full check pass; 11 applicable E2E cases pass after correcting
+the social-card test's headline expectation, with 5 intentional skips. The decision browser
+checks cover export content, invalid quantity recovery, keyboard focus, reduced motion and
+four viewport axe checks without violations. No additional email or paid provider call.
+
 ### 2026-09-19 — custom requests and release verification
 
 Deployed the buyer-focused workspace and a real custom Moroccan-ceramics research path.

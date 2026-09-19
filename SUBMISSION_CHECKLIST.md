@@ -24,7 +24,8 @@
 
 ## Quality
 
-- [x] Root and Convex type checking, linting, formatting, 102 unit/Convex/UI tests, and build pass. Last E2E run: 11 passed, 5 intentional skips.
+- [x] Root and Convex type checking, linting, formatting, 119 unit/Convex/UI tests, and build pass. Last E2E run: 11 passed, 5 intentional skips.
+- [x] Interactive captured-quote scenario, clarification draft, Markdown export, missing-evidence and invalid-input handling verified.
 - [x] Four real custom requests completed; deployed request revision and cross-session denial verified.
 - [x] Automated axe A/AA checks pass on four deployed routes without violations.
 - [x] Visual checks pass at 1440×900, 1280×800, 768×1024, and 390×844.
@@ -38,7 +39,7 @@
 - [x] Public URL passes an isolated-browser test.
 - [x] Root `hackathon.md` reflects current repository evidence.
 - [x] README names only integrations that were exercised and labels pending work.
-- [x] Updated September 19 captioned walkthrough is 1:58.52 and primarily shows the deployed product; no voiceover.
+- [x] Updated September 19 captioned walkthrough is 1:44.96 and primarily shows the deployed product; no voiceover.
 - [ ] Walkthrough approved for public hosting and its real URL added to the build log.
 - [x] Social preview, share card, LinkedIn composer, X composer, and copy summary are ready.
 - [ ] Build is shared with required sponsor tags.

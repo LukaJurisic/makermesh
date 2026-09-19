@@ -23,7 +23,9 @@ for (const viewport of viewports) {
     await page.setViewportSize({width: viewport.width, height: viewport.height});
     await page.goto('/');
     await settle(page);
-    await expect(page.getByRole('heading', {name: 'A market appears when you ask.'})).toBeVisible();
+    await expect(
+      page.getByRole('heading', {name: 'Know what the workshop can commit to.'}),
+    ).toBeVisible();
     await page.screenshot({
       path: `artifacts/screenshots/${viewport.name}-landing.png`,
       fullPage: true,

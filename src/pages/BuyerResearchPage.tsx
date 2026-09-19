@@ -329,6 +329,15 @@ function ResearchRequest({requestId}: {requestId: Id<'buyerResearchRequests'>}) 
             {copied}
           </p>
         )}
+        <section className="research-private-note" aria-label="Explore a supplier reply">
+          <p>
+            What happens after a supplier replies? Explore a separate fictional quote example. These
+            research leads are not part of that comparison.
+          </p>
+          <Link to="/projects/harbour-coffee-lab/compare" className="research-back mt-3">
+            Try the quote example
+          </Link>
+        </section>
         <footer className="research-private-note">
           Private to this browser · expires after 48 hours. Public-source contact details are
           redacted. Research never sends email, grades real suppliers, or certifies their claims.

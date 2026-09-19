@@ -1,0 +1,382 @@
+.decision-scenario {
+  margin: 2rem 0;
+  color: var(--ink);
+}
+
+.decision-scenario__header {
+  border-bottom: 1px solid var(--border-strong);
+  padding-bottom: 1.25rem;
+}
+
+.decision-scenario__header h2 {
+  max-width: 35rem;
+  margin: 0.5rem 0 0;
+  font-family: var(--font-serif);
+  font-size: clamp(2rem, 4vw, 3.2rem);
+  font-weight: 400;
+  line-height: 0.98;
+  letter-spacing: -0.02em;
+}
+
+.decision-scenario__context {
+  margin: 0.85rem 0 0;
+  color: var(--ink-soft);
+  font-size: 0.875rem;
+  font-variant-numeric: tabular-nums;
+}
+
+.decision-scenario__workspace {
+  display: grid;
+  grid-template-columns: minmax(15rem, 0.85fr) minmax(0, 1.15fr);
+  column-gap: clamp(2rem, 6vw, 6rem);
+  row-gap: 1.5rem;
+  padding-top: 1.75rem;
+}
+
+.decision-scenario__inputs,
+.decision-scenario__consequence,
+.decision-scenario__evidence {
+  min-width: 0;
+}
+
+.decision-scenario__field + .decision-scenario__field {
+  margin-top: 1.15rem;
+}
+
+.decision-scenario__field label {
+  display: block;
+  margin-bottom: 0.45rem;
+  color: var(--ink-soft);
+  font-size: 0.8rem;
+  font-weight: 650;
+  line-height: 1.35;
+}
+
+.decision-scenario__field input {
+  width: 100%;
+  min-height: 2.9rem;
+  border: 1px solid var(--border-strong);
+  border-radius: 9px;
+  background: var(--surface-raised);
+  padding: 0.65rem 0.75rem;
+  color: var(--ink);
+  font-size: 1rem;
+  font-variant-numeric: tabular-nums;
+  outline: none;
+}
+
+.decision-scenario__field input:focus-visible,
+.decision-scenario__button:focus-visible,
+.decision-scenario__text-button:focus-visible,
+.decision-scenario__details summary:focus-visible {
+  outline: 2px solid var(--focus);
+  outline-offset: 2px;
+}
+
+.decision-scenario__field input[aria-invalid='true'] {
+  border-color: var(--danger);
+}
+
+.decision-scenario__field input:disabled,
+.decision-scenario__button:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+.decision-scenario__help,
+.decision-scenario__fine-print {
+  margin: 0.45rem 0 0;
+  color: var(--muted);
+  font-size: 0.75rem;
+  line-height: 1.5;
+}
+
+.decision-scenario__error {
+  margin: 0.45rem 0 0;
+  color: var(--danger);
+  font-size: 0.75rem;
+}
+
+.decision-scenario__input-actions,
+.decision-scenario__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.65rem;
+  margin-top: 1.35rem;
+}
+
+.decision-scenario__button {
+  min-height: 2.75rem;
+  border: 1px solid transparent;
+  border-radius: 9px;
+  padding: 0.65rem 0.9rem;
+  cursor: pointer;
+  font-size: 0.8rem;
+  font-weight: 650;
+  transition:
+    background-color 180ms ease,
+    border-color 180ms ease,
+    color 180ms ease;
+}
+
+.decision-scenario__button--primary {
+  border-color: var(--terracotta-contrast);
+  background: var(--terracotta-contrast);
+  color: white;
+}
+
+.decision-scenario__button--primary:hover {
+  border-color: #8f432e;
+  background: #8f432e;
+}
+
+.decision-scenario__button--secondary {
+  border-color: var(--border-strong);
+  background: var(--surface-raised);
+  color: var(--ink);
+}
+
+.decision-scenario__button--secondary:hover {
+  border-color: var(--ink-soft);
+}
+
+.decision-scenario__button--quiet {
+  border-color: transparent;
+  background: transparent;
+  color: var(--ink-soft);
+}
+
+.decision-scenario__button--quiet:hover {
+  background: var(--surface);
+  color: var(--ink);
+}
+
+.decision-scenario__state {
+  grid-column: 1 / -1;
+  margin: 0;
+  border-top: 1px solid var(--border);
+  padding-top: 1.25rem;
+  color: var(--muted);
+}
+
+.decision-scenario__consequence {
+  border-top: 3px solid var(--unknown);
+  padding-top: 0.9rem;
+}
+
+.decision-scenario__consequence--pass {
+  border-color: var(--success);
+}
+.decision-scenario__consequence--fail {
+  border-color: var(--danger);
+}
+
+.decision-scenario__consequence h3,
+.decision-scenario__evidence h3,
+.decision-scenario__questions h3,
+.decision-scenario__reconfirm h3 {
+  margin: 0.25rem 0 0;
+  font-size: 1.15rem;
+  line-height: 1.25;
+}
+
+.decision-scenario__consequence p:last-child,
+.decision-scenario__evidence > p,
+.decision-scenario__questions > p,
+.decision-scenario__reconfirm > p {
+  margin: 0.65rem 0 0;
+  color: var(--ink-soft);
+  font-size: 0.9rem;
+  line-height: 1.6;
+}
+
+.decision-scenario__eyebrow {
+  margin: 0;
+  color: var(--terracotta-contrast);
+  font-size: 0.68rem;
+  font-weight: 750;
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
+}
+
+.decision-scenario__evidence {
+  border-top: 1px solid var(--border-strong);
+  padding-top: 0.9rem;
+}
+
+.decision-scenario__section-heading {
+  display: flex;
+  align-items: start;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.decision-scenario__text-button {
+  min-height: 44px;
+  flex: 0 0 auto;
+  border: 0;
+  background: transparent;
+  padding: 0.15rem 0;
+  color: var(--teal);
+  cursor: pointer;
+  font-size: 0.78rem;
+  font-weight: 700;
+  text-decoration: underline;
+  text-underline-offset: 0.2em;
+}
+
+.decision-scenario__evidence blockquote {
+  margin: 1.15rem 0 0;
+  border-left: 2px solid var(--teal);
+  padding-left: 1rem;
+  color: var(--ink);
+  font-family: var(--font-serif);
+  font-size: 1.25rem;
+  line-height: 1.35;
+}
+
+.decision-scenario__evidence .decision-scenario__fine-print {
+  margin-top: 0.3rem;
+}
+
+.decision-scenario__commercial {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+  margin: 1.1rem 0 0;
+  border-top: 1px solid var(--border);
+  padding-top: 0.9rem;
+}
+
+.decision-scenario__commercial dt {
+  color: var(--muted);
+  font-size: 0.73rem;
+  line-height: 1.45;
+}
+
+.decision-scenario__commercial dd {
+  margin: 0.25rem 0 0;
+  color: var(--ink);
+  font-size: 0.88rem;
+  font-weight: 650;
+  line-height: 1.4;
+  font-variant-numeric: tabular-nums;
+}
+
+.decision-scenario__reconfirm {
+  grid-column: 1 / -1;
+  border: 1px solid var(--warning);
+  background: var(--ochre-soft);
+  padding: 1rem 1.1rem;
+}
+
+.decision-scenario__questions {
+  grid-column: 1 / -1;
+  border-top: 1px solid var(--border-strong);
+  padding-top: 1rem;
+}
+
+.decision-scenario__question-copy {
+  max-width: 58rem;
+  white-space: pre-wrap;
+}
+
+.decision-scenario__fallback {
+  color: var(--danger) !important;
+  font-size: 0.78rem !important;
+}
+
+.decision-scenario__export-fallback {
+  display: block;
+  width: 100%;
+  min-height: 9rem;
+  margin-top: 0.85rem;
+  border: 1px solid var(--border-strong);
+  border-radius: 8px;
+  background: var(--surface-raised);
+  padding: 0.75rem;
+  color: var(--ink-soft);
+  font-size: 0.78rem;
+  line-height: 1.5;
+}
+
+.decision-scenario__details {
+  grid-column: 1 / -1;
+  order: 4;
+  border-top: 1px solid var(--border);
+  padding-top: 0.9rem;
+}
+
+.decision-scenario__details summary {
+  width: fit-content;
+  cursor: pointer;
+  color: var(--ink-soft);
+  font-size: 0.85rem;
+  font-weight: 700;
+}
+
+.decision-scenario__details-content {
+  max-width: 42rem;
+  padding: 0.75rem 0 0 1rem;
+  color: var(--ink-soft);
+  font-size: 0.85rem;
+  line-height: 1.55;
+}
+
+.decision-scenario__details-content p {
+  margin: 0.35rem 0;
+}
+
+@media (max-width: 1023px) {
+  .decision-scenario__workspace {
+    grid-template-columns: 1fr;
+  }
+  .decision-scenario__reconfirm,
+  .decision-scenario__questions,
+  .decision-scenario__details {
+    grid-column: auto;
+  }
+  .decision-scenario__button {
+    flex: 1 1 13rem;
+  }
+}
+
+@media (max-width: 420px) {
+  .decision-scenario__header h2 {
+    font-size: 2.25rem;
+  }
+  .decision-scenario__section-heading {
+    display: block;
+  }
+  .decision-scenario__text-button {
+    display: inline-block;
+    margin-top: 0.75rem;
+  }
+  .decision-scenario__button {
+    width: 100%;
+  }
+  .decision-scenario__commercial {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .decision-scenario__button {
+    transition: none;
+  }
+}
+
+@media (min-width: 1024px) {
+  .decision-scenario__inputs {
+    grid-column: 1;
+    grid-row: 1;
+  }
+  .decision-scenario__consequence {
+    grid-column: 1;
+    grid-row: 2;
+  }
+  .decision-scenario__evidence {
+    grid-column: 2;
+    grid-row: 1 / 3;
+  }
+}

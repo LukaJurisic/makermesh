@@ -57,6 +57,7 @@ describe('captured reply comparison', () => {
         <ComparePage />
       </MemoryRouter>,
     );
+    fireEvent.click(screen.getByText('Original brief comparison'));
     const table = within(screen.getByRole('table'));
     expect(table.getByText('Atlas Clay Studio — Demo Supplier')).toBeInTheDocument();
     expect(screen.getAllByRole('row')).toHaveLength(2);

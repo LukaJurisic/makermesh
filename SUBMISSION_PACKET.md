@@ -8,21 +8,23 @@ Prepared September 19, 2026. **Draft; do not submit until the checklist is compl
 - Tagline: **A market appears when you ask.**
 - Repository: <https://github.com/LukaJurisic/makermesh> — currently private.
 - Live development app: <https://disciplined-ladybug-82.convex.site>.
-- Video: local captioned MP4 recorded against the published app, 1:58.52 at 1440×900; no voiceover. Publication and public URL pending.
+- Video: local captioned MP4 recorded against the published app, 1:44.96 at 1440×900; no voiceover. Publication and public URL pending.
 - Form: <https://vibeapps.dev/judging/convex-all-gas-hackathon-openai/submit>.
 - Deadline: before September 22, 2026, 12:00 PM PDT / 3:00 PM Toronto EDT.
 
 ## Product description
 
-Small businesses often know what they need made but lack a structured way to find and
-compare suitable workshops. MakerMesh starts with that request: it structures the brief,
-researches public supplier footprints, preserves evidence, and identifies the questions
-the web cannot answer. Buyer-approved email replies become comparable capability claims.
+MakerMesh helps café buyers understand what a ceramics workshop has actually committed to.
+Visitors can research Moroccan ceramics sources and explore a separately labelled captured
+French reply. Change the production requirement, inspect the exact supporting sentence,
+and prepare the clarification needed before proceeding. The decision brief preserves
+original currency, exclusions and unknowns. Changing order quantity requires supplier
+reconfirmation; an illustrative calculation does not become a new quote.
 
 The demonstration follows a fictional Toronto café sourcing 200 custom Moroccan ceramic
-espresso cups. AI extracts information; deterministic rules evaluate requirements.
-Unknowns remain unknown, original currencies and quote bases stay visible, and public
-supplier facts are separated from fictional demonstration grades and quotes.
+espresso cups. AI extracts information; deterministic rules evaluate requirements. A quoted
+30–35 days starts after sample approval, and shipping is excluded. No real supplier is
+publicly scored, qualified or represented by the fictional Atlas quote.
 
 ## Stack and evidence
 
@@ -49,11 +51,11 @@ fictional Atlas exchange separately demonstrates the approved email-to-compariso
 
 Use only after the controlled exchange and public release are verified:
 
-> A market appears when you ask.
+> Know what the workshop can commit to.
 >
-> I built MakerMesh for small businesses sourcing custom products. Start with a brief,
-> inspect the evidence, ask what is missing, and compare a supplier reply without turning
-> unknowns into a pass.
+> I built MakerMesh for cafés sourcing custom ceramics. Try changing the production
+> limit to 30 days: the captured French reply says 30–35, after sample approval. Inspect
+> the exact sentence, prepare a clarification, and download the decision brief.
 >
 > The demo uses a fictional café and ceramics workshop. Convex runs the backend; OpenAI
 > structures the brief and reply, Firecrawl researches public pages, and AgentMail carries

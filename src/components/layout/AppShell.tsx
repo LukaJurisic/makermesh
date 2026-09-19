@@ -182,7 +182,7 @@ export function AppShell() {
             {notice}
           </p>
         )}
-        {active !== next.stage && (
+        {active !== 'compare' && active !== next.stage && (
           <div className="buyer-next">
             <span>
               <small>Next step</small>

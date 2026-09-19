@@ -8,6 +8,7 @@ import {StrictMode} from 'react';
 import {createRoot} from 'react-dom/client';
 import App from './App';
 import {useBrowserSession} from './app/useBrowserSession';
+import {WorkspaceErrorBoundary} from './app/WorkspaceErrorBoundary';
 import './styles/global.css';
 
 const convexUrl = import.meta.env.VITE_CONVEX_URL;
@@ -21,7 +22,9 @@ createRoot(root).render(
   <StrictMode>
     <ConvexAuthProvider client={convex}>
       <SessionProvider storageKey="makermesh-demo-session-v1" useStorage={useBrowserSession}>
-        <App />
+        <WorkspaceErrorBoundary>
+          <App />
+        </WorkspaceErrorBoundary>
       </SessionProvider>
     </ConvexAuthProvider>
   </StrictMode>,

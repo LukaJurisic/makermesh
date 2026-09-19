@@ -5,13 +5,32 @@ Purpose: review the existing work, then finish the sponsor loop and submission.
 
 ## Current release — September 19
 
-### Next implementation: reviewed purchasing-decision experience
+### Purchasing-decision experience implemented
+
+Luna subagents implemented the pure evaluator/export, decision panel, and component tests;
+the primary agent integrated and reviewed them. Full check passes 119 tests and build.
+The frontend is deployed; public verification repeats the export, recovery, keyboard,
+reduced-motion and four viewport axe checks successfully. Updated decision-first walkthrough:
+1:44.96, H.264, 1440×900, captions, no voiceover, zero browser errors. Private local artifact:
+`artifacts/submission.local/MakerMesh-decision-walkthrough.mp4`; publication still pending.
+The 11 applicable E2E cases pass across the full run and corrected social-card rerun,
+with 5 intentional skips. Browser checks verify Markdown content, quantity recovery,
+keyboard drawer, reduced motion and four viewport axe checks with zero violations.
+The first build encountered a transient Windows file-copy error; the build and full check
+subsequently passed. No backend changes, new email or paid provider calls were required.
+
+The interaction now runs on Compare: try a 30-day limit, inspect exact French timing
+evidence, copy questions and download a decision brief. Quantity changes show unconfirmed
+timing and an illustrative cost. Original comparison is disclosed separately. Source-scan
+result: 266 files and 17 pre-release commits, no high-confidence credential matches.
+
+### Planning context
 
 After inspecting public hackathon listings, the user selected the interactive decision
 direction and authorized recommended defaults for strategy/design/copy reviews. Those
 reviews are complete in [strategy](docs/designs/DECISION_STRATEGY_2026-09-19.md) and
 [design and copy](docs/designs/DECISION_EXPERIENCE_2026-09-19.md). Five independent review
-findings were resolved; follow-up review passed. This feature is NOT implemented yet.
+findings were resolved; follow-up review passed. See implementation status above.
 
 Build timing constraint → exact French evidence → clarification draft → decision export
 in Compare. Original request is 200 cups with a 42-day hard production limit; quoted

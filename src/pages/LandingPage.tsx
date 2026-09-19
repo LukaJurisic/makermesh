@@ -24,8 +24,8 @@ const principles = [
   {
     number: '02',
     icon: MailQuestion,
-    title: 'Ask only what is missing',
-    body: 'Confirmed facts stay out of the email. Unknown requirements become concise, editable supplier questions.',
+    title: 'Know what to ask next',
+    body: 'Public statements and supplier replies stay beside your requirements. Unanswered questions remain visible before you decide.',
   },
   {
     number: '03',
@@ -75,27 +75,27 @@ export function LandingPage() {
               Custom production, made clearer
             </p>
             <h1 className="max-w-[760px] font-serif text-[clamp(3.3rem,6.3vw,5.25rem)] leading-[0.94] tracking-[-0.045em] text-[var(--ink)]">
-              A market appears
+              Know what the workshop
               <br />
-              <em className="font-normal">when you ask.</em>
+              <em className="font-normal">can commit to.</em>
             </h1>
             <p className="mt-7 max-w-[590px] text-[17px] leading-7 text-[var(--ink-soft)]">
-              Find workshops for your next product. Bring your requirements, explore makers, and
-              compare replies with the evidence in view.
+              Research Moroccan ceramics sources, then try a captured quote example to see how
+              requirements, exact wording, and unanswered questions shape a sourcing decision.
             </p>
             <div className="mt-8 flex flex-col gap-3 sm:flex-row">
               <Button asChild size="lg">
-                <Link to="/compose">
-                  Start a sourcing request <ArrowRight className="size-4" />
+                <Link to="/projects/harbour-coffee-lab/compare">
+                  Try the quote example <ArrowRight className="size-4" />
                 </Link>
               </Button>
               <Button asChild size="lg" variant="secondary">
-                <Link to="/projects/harbour-coffee-lab/brief">Open the espresso-cup demo</Link>
+                <Link to="/compose">Research your own request</Link>
               </Button>
             </div>
             <p className="mt-5 flex items-center gap-2 text-xs text-[var(--muted)]">
-              <ShieldCheck className="size-4 text-[var(--teal)]" /> Human approval before any
-              communication
+              <ShieldCheck className="size-4 text-[var(--teal)]" /> Fictional supplier example ·
+              captured email exchange
             </p>
           </motion.div>
         </div>

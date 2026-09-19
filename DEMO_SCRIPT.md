@@ -1,17 +1,16 @@
-# MakerMesh walkthrough — September 19
+# MakerMesh decision walkthrough — September 19
 
-The current local recording is 1:58.52, H.264 at 1440×900, captioned without voiceover.
-It shows the deployed app. Publication remains pending.
+Current verified recording:1:44.96, H.264,1440×900, captioned without voiceover.
+Recorded against the deployed development app; public video hosting is pending.
 
-1. Landing: buyer demand starts the sourcing process.
-2. Custom draft: 120 dinner plates for Toronto, with quantity, budget, and timing.
-3. Completed real research: explicitly labelled as captured execution during recording.
-4. Three public source domains: exact statements and questions, no real-supplier grades.
-5. Separate fictional Atlas email demonstration: approved RFQ and French reply.
-6. Original reply and evidence: deterministic evaluation, packaging still unknown.
-7. Quote: 72 MAD per cup, MOQ 150, sample 650 MAD, 30–35 days, EXW.
-8. Closing: Convex, OpenAI, Firecrawl, and AgentMail perform distinct real work.
+1. Open Compare. Set a30-day production limit after sample approval.
+2. Show the mismatch against the captured30–35-day statement and exact French sentence.
+3. Read the clarification draft and download the evidence-backed decision brief.
+4. Change to300cups: show price/capacity/timing reconfirmation, not a new supplier quote.
+5. Open the separate completed real120-plate custom request; show attributed public sources.
+6. Return to the fictional Atlas example and expand the original French email.
+7. Close on the landing page: know what the workshop can commit to.
 
-The recording triggers no additional research or email. It never presents the controlled
-fictional exchange as outreach to an actual manufacturer. Keep the research owner's browser
-capability and private result URL out of published text and metadata.
+No additional research or email is triggered by this recording. Captured real provider
+execution and fictional supplier identity remain explicit. Private browser capabilities
+and request identifiers are not published as text or metadata.

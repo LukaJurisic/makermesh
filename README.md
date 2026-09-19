@@ -13,6 +13,12 @@ eight-ounce espresso cups for the fictional Harbour Coffee Lab in Toronto.
 
 ## Why it is different
 
+Try the quote example from the landing page: change the maximum production time to 30 days
+and inspect why the captured 30–35-day commitment does not meet it. The clock starts after
+sample approval. Prepare a clarification and download a decision brief with the quoted
+terms, exact evidence and exclusions. Changed quantities require supplier reconfirmation;
+the calculated cost is illustrative, and the captured supplier is explicitly fictional.
+
 Conventional marketplaces wait for suppliers to onboard and maintain catalogues.
 MakerMesh starts with buyer demand. Unknown information is retained as unknown and drives
 focused questions. AI performs extraction and explanation; transparent TypeScript rules

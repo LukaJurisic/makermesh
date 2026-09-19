@@ -2,8 +2,12 @@ import {expect, test} from '@playwright/test';
 
 test('judge can inspect the complete espresso-cup story', async ({page}) => {
   await page.goto('/');
-  await expect(page.getByRole('heading', {name: 'A market appears when you ask.'})).toBeVisible();
-  await page.getByRole('link', {name: 'Open the espresso-cup demo'}).click();
+  await expect(
+    page.getByRole('heading', {name: 'Know what the workshop can commit to.'}),
+  ).toBeVisible();
+  await page.getByRole('link', {name: 'Try the quote example', exact: true}).click();
+  await expect(page.getByRole('heading', {name: 'Compare makers'})).toBeVisible();
+  await page.goto('/projects/harbour-coffee-lab/brief');
 
   await expect(page.getByRole('heading', {name: 'Your sourcing brief'})).toBeVisible();
   await expect(page.getByText('Fictional makers · Example data')).toBeVisible();
