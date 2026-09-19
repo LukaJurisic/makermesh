@@ -44,9 +44,15 @@ normalized value and never delegate pass/fail to the model.
 
 ## Human approval
 
-Research starts only after brief approval. Email requires review of the recipient,
+Research starts only after brief approval. Email requires review of the exact sender identity, recipient,
 recipient source, subject, questions, English text, localized text, and recipient count.
 No model completion can send an email.
+
+Controlled v2 approval fingerprints include sender inbox, email, and display-name hashes.
+Refreshing provider attestation cannot make an approval valid for a different sender.
+Publishing a controlled reply requires a separate reviewed fingerprint; public text is
+restricted to the authored demonstration message and exact excerpts, with private metadata
+excluded. This proves provider execution without implying a real supplier endorsement.
 
 ## Cost and privacy
 

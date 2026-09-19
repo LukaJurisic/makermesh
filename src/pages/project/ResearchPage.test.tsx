@@ -70,7 +70,7 @@ describe('ResearchPage', () => {
     expect(screen.getByText('Convex-backed research theme')).toBeInTheDocument();
     expect(screen.getByText('Convex-backed source')).toBeInTheDocument();
     expect(screen.getByText('Convex-backed Maker')).toBeInTheDocument();
-    expect(screen.getByRole('button', {name: /start captured-live replay/i})).toBeInTheDocument();
+    expect(screen.getByRole('button', {name: /replay example research/i})).toBeInTheDocument();
     expect(screen.getByRole('status')).toHaveTextContent('Ready to replay');
     expect(screen.getByRole('progressbar', {name: 'Research replay progress'})).toHaveAttribute(
       'aria-valuenow',

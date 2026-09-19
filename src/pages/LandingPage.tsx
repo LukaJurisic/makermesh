@@ -7,20 +7,12 @@ import {
   ShieldCheck,
 } from 'lucide-react';
 import {motion} from 'motion/react';
+import {useState} from 'react';
 import {Link} from 'react-router-dom';
 import {Brand} from '@/components/brand/Logo';
 import {Button} from '@/components/ui/Button';
-import {demoMetrics} from '@/data/demo';
+import {AboutDemoDrawer} from '@/components/layout/AboutDemoDrawer';
 import {useTrackProductEvent} from '@/app/useTrackProductEvent';
-
-const flow = [
-  ['Brief', 'Approved'],
-  ['Sources', String(demoMetrics.sources)],
-  ['Makers', String(demoMetrics.makers)],
-  ['Questions', String(demoMetrics.questions)],
-  ['RFQs', '1 controlled'],
-  ['Replies', String(demoMetrics.replies)],
-] as const;
 
 const principles = [
   {
@@ -45,6 +37,7 @@ const principles = [
 
 export function LandingPage() {
   useTrackProductEvent('landing_viewed');
+  const [aboutOpen, setAboutOpen] = useState(false);
   return (
     <div className="min-h-screen bg-[var(--canvas)] text-[var(--ink)]">
       <section className="landing-hero">
@@ -67,7 +60,7 @@ export function LandingPage() {
               Mesh Passport
             </a>
             <Link to="/projects/harbour-coffee-lab/brief" className="hover:text-[var(--ink)]">
-              Live demo
+              Explore demo
             </Link>
           </nav>
         </header>
@@ -79,7 +72,7 @@ export function LandingPage() {
             transition={{duration: 0.5, ease: 'easeOut'}}
           >
             <p className="mb-5 text-xs font-semibold uppercase tracking-[0.14em] text-[var(--terracotta)]">
-              Demand-triggered sourcing intelligence
+              Custom production, made clearer
             </p>
             <h1 className="max-w-[760px] font-serif text-[clamp(3.3rem,6.3vw,5.25rem)] leading-[0.94] tracking-[-0.045em] text-[var(--ink)]">
               A market appears
@@ -87,13 +80,13 @@ export function LandingPage() {
               <em className="font-normal">when you ask.</em>
             </h1>
             <p className="mt-7 max-w-[590px] text-[17px] leading-7 text-[var(--ink-soft)]">
-              Describe what you need made. MakerMesh discovers relevant makers, finds what the web
-              cannot answer, and turns every response into comparable evidence.
+              Find workshops for your next product. Bring your requirements, explore makers, and
+              compare replies with the evidence in view.
             </p>
             <div className="mt-8 flex flex-col gap-3 sm:flex-row">
               <Button asChild size="lg">
                 <Link to="/compose">
-                  Compile a maker market <ArrowRight className="size-4" />
+                  Start a sourcing request <ArrowRight className="size-4" />
                 </Link>
               </Button>
               <Button asChild size="lg" variant="secondary">
@@ -107,32 +100,12 @@ export function LandingPage() {
           </motion.div>
         </div>
 
-        <motion.div
-          className="compilation-line"
-          initial={{opacity: 0, y: 10}}
-          animate={{opacity: 1, y: 0}}
-          transition={{delay: 0.32, duration: 0.45}}
-          aria-label="Demonstration compilation flow"
-        >
-          <div className="compilation-label">
-            <span>Demo fixture</span>
-            <strong>Market compilation</strong>
-          </div>
-          <ol>
-            {flow.map(([label, value], index) => (
-              <li key={label}>
-                <span className="flow-dot" aria-hidden="true" />
-                <div>
-                  <strong>{value}</strong>
-                  <span>{label}</span>
-                </div>
-                {index < flow.length - 1 && (
-                  <ArrowRight className="flow-arrow" aria-hidden="true" />
-                )}
-              </li>
-            ))}
-          </ol>
-        </motion.div>
+        <div className="landing-demo-note">
+          <span>Explore a fictional café’s search for 200 custom espresso cups.</span>
+          <button onClick={() => setAboutOpen(true)}>
+            About this demo <ArrowRight size={14} />
+          </button>
+        </div>
       </section>
 
       <main>
@@ -244,6 +217,7 @@ export function LandingPage() {
         <p>From a sourcing brief to an evidence-backed maker network.</p>
         <span>Built for the Convex All Gas Hackathon · 2026</span>
       </footer>
+      <AboutDemoDrawer open={aboutOpen} onOpenChange={setAboutOpen} />
     </div>
   );
 }

@@ -2,6 +2,12 @@ import {cronJobs} from 'convex/server';
 import {internal} from './_generated/api';
 
 const crons = cronJobs();
+crons.interval(
+  'expire private buyer research',
+  {hours: 1},
+  internal.buyerResearchStore.cleanupExpired,
+  {},
+);
 
 crons.interval(
   'remove expired privacy-conscious product events',

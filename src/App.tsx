@@ -11,6 +11,9 @@ const LandingPage = lazy(() =>
 const ComposerPage = lazy(() =>
   import('@/pages/ComposerPage').then((module) => ({default: module.ComposerPage})),
 );
+const BuyerResearchPage = lazy(() =>
+  import('@/pages/BuyerResearchPage').then((module) => ({default: module.BuyerResearchPage})),
+);
 const OperatorPage = lazy(() =>
   import('@/pages/OperatorPage').then((module) => ({default: module.OperatorPage})),
 );
@@ -54,6 +57,7 @@ function loadRoute(children: ReactNode) {
 const router = createBrowserRouter([
   {path: '/', element: loadRoute(<LandingPage />)},
   {path: '/compose', element: loadRoute(<ComposerPage />)},
+  {path: '/research/:requestId', element: loadRoute(<BuyerResearchPage />)},
   {path: '/operator', element: loadRoute(<OperatorPage />)},
   {path: '/share-card', element: loadRoute(<ShareCardPage />)},
   {path: '/demo', element: <Navigate to="/projects/harbour-coffee-lab/brief" replace />},

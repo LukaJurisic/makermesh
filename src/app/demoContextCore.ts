@@ -1,4 +1,5 @@
 import {createContext} from 'react';
+import type {ControlledReply} from '../../convex/model/controlledReply';
 import type {
   ActivityEvent,
   CaptureProofEvent,
@@ -9,6 +10,7 @@ import type {
 import type {demoMetrics} from '@/data/demo';
 
 export interface DemoContextValue {
+  controlledReply?: ControlledReply | null;
   briefApproved: boolean;
   researchStarted: boolean;
   outreachApproved: boolean;

@@ -1,22 +1,56 @@
 import {ArrowRight, CheckCircle2, CircleHelp, Languages, Mail, ShieldAlert} from 'lucide-react';
 import {useState} from 'react';
+import {Link} from 'react-router-dom';
 import {Button} from '@/components/ui/Button';
 import {OutreachDrawer, DeliveryTimeline} from '@/components/outreach/OutreachDrawer';
 import {demoMakers, outreachDraft} from '@/data/demo';
 import {useDemo} from '@/app/useDemo';
+import {ControlledReplyPanel} from '@/components/outreach/ControlledReplyPanel';
 
 export function OutreachPage() {
-  const {trackEvent} = useDemo();
+  const {trackEvent, controlledReply} = useDemo();
   const [drawerOpen, setDrawerOpen] = useState(false);
   const atlas = demoMakers[0];
   if (!atlas) return null;
   const unknowns = atlas.evaluations.filter((item) => item.outcome === 'unknown');
+  if (controlledReply)
+    return (
+      <div className="workspace-page">
+        <header className="page-heading-row">
+          <div>
+            <p className="page-kicker">Messages & follow-up</p>
+            <h2>Supplier replies</h2>
+            <p>Review the quote and resolve the details that still need an answer.</p>
+          </div>
+          <Button asChild>
+            <Link to="/projects/harbour-coffee-lab/compare">
+              Compare reply
+              <ArrowRight size={16} />
+            </Link>
+          </Button>
+        </header>
+        <ControlledReplyPanel />
+        <details className="mt-8 border-t border-[var(--border)] pt-5">
+          <summary className="cursor-pointer text-sm font-semibold text-[var(--ink-soft)]">
+            Explore the approval step
+          </summary>
+          <p className="mt-3 text-sm leading-6 text-[var(--muted)]">
+            Rehearse reviewing a bilingual message. This example does not send email or change the
+            captured exchange.
+          </p>
+          <Button className="mt-4" variant="secondary" onClick={() => setDrawerOpen(true)}>
+            Review controlled draft
+          </Button>
+        </details>
+        <OutreachDrawer open={drawerOpen} onOpenChange={setDrawerOpen} />
+      </div>
+    );
   return (
     <div className="workspace-page">
       <header className="page-heading-row">
         <div>
           <p className="page-kicker">Human approval before communication</p>
-          <h2>Question gaps and outreach</h2>
+          <h2>Questions for the maker</h2>
           <p>Ask only what remains unresolved, in language the maker can answer by normal email.</p>
         </div>
         <Button
@@ -28,6 +62,14 @@ export function OutreachPage() {
           <Mail className="size-4" /> Review controlled draft <ArrowRight className="size-4" />
         </Button>
       </header>
+
+      <ControlledReplyPanel />
+      {controlledReply && (
+        <p className="mt-4 text-sm text-[var(--muted)]">
+          The received exchange is shown above. The draft-review controls below remain a separate
+          fixture rehearsal and do not send email.
+        </p>
+      )}
 
       <div className="mt-7 grid gap-7 xl:grid-cols-[minmax(0,0.85fr)_minmax(360px,1.15fr)]">
         <section>
@@ -82,9 +124,7 @@ export function OutreachPage() {
                     Could affect commercial completeness
                   </p>
                 </div>
-                <button type="button" className="text-xs font-semibold text-[var(--terracotta)]">
-                  Edit
-                </button>
+                <span className="text-xs text-[var(--muted)]">Draft question</span>
               </li>
             ))}
           </ol>

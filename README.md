@@ -38,8 +38,9 @@ Convex is the sole backend and system of record. The official Firecrawl and Agen
 components are mounted and their guarded application wrappers are implemented. A live
 OpenAI Responses structured-brief call and a durable five-page Firecrawl crawl have been
 exercised on the cloud development deployment. AgentMail authentication, inbox creation,
-component access, and signed webhook rejection are verified; outbound and inbound mail
-remain unexercised and are not claimed.
+component access, and signed webhook rejection are verified. On September 7, the approved
+bilingual RFQ was delivered and one approved French reply was received through the signed
+callback. OpenAI extracted its evidence and quote; deterministic comparison was verified.
 See [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) for the detailed design.
 
 ## Local setup
@@ -74,9 +75,11 @@ environment variables.
 
 ## Safety model
 
-- Public visitors cannot trigger live Firecrawl or AgentMail operations.
-- External calls originate only from operator-authenticated Convex actions or verified
-  provider callbacks.
+- Public visitors can run bounded Moroccan-ceramics research after reviewing their brief.
+  An operator-controlled allowance and per-visitor/global limits constrain provider usage.
+- Custom research is private to a browser capability and expires after 48 hours. Provider
+  calls run server-side through durable workflows; visitors never receive credentials.
+- AgentMail operations require operator authorization and explicit message approval.
 - Real hackathon email is restricted to an allowlisted controlled address.
 - Operator sessions use server-side PBKDF2 verification and short-lived signed Convex Auth
   tokens, the Vite-compatible equivalent approved for the reactive client.
@@ -85,6 +88,12 @@ environment variables.
   as Mesh Passports from incomplete public evidence.
 
 ## Demo and deployment
+
+The September 19 release is live, including the researched buyer workspace, maker dossiers,
+quote-first comparison, persistent drafts, and custom Moroccan-ceramics research. Start at
+`/compose`, review the structured brief, then approve a bounded search. Results preserve
+exact public evidence and unanswered questions without grading real suppliers. Four live
+requests exercised this path. See [release evidence](docs/RELEASE_CANDIDATE_2026-09-19.md).
 
 The public demo reads an immutable, versioned sanitized baseline and stores only a small
 24-hour visitor overlay. Research content is projected through a bounded public Convex DTO;
@@ -97,11 +106,22 @@ user approval.
 Current status: the fixture-backed vertical slice is available on the verified Convex
 development deployment at <https://disciplined-ladybug-82.convex.site>. OpenAI and
 Firecrawl have completed a controlled live run. The deployed Research page now reads its
-brief, makers, public sources, and supported claims from Convex. Baseline v3 attaches an
+brief, makers, public sources, and supported claims from Convex. Baseline v4 attaches an
 inspectable captured-live OpenAI/Firecrawl research proof to that fictional sanitized market
 replay and labels the boundary explicitly; it does not claim that the displayed suppliers
-came from the live crawl. The controlled AgentMail send/reply and production deployment
-remain pending.
+came from the live crawl. The controlled AgentMail exchange is verified and its reviewed,
+sanitized reply proof is now published. No production deployment has been made.
+
+September 7 readiness work is deployed to the existing development site: sender-bound v2 approval,
+an operator-reviewed public projection of the exact controlled fictional reply, reactive
+Atlas comparison, and separate AgentMail/OpenAI proof in System Pulse. The published result
+is clearly separated from the labelled fixture market and headline metrics.
+Legacy v1 drafts remain unapproved. See
+[live verification](docs/research/LIVE_EXCHANGE_2026-09-07.md) for the exercised boundaries.
+
+See [SUBMISSION_PACKET.md](SUBMISSION_PACKET.md) for the prepared submission copy and
+release sequence, and [the compliance audit](docs/research/COMPLIANCE_AUDIT_2026-09-07.md)
+for the original findings. The repository remains private until publication is authorized.
 
 ## Limitations
 

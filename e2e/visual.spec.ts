@@ -31,7 +31,7 @@ for (const viewport of viewports) {
 
     await page.goto('/projects/harbour-coffee-lab/brief');
     await settle(page);
-    await expect(page.getByRole('heading', {name: 'Structured sourcing brief'})).toBeVisible();
+    await expect(page.getByRole('heading', {name: 'Your sourcing brief'})).toBeVisible();
     await page.screenshot({
       path: `artifacts/screenshots/${viewport.name}-brief.png`,
       fullPage: true,

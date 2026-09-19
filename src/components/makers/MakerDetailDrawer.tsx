@@ -6,6 +6,7 @@ import {Button} from '@/components/ui/Button';
 import {FixtureBadge, StatusBadge} from '@/components/ui/StatusBadge';
 import {EvidenceDialog} from '@/components/evidence/EvidenceDialog';
 import type {Maker, SourceEvidence} from '@/domain/types';
+import {useDemo} from '@/app/useDemo';
 
 export function MakerDetailDrawer({
   maker,
@@ -18,6 +19,7 @@ export function MakerDetailDrawer({
 }) {
   const [selectedEvidence, setSelectedEvidence] = useState<SourceEvidence | null>(null);
   const evidenceTriggerRef = useRef<HTMLElement | null>(null);
+  const {controlledReply} = useDemo();
   if (!maker) return null;
 
   return (
@@ -26,17 +28,23 @@ export function MakerDetailDrawer({
         open={open}
         onOpenChange={onOpenChange}
         title={maker.name}
-        description="Project-specific maker record with claim-level evidence."
+        description="Fictional maker · production details and evidence for your request."
         width="wide"
       >
-        <div className="relative h-52 overflow-hidden bg-[var(--surface)]">
+        <div className="relative h-40 overflow-hidden bg-[var(--surface)]">
           <img
             src={maker.visual}
             alt="Illustrative MakerMesh ceramic study"
             className="h-full w-full object-cover"
           />
           <div className="absolute left-6 top-5">
-            <FixtureBadge />
+            {maker.fixture ? (
+              <FixtureBadge />
+            ) : (
+              <span className="rounded-md bg-[var(--surface-raised)] px-3 py-2 text-xs font-semibold">
+                Captured reply · fictional supplier
+              </span>
+            )}
           </div>
         </div>
         <div className="px-6 py-6 sm:px-8">
@@ -55,14 +63,43 @@ export function MakerDetailDrawer({
             {maker.summary}
           </p>
 
-          <Tabs.Root defaultValue="fit" className="mt-7">
+          <dl className="record-overview">
+            <QuoteField
+              label="Minimum order"
+              value={maker.quote?.moq !== undefined ? `${maker.quote.moq} cups` : 'Not yet known'}
+            />
+            <QuoteField
+              label="Unit price"
+              value={
+                maker.quote?.unitPrice !== undefined
+                  ? `${maker.quote.unitPrice} ${maker.quote.currency ?? ''}`
+                  : 'Quote needed'
+              }
+            />
+            <QuoteField
+              label="Production"
+              value={
+                maker.quote?.productionMaxDays !== undefined
+                  ? `${maker.quote.productionMaxDays} days maximum`
+                  : 'Not yet known'
+              }
+            />
+            <QuoteField label="Quote basis" value={maker.quote?.quoteBasis ?? 'Not yet known'} />
+          </dl>
+          <Tabs.Root key={maker.id} defaultValue="fit" className="record-tabs">
             <Tabs.List
               className="flex gap-5 overflow-x-auto border-b border-[var(--border)]"
               aria-label="Maker record sections"
             >
-              {['fit', 'capabilities', 'sources', 'quote'].map((tab) => (
-                <Tabs.Trigger key={tab} value={tab} className="record-tab capitalize">
-                  {tab}
+              {Object.entries({
+                fit: 'Requirements',
+                capabilities: 'Capabilities',
+                sources: 'Evidence',
+                quote: 'Quote & terms',
+                messages: 'Messages',
+              }).map(([tab, label]) => (
+                <Tabs.Trigger key={tab} value={tab} className="record-tab whitespace-nowrap">
+                  {label}
                 </Tabs.Trigger>
               ))}
             </Tabs.List>
@@ -124,8 +161,10 @@ export function MakerDetailDrawer({
                 ))}
               </div>
               <p className="mt-6 text-xs leading-5 text-[var(--muted)]">
-                Capabilities describe the fixture evidence available for this project. They are not
-                verification or endorsement.
+                {maker.fixture
+                  ? 'These capabilities come from example evidence.'
+                  : 'These capabilities come from the captured fictional reply.'}{' '}
+                They are supplier statements, not independent verification.
               </p>
             </Tabs.Content>
 
@@ -153,26 +192,60 @@ export function MakerDetailDrawer({
               </div>
             </Tabs.Content>
 
+            <Tabs.Content value="messages" className="py-5 outline-none">
+              <p className="mb-4 text-xs text-[var(--muted)]">
+                {maker.fixture
+                  ? 'Example email evidence · fictional supplier'
+                  : 'Original captured reply · fictional supplier. Mailbox addresses stay private.'}
+              </p>
+              <p lang="fr" className="whitespace-pre-wrap text-sm leading-7 text-[var(--ink-soft)]">
+                {!maker.fixture && controlledReply
+                  ? controlledReply.originalText
+                  : (maker.sources.find((source) => source.sourceType === 'supplier_email')
+                      ?.excerpt ?? 'No email evidence is available for this maker.')}
+              </p>
+            </Tabs.Content>
             <Tabs.Content value="quote" className="py-5 outline-none">
               {maker.quote ? (
                 <dl className="grid gap-5 sm:grid-cols-2">
                   <QuoteField
                     label="Unit price"
-                    value={`${maker.quote.unitPrice} ${maker.quote.currency}`}
+                    value={
+                      maker.quote.unitPrice !== undefined
+                        ? `${maker.quote.unitPrice} ${maker.quote.currency ?? ''}`
+                        : 'Unknown'
+                    }
                   />
                   <QuoteField label="Quote basis" value={maker.quote.quoteBasis ?? 'Unknown'} />
-                  <QuoteField label="MOQ" value={`${maker.quote.moq} units`} />
+                  <QuoteField
+                    label="MOQ"
+                    value={maker.quote.moq !== undefined ? `${maker.quote.moq} units` : 'Unknown'}
+                  />
                   <QuoteField
                     label="Production"
-                    value={`${maker.quote.productionMinDays}–${maker.quote.productionMaxDays} days`}
+                    value={
+                      maker.quote.productionMaxDays !== undefined
+                        ? `${maker.quote.productionMinDays ?? '?'}–${maker.quote.productionMaxDays} days`
+                        : 'Unknown'
+                    }
                   />
                   <QuoteField
                     label="Sample"
-                    value={`${maker.quote.samplePrice} ${maker.quote.currency}`}
+                    value={
+                      maker.quote.samplePrice !== undefined
+                        ? `${maker.quote.samplePrice} ${maker.quote.currency ?? ''}`
+                        : 'Unknown'
+                    }
                   />
                   <QuoteField
                     label="Shipping"
-                    value={maker.quote.shippingIncluded ? 'Included' : 'Not included'}
+                    value={
+                      maker.quote.shippingIncluded === undefined
+                        ? 'Unknown'
+                        : maker.quote.shippingIncluded
+                          ? 'Included'
+                          : 'Not included'
+                    }
                   />
                   <QuoteField label="Payment terms" value={maker.quote.paymentTerms ?? 'Unknown'} />
                 </dl>

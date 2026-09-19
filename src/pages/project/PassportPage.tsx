@@ -12,6 +12,7 @@ import {
 import {ShareMenu} from '@/components/sharing/ShareMenu';
 import {demoMakers} from '@/data/demo';
 import {useDemo} from '@/app/useDemo';
+import {ControlledReplyPanel} from '@/components/outreach/ControlledReplyPanel';
 
 export function PassportPage() {
   const {trackEvent} = useDemo();
@@ -22,6 +23,11 @@ export function PassportPage() {
       <div className="passport-warning">
         <Sparkles className="size-4" /> Demonstration profile — not a real supplier endorsement.
       </div>
+      <ControlledReplyPanel />
+      <p className="mx-auto my-4 max-w-3xl px-5 text-sm leading-6 text-[var(--muted)]">
+        The dossier below is a fictional design preview with fixed fixture history. It is separate
+        from any captured email evidence shown above.
+      </p>
       <article className="passport-dossier">
         <header className="passport-cover">
           <img

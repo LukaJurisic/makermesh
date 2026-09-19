@@ -7,7 +7,7 @@ import {
   PencilLine,
   WalletCards,
 } from 'lucide-react';
-import {useNavigate} from 'react-router-dom';
+import {Link, useNavigate} from 'react-router-dom';
 import {useDemo} from '@/app/useDemo';
 import {Button} from '@/components/ui/Button';
 import {demoBrief, demoRequirements} from '@/data/demo';
@@ -28,13 +28,15 @@ export function BriefPage() {
     <div className="workspace-page">
       <header className="page-heading-row">
         <div>
-          <p className="page-kicker">Approved input controls all downstream work</p>
-          <h2>Structured sourcing brief</h2>
+          <p className="page-kicker">Project requirements</p>
+          <h2>Your sourcing brief</h2>
           <p>Review exactly what is required, preferred, assumed, and still unknown.</p>
         </div>
         <div className="flex gap-2">
-          <Button variant="secondary">
-            <PencilLine className="size-4" /> Edit brief
+          <Button variant="secondary" asChild>
+            <Link to="/compose">
+              <PencilLine className="size-4" /> New request
+            </Link>
           </Button>
           <Button onClick={approve} disabled={!backendReady || briefApproved}>
             {briefApproved ? 'Brief approved' : 'Approve brief'} <ArrowRight className="size-4" />
@@ -52,7 +54,7 @@ export function BriefPage() {
             />
             <div>
               <span className="inline-flex items-center gap-1.5 text-xs font-semibold uppercase tracking-[0.1em] text-[var(--terracotta)]">
-                <ImageIcon className="size-3.5" /> Buyer-approved reference
+                <ImageIcon className="size-3.5" /> Product reference
               </span>
               <h3 className="mt-3 font-serif text-[34px] leading-9 tracking-[-0.035em] text-[var(--ink)]">
                 {demoBrief.product}

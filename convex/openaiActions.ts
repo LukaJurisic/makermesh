@@ -10,6 +10,7 @@ import {env, action, internalAction} from './_generated/server';
 import {briefModel, extractionModel} from './ai/modelConfig';
 import {promptRegistry} from './ai/prompts';
 import {SourcingBriefSchema, SupplierReplySchema} from './ai/schemas';
+import {supplierReplyResponseSchema} from './ai/replyResponseSchema';
 
 const inboundMessagesSchema = z.array(
   z
@@ -183,7 +184,7 @@ export const extractSupplierReply = internalAction({
             content: `Project: ${context.projectTitle}\nSupplier: ${context.supplierName}\nRequirement keys: ${JSON.stringify(context.requirements)}\n\nOriginal supplier email:\n${originalText}`,
           },
         ],
-        text: {format: zodTextFormat(SupplierReplySchema, 'supplier_reply')},
+        text: {format: zodTextFormat(supplierReplyResponseSchema(originalText), 'supplier_reply')},
       });
       const parsed = SupplierReplySchema.parse(response.output_parsed);
       await ctx.runMutation(internal.openaiStore.persistSupplierReply, {

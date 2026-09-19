@@ -1,6 +1,7 @@
 import {authTables} from '@convex-dev/auth/server';
 import {defineSchema, defineTable} from 'convex/server';
 import {v} from 'convex/values';
+import {researchInput, researchBrief, researchState, researchSource} from './model/buyerResearch';
 import {
   claimStatusValidator,
   captureEventValidator,
@@ -21,6 +22,47 @@ import {
 
 export default defineSchema({
   ...authTables,
+
+  buyerResearchBudget: defineTable({
+    key: v.literal('public'),
+    enabled: v.boolean(),
+    remaining: v.number(),
+  }).index('by_key', ['key']),
+  buyerResearchRequests: defineTable({
+    sessionId: v.string(),
+    requestKey: v.string(),
+    input: researchInput,
+    status: researchState,
+    brief: v.optional(researchBrief),
+    briefHash: v.optional(v.string()),
+    approvedAt: v.optional(v.number()),
+    compileClaimed: v.optional(v.boolean()),
+    searchClaimed: v.optional(v.boolean()),
+    extractClaimed: v.optional(v.boolean()),
+    results: v.optional(v.array(researchSource)),
+    error: v.optional(v.string()),
+    createdAt: v.number(),
+    updatedAt: v.number(),
+    expiresAt: v.number(),
+  })
+    .index('by_session_and_key', ['sessionId', 'requestKey'])
+    .index('by_session_and_created', ['sessionId', 'createdAt'])
+    .index('by_expiresAt', ['expiresAt']),
+  buyerResearchPages: defineTable({
+    requestId: v.id('buyerResearchRequests'),
+    url: v.string(),
+    title: v.string(),
+    text: v.string(),
+    observedAt: v.number(),
+  }).index('by_request', ['requestId']),
+
+  controlledReplyPublications: defineTable({
+    key: v.literal('atlas-controlled-reply'),
+    operationId: v.id('externalOperations'),
+    fingerprint: v.string(),
+    publishedAt: v.number(),
+    status: v.union(v.literal('published'), v.literal('withdrawn')),
+  }).index('by_key', ['key']),
 
   operatorProfiles: defineTable({
     authUserId: v.id('users'),

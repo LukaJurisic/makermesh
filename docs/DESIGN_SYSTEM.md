@@ -63,8 +63,14 @@ Use no more than these two families. Headings use sentence case.
 
 ## Layout
 
+September 12 buyer-workspace refinement, following the approved external-reference direction:
+the 232px desktop rail is the primary navigation; smaller screens use a single horizontal
+stage navigation. Execution details and System Pulse live in the on-demand “About this demo”
+drawer. A compact fictional-data disclosure remains visible. Headline fixture metrics no
+longer occupy every product screen. The main workspace leads with a task and relevant facts.
+
 - Recording target: 1440 × 900.
-- Application rail: 232px; project header: 64px; System Pulse: 320px.
+- Application rail: 232px; project header: 76px desktop / 64px mobile; System Pulse is on demand.
 - Main workspace: disciplined 12-column grid.
 - Standard cards: 12px radius; large drawers: 16px; controls: 8–10px.
 - Thin rules and surface contrast precede shadows.

@@ -3,8 +3,9 @@
 - **Project:** MakerMesh
 - **Event:** Convex All Gas Hackathon sponsored by OpenAI, Firecrawl, and AgentMail
 - **What it does:** Compiles a sourcing brief into an evidence-backed maker network, identifies unanswered requirements, and structures buyer-approved supplier replies.
-- **Live app:** development fixture — https://disciplined-ladybug-82.convex.site (production not deployed)
-- **Repo:** none
+- **Live app:** https://disciplined-ladybug-82.convex.site — custom research plus a labelled captured-email demonstration, on the development deployment
+- **Repo:** https://github.com/LukaJurisic/makermesh (private; publication pending)
+- **Demo video:** pending recording and publication
 - **Frontend:** Convex static hosting
 - **Convex deployment:** development — disciplined-ladybug-82 (production not deployed)
 - **Components:** @convex-dev/rate-limiter, @convex-dev/workflow, @firecrawl/firecrawl-convex, @agentmail/convex, @convex-dev/static-hosting
@@ -12,9 +13,79 @@
 - **Auth:** Convex Auth
 - **AI models:** gpt-5.6-luna (live Responses API brief compilation exercised)
 - **Started:** 2026-08-29T14:07:45.2228690Z
-- **Last updated:** 2026-08-31T03:56:32Z
+- **Last updated:** 2026-09-19
 
 ## Log
+
+### 2026-09-19 — custom requests and release verification
+
+Deployed the buyer-focused workspace and a real custom Moroccan-ceramics research path.
+OpenAI compiles a request; the buyer approves the exact reviewed brief; a durable Convex
+workflow runs bounded bilingual Firecrawl search and retrieval, then source-span extraction.
+Four live requests exercised the flow and improved search relevance. Results are leads
+with attributed facts and confirmation questions, never public real-supplier grades.
+
+Added atomic usage allowance, visitor/global rate limits, browser-capability ownership,
+48-hour scheduled cleanup, exact citation validation, contact redaction, and explicit
+provider-failure states. The captured fictional Atlas reply now explains its contribution
+to the comparison; it is never presented as a new email. No additional email was sent.
+
+Verification: 102 tests, formatting/lint/types/build, 11 Playwright passes with 5 intentional
+skips, and zero automated axe A/AA violations on four deployed routes. Deployed checks
+also verified request-specific revision and denial to a different browser session.
+Repository/video/social publication and eligibility/submission remain pending.
+
+Earlier entries below are historical snapshots, not the current release status.
+
+### 2026-09-07 — approved public proof
+
+Published the separately approved sanitized AgentMail reply proof after its fingerprint
+matched the reviewed preview. Anonymous public output matched exactly. Live browser checks
+verified original-currency quote, four viewport layouts, no private metadata, reactive
+ranking weights, and proof persistence after visitor reset. The public banner distinguishes
+the captured reply/comparison from fixture market metrics. No further messages were sent.
+
+Recorded a local 2:32 captioned walkthrough of the deployed app at 1440×900 with no browser
+errors. It remains a review artifact, not a published demo link; repository, video/social
+publication, eligibility confirmation, and final submission still await their gates.
+
+### 2026-09-07 — approved live email exchange
+
+Deployed the reviewed readiness backend/frontend to the existing development site. After
+explicit approval of both exact messages, delivered one bilingual RFQ and received the
+controlled French reply through AgentMail's signed callback. The send switch was relocked.
+OpenAI extraction completed on its third bounded attempt; the earlier two paraphrased
+excerpts were correctly rejected. Source-span enums now prevent invented evidence strings.
+
+Added regression-tested transport-footer handling and deterministic bilingual/unit
+normalization; reconciled stored evaluations while retaining raw claims. Quote: MOQ 150,
+72 MAD/unit, 650 MAD sample, 30–35 days, EXW, shipping excluded. Packaging remains unknown;
+the below-35-days preference fails. Verification passes 91 tests plus types/lint/format/build.
+The sanitized public proof is prepared but awaits publication approval. Video, public repo,
+social post, eligibility confirmation, and final submission remain pending.
+
+### 2026-09-07 — local submission-readiness work (uncommitted)
+
+Reverified competition requirements and reviewed the latest commits. Confirmed public
+development access and private GitHub visibility. The cloud controlled draft remains
+unapproved and unsent.
+
+Bound v2 approval to sender inbox/email/display-name hashes as well as recipient and
+bilingual content. Legacy v1 drafts remain unapproved and cannot pass the new scope checks.
+Added an operator-reviewed public reply projection tied to the exact controlled fictional
+message, immutable receipt time, parser provenance, and current source evidence. Public
+comparison subscribes to the captured Atlas result and excludes unrelated fixture makers;
+Outreach, Passport, and System Pulse distinguish it from rehearsal content.
+
+Follow-up reviews caught and resolved parser metadata loss, model-status dependence,
+mutable receipt timestamps, and ambiguous fixture history. Regression coverage includes
+actual extraction persistence through publication, privacy, sender rotation, stale scope,
+withdrawal, and reactive comparison. Verification reached 75 tests and 7 applicable
+Playwright cases with canonical viewport captures. These changes remain local: no new
+cloud deployment, real email exchange, or public proof publication is claimed.
+
+Prepared submission copy and the 2:56 walkthrough. Video, social publication, public source,
+registration/eligibility confirmation, and final submission remain pending.
 
 ### 2026-08-29 - 4d51430
 

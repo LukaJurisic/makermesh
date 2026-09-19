@@ -55,6 +55,8 @@ sanitized fixture frontend is served through the static-hosting component at
 - `demoSessions`, `demoSessionState`, `demoRequirementOverrides`, `demoSessionEvents`
 - `externalOperations`, `requirementEvaluations`, `productEvents`
 - Convex Auth tables, `operatorProfiles`, `idempotencyRecords`
+- `controlledReplyPublications`: private operation reference and reviewed fingerprint;
+  the public query returns only the validated projection, never this row.
 
 Every user-facing list has a matching index. Time-ordered tables include project and time
 in the index, and no potentially unbounded path uses a full-table scan.
@@ -108,12 +110,45 @@ client bundles.
 
 ## Provenance
 
+### Controlled reply publication (deployed; private live exchange verified)
+
+The v2 outreach fingerprint includes the sender inbox, email, and display-name hashes in
+addition to recipient and bilingual message content. A version bump leaves legacy drafts
+unapproved and unusable by the new send path. Preparation creates a new v2 draft; no
+approval migrates automatically.
+
+`controlledReply.preview` reconstructs a public-safe result only for a completed extraction
+of the authored controlled French reply, matched by source hash with transport line-ending
+variants and the exact observed AgentMail footer. It rechecks frozen project/brief/Atlas identity, approval, thread, claims, quote,
+parser version, and exact excerpts. Model status does not determine evaluation outcomes.
+Completion preserves parser metadata; immutable operation creation time supplies receipt
+time rather than a mutable delivery-status timestamp.
+
+The operator reviews a fingerprint before `controlledReply.publish`. The anonymous
+`getPublished` query takes no IDs, revalidates the source, and returns null after material
+changes or withdrawal. Returned text is authored copy or exact substrings of that copy;
+model-generated display text, contact data, and provider identifiers are never returned.
+The projection is separate from the immutable research baseline and visitor overlays.
+
+The frontend subscribes reactively. Compare uses only the captured Atlas result when one
+is published, with unknowns earning no points. Outreach, Passport, and System Pulse show
+the captured evidence separately from fixture rehearsal content. Resetting a visitor's
+fixture replay does not withdraw the published capture. `unpublish` is operator-only.
+
 Claims store the source or message reference, exact excerpt, source-content hash,
 observation time, acquisition method, evidence state, model, and prompt version. Quotes
 retain field-level exact excerpts. AI confidence describes extraction confidence only and
 never changes evidence state.
 
 ## Security and privacy
+
+Reply Structured Outputs constrain evidence to exact source spans, including quote-field
+evidence. Persistence checks those excerpts independently. Explicit ounce units and a
+small bilingual alias dictionary canonicalize known values before deterministic evaluation;
+unsupported types and coordinated negation remain unknown. Hard and preferred thresholds
+reuse the same observed MOQ/production attribute without inventing missing facts.
+Operator-only `controlledReply.recalculate` reconciles derived stored evaluations and
+metrics from the validated projection without changing raw model claims or source text.
 
 - Real recipient addresses exist only in private Convex/provider state.
 - Public snapshots replace addresses, thread IDs, message IDs, and provider references.

@@ -8,6 +8,7 @@ import {api, internal} from './_generated/api';
 import {hashControlledDraftContent} from './model/controlledOutreach';
 import {CONTROLLED_SMOKE_SLUG} from './model/controlledDemo';
 import {FROZEN_CONTROLLED_REQUIREMENTS} from './model/controlledScenario';
+import {CONTROLLED_REPLY_TEXT} from './model/controlledReply';
 import schema from './schema';
 
 const modules = import.meta.glob('./**/*.ts');
@@ -181,7 +182,349 @@ async function setupControlledOutreach() {
 
 afterEach(() => vi.unstubAllEnvs());
 
+async function setupPublishedReplyCandidate(originalText = CONTROLLED_REPLY_TEXT) {
+  const setup = await setupControlledOutreach();
+  const {t, operator, ids} = setup;
+  const prepared = await operator.mutation(api.controlledOutreach.prepareControlledDemoDraft, {
+    recipient: controlledRecipient,
+  });
+  await operator.mutation(api.controlledOutreach.approveControlledDemoDraft, {
+    outreachDraftId: prepared.outreachDraftId,
+    expectedContentHash: prepared.contentHash,
+  });
+  const sourceContentHash = await sha256Hex(originalText);
+  const candidate = await t.run(async (ctx) => {
+    const draft = (await ctx.db.get(prepared.outreachDraftId))!;
+    await ctx.db.patch(ids.projectId, {status: 'comparing'});
+    await ctx.db.patch(draft._id, {
+      status: 'replied',
+      sentAt: 300,
+      agentMailOutboundId: 'private-outbound',
+    });
+    await ctx.db.insert('mailThreads', {
+      projectId: ids.projectId,
+      briefId: ids.briefId,
+      supplierId: draft.supplierId,
+      outreachDraftId: draft._id,
+      agentMailOutboundId: 'private-outbound',
+      agentMailInboxId: 'makermesh-sender-inbox',
+      agentMailThreadId: 'private-thread',
+      inboundProcessedCount: 1,
+      status: 'replied',
+      latestMessageAt: 400,
+    });
+    const operationId = await ctx.db.insert('externalOperations', {
+      projectId: ids.projectId,
+      briefId: ids.briefId,
+      supplierId: draft.supplierId,
+      outreachDraftId: draft._id,
+      sourceMessageId: 'private-message',
+      sourceContentHash,
+      provider: 'openai',
+      operation: 'extract_supplier_reply',
+      idempotencyKey: 'private-reply-operation',
+      status: 'completed',
+      safeMetadata: {parserVersion: 'supplier.reply.v1'},
+      createdAt: 400,
+      updatedAt: 500,
+    });
+    const requirement = (await ctx.db
+      .query('requirements')
+      .withIndex('by_briefId_and_key', (q) => q.eq('briefId', ids.briefId).eq('key', 'moq_max'))
+      .unique())!;
+    const claimId = await ctx.db.insert('capabilityClaims', {
+      projectId: ids.projectId,
+      supplierId: draft.supplierId,
+      requirementId: requirement._id,
+      key: 'moq_max',
+      normalizedValue: 150,
+      displayValue: 'secret-contact@example.test private-provider-reference',
+      status: 'confirmed',
+      evidenceState: 'supplier_claimed',
+      agentMailMessageId: 'private-message',
+      sourceContentHash,
+      supportingExcerpt: 'Notre MOQ est de 150 unités.',
+      observedAt: 500,
+      promptVersion: 'supplier.reply.v1',
+      extractionModel: 'private-model-metadata',
+    });
+    return {operationId, claimId};
+  });
+  await t.run((ctx) => ctx.db.patch(candidate.operationId, {status: 'running', attempt: 1}));
+  await t.mutation(internal.openaiStore.persistSupplierReply, {
+    operationId: candidate.operationId,
+    attempt: 1,
+    originalText,
+    resultJson: JSON.stringify({
+      supplierIdentitySignals: [],
+      answers: [
+        {
+          requirementKey: 'moq_max',
+          normalizedValue: 150,
+          displayValue: 'secret-contact@example.test private-provider-reference',
+          status: 'contradicted',
+          supportingExcerpt: 'Notre MOQ est de 150 unités.',
+        },
+      ],
+      quote: {
+        originalCurrency: 'MAD',
+        unitPrice: 72,
+        samplePrice: 650,
+        moq: 150,
+        productionMinDays: 30,
+        productionMaxDays: 35,
+        shippingIncluded: false,
+        quoteBasis: 'EXW',
+        paymentTerms: null,
+        sampleTerms: 'private-model-sample-summary',
+        validUntil: null,
+        fieldEvidence: [
+          {field: 'originalCurrency', supportingExcerpt: '72 MAD par tasse'},
+          {field: 'unitPrice', supportingExcerpt: '72 MAD par tasse'},
+          {field: 'samplePrice', supportingExcerpt: '650 MAD'},
+          {field: 'moq', supportingExcerpt: 'Notre MOQ est de 150 unités.'},
+          {field: 'productionMinDays', supportingExcerpt: '30 à 35 jours'},
+          {field: 'productionMaxDays', supportingExcerpt: '30 à 35 jours'},
+          {field: 'shippingIncluded', supportingExcerpt: "L'expédition n'est pas incluse."},
+          {field: 'quoteBasis', supportingExcerpt: 'base EXW'},
+          {
+            field: 'sampleTerms',
+            supportingExcerpt:
+              'Un échantillon de préproduction avec le logo est disponible pour 650 MAD.',
+          },
+        ],
+      },
+      customizationMethod: null,
+      documentationStatements: [],
+      exportStatement: null,
+      unresolvedQuestions: ['Packaging'],
+      contradictions: [],
+      attachmentReferences: [],
+    }),
+    model: 'private-model-metadata',
+    promptVersion: 'supplier.reply.v1',
+    latencyMs: 10,
+  });
+  return {...setup, ...candidate};
+}
+
+describe('controlled reply publication', () => {
+  it('preserves the exact AgentMail transport footer but rejects arbitrary appended text', async () => {
+    const originalText = `${CONTROLLED_REPLY_TEXT}\n\n--\nSent via AgentMail`;
+    const {operator, t, operationId} = await setupPublishedReplyCandidate(originalText);
+    const preview = await operator.query(api.controlledReply.preview, {operationId});
+    expect(preview.proof.originalText).toBe(originalText);
+    await t.run(async (ctx) =>
+      ctx.db.patch(operationId, {
+        sourceContentHash: await sha256Hex(`${originalText}\nprivate-contact@example.test`),
+      }),
+    );
+    await expect(operator.query(api.controlledReply.preview, {operationId})).rejects.toThrow(
+      'public-safe demonstration text',
+    );
+  });
+  it('requires operator review, publishes only bounded safe evidence, and withdraws changed evidence', async () => {
+    const {t, operator, operationId, claimId} = await setupPublishedReplyCandidate();
+    expect(await t.query(api.controlledReply.getPublished, {})).toBeNull();
+    await expect(t.query(api.controlledReply.preview, {operationId})).rejects.toThrow(
+      'Unauthenticated',
+    );
+    const review = await operator.query(api.controlledReply.preview, {operationId});
+    await expect(
+      t.mutation(api.controlledReply.publish, {
+        operationId,
+        expectedFingerprint: review.fingerprint,
+      }),
+    ).rejects.toThrow('Unauthenticated');
+    await expect(
+      operator.mutation(api.controlledReply.publish, {operationId, expectedFingerprint: 'wrong'}),
+    ).rejects.toThrow('changed after publication review');
+    expect(
+      await operator.mutation(api.controlledReply.publish, {
+        operationId,
+        expectedFingerprint: review.fingerprint,
+      }),
+    ).toBe(true);
+    expect(
+      await operator.mutation(api.controlledReply.publish, {
+        operationId,
+        expectedFingerprint: review.fingerprint,
+      }),
+    ).toBe(false);
+    const published = await t.query(api.controlledReply.getPublished, {});
+    await expect(t.mutation(api.controlledReply.recalculate, {operationId})).rejects.toThrow(
+      'Unauthenticated',
+    );
+    const recalculated = await operator.mutation(api.controlledReply.recalculate, {operationId});
+    expect(recalculated).toMatchObject({evaluationsUpdated: 17, hardFailures: 0, unknowns: 15});
+    expect(await t.query(api.controlledReply.getPublished, {})).toEqual(published);
+    expect(published?.evaluations).toHaveLength(17);
+    expect(published?.evaluations.find((item) => item.requirementKey === 'moq_max')?.outcome).toBe(
+      'pass',
+    );
+    expect(published?.evaluations.filter((item) => item.outcome === 'unknown')).toHaveLength(15);
+    expect(published?.originalText).toBe(CONTROLLED_REPLY_TEXT);
+    expect(published?.quote).toMatchObject({
+      currency: 'MAD',
+      unitPrice: 72,
+      samplePrice: 650,
+      moq: 150,
+      productionMinDays: 30,
+      productionMaxDays: 35,
+      shippingIncluded: false,
+      quoteBasis: 'EXW',
+    });
+    expect(published?.quote?.sampleTerms).toBe(
+      'Un échantillon de préproduction avec le logo est disponible pour 650 MAD.',
+    );
+    await t.run(async (ctx) => {
+      const thread = (await ctx.db
+        .query('mailThreads')
+        .withIndex('by_agentMailThreadId', (q) => q.eq('agentMailThreadId', 'private-thread'))
+        .unique())!;
+      await ctx.db.patch(thread._id, {latestMessageAt: 900});
+    });
+    expect(await t.query(api.controlledReply.getPublished, {})).toEqual(published);
+    for (const secret of [
+      'private-',
+      '@example.test',
+      String(operationId),
+      String(claimId),
+      'sourceMessageId',
+      'outreachDraftId',
+    ])
+      expect(JSON.stringify(published)).not.toContain(secret);
+    await t.run((ctx) => ctx.db.patch(claimId, {normalizedValue: 300}));
+    expect(await t.query(api.controlledReply.getPublished, {})).toBeNull();
+    const revised = await operator.query(api.controlledReply.preview, {operationId});
+    expect(
+      revised.proof.evaluations.find((item) => item.requirementKey === 'moq_max')?.outcome,
+    ).toBe('fail');
+    await operator.mutation(api.controlledReply.publish, {
+      operationId,
+      expectedFingerprint: revised.fingerprint,
+    });
+    await operator.mutation(api.controlledReply.unpublish, {});
+    expect(await t.query(api.controlledReply.getPublished, {})).toBeNull();
+  });
+
+  it.each(['source', 'brief', 'supplier', 'operation', 'excerpt'])(
+    'fails closed for changed %s scope',
+    async (field) => {
+      const {t, operator, operationId, claimId, ids} = await setupPublishedReplyCandidate();
+      const review = await operator.query(api.controlledReply.preview, {operationId});
+      await operator.mutation(api.controlledReply.publish, {
+        operationId,
+        expectedFingerprint: review.fingerprint,
+      });
+      await t.run(async (ctx) => {
+        if (field === 'source')
+          await ctx.db.patch(operationId, {sourceContentHash: 'a'.repeat(64)});
+        if (field === 'brief') await ctx.db.patch(ids.briefId, {quantity: 500});
+        if (field === 'operation') await ctx.db.patch(operationId, {status: 'running'});
+        if (field === 'excerpt')
+          await ctx.db.patch(claimId, {supportingExcerpt: 'secret-contact@example.test'});
+        if (field === 'supplier') {
+          const claim = (await ctx.db.get(claimId))!;
+          await ctx.db.patch(claim.supplierId, {demoSupplier: false});
+        }
+      });
+      expect(await t.query(api.controlledReply.getPublished, {})).toBeNull();
+      await expect(operator.query(api.controlledReply.preview, {operationId})).rejects.toThrow();
+    },
+  );
+});
+
 describe('controlled demo outreach preparation', () => {
+  it.each(['inbox', 'email', 'display name'])(
+    'invalidates review and approval after sender %s rotation',
+    async (field) => {
+      const {t, operator} = await setupControlledOutreach();
+      const prepared = await operator.mutation(api.controlledOutreach.prepareControlledDemoDraft, {
+        recipient: controlledRecipient,
+      });
+      await operator.mutation(api.controlledOutreach.approveControlledDemoDraft, {
+        outreachDraftId: prepared.outreachDraftId,
+        expectedContentHash: prepared.contentHash,
+      });
+      const inbox = field === 'inbox' ? 'replacement-sender-inbox' : 'makermesh-sender-inbox';
+      const email = field === 'email' ? 'replacement@example.test' : controlledSender;
+      const displayName =
+        field === 'display name'
+          ? 'MakerMesh on behalf of Harbour Coffee Lab'
+          : controlledSenderDisplayName;
+      vi.stubEnv('AGENTMAIL_INBOX_ID', inbox);
+      vi.stubEnv('CONTROLLED_DEMO_SENDER_EMAIL_HASH', await sha256Hex(email));
+      vi.stubEnv('CONTROLLED_DEMO_SENDER_DISPLAY_NAME_HASH', await sha256Hex(displayName));
+      await t.mutation(internal.controlledOutreach.recordDemoMailboxBinding, {
+        senderInboxIdHash: await sha256Hex(inbox),
+        senderEmailHash: await sha256Hex(email),
+        senderDisplayNameHash: await sha256Hex(displayName),
+        inboxIdHash: await sha256Hex('atlas-controlled-inbox'),
+        recipientHash: await sha256Hex(controlledRecipient),
+      });
+      await expect(
+        operator.mutation(api.agentMail.sendApproved, {
+          outreachDraftId: prepared.outreachDraftId,
+        }),
+      ).rejects.toThrow('content or recipient changed');
+      await expect(
+        operator.mutation(api.controlledOutreach.approveControlledDemoDraft, {
+          outreachDraftId: prepared.outreachDraftId,
+          expectedContentHash: prepared.contentHash,
+        }),
+      ).rejects.toThrow('content or recipient changed');
+      await t.run(async (ctx) => {
+        await ctx.db.patch(prepared.outreachDraftId, {
+          status: 'draft',
+          approvedAt: undefined,
+          approvedContentHash: undefined,
+        });
+      });
+      await expect(
+        operator.mutation(api.controlledOutreach.approveControlledDemoDraft, {
+          outreachDraftId: prepared.outreachDraftId,
+          expectedContentHash: prepared.contentHash,
+        }),
+      ).rejects.toThrow('content or recipient changed');
+      const draft = await t.run((ctx) => ctx.db.get(prepared.outreachDraftId));
+      expect(draft?.sentAt).toBeUndefined();
+      expect(draft?.agentMailOutboundId).toBeUndefined();
+    },
+  );
+
+  it('supersedes a legacy unapproved draft without approving or sending either version', async () => {
+    const {t, operator} = await setupControlledOutreach();
+    const prepared = await operator.mutation(api.controlledOutreach.prepareControlledDemoDraft, {
+      recipient: controlledRecipient,
+    });
+    await t.run(async (ctx) => {
+      const draft = (await ctx.db.get(prepared.outreachDraftId))!;
+      await ctx.db.patch(draft._id, {
+        templateVersion: 'atlas-controlled-rfq.v1',
+        idempotencyKey: draft.idempotencyKey.replace(
+          'atlas-controlled-rfq.v2',
+          'atlas-controlled-rfq.v1',
+        ),
+      });
+    });
+    await expect(
+      operator.mutation(api.controlledOutreach.approveControlledDemoDraft, {
+        outreachDraftId: prepared.outreachDraftId,
+        expectedContentHash: prepared.contentHash,
+      }),
+    ).rejects.toThrow('scope is invalid');
+    const replacement = await operator.mutation(api.controlledOutreach.prepareControlledDemoDraft, {
+      recipient: controlledRecipient,
+    });
+    expect(replacement.outreachDraftId).not.toBe(prepared.outreachDraftId);
+    expect(replacement.status).toBe('draft');
+    const original = await t.run((ctx) => ctx.db.get(prepared.outreachDraftId));
+    expect(original?.status).toBe('draft');
+    expect(original?.approvedAt).toBeUndefined();
+    expect(original?.sentAt).toBeUndefined();
+  });
+
   it('prepares, reviews, and approves one bilingual draft without sending it', async () => {
     const {t, ids, operator} = await setupControlledOutreach();
     await expect(
@@ -242,7 +585,7 @@ describe('controlled demo outreach preparation', () => {
     expect(stored.draft).toMatchObject({
       status: 'draft',
       draftKind: 'controlled_demo',
-      templateVersion: 'atlas-controlled-rfq.v1',
+      templateVersion: 'atlas-controlled-rfq.v2',
       recipient: controlledRecipient,
     });
     expect(stored.draft?.approvedAt).toBeUndefined();
@@ -268,7 +611,7 @@ describe('controlled demo outreach preparation', () => {
       recipient: controlledRecipient,
       recipientCount: 1,
       status: 'draft',
-      templateVersion: 'atlas-controlled-rfq.v1',
+      templateVersion: 'atlas-controlled-rfq.v2',
     });
     for (const value of ['200', '250', '8', '42', 'CAD 3,500']) {
       expect(review.bodyEnglish).toContain(value);

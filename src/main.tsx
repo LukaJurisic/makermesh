@@ -7,6 +7,7 @@ import {ConvexReactClient} from 'convex/react';
 import {StrictMode} from 'react';
 import {createRoot} from 'react-dom/client';
 import App from './App';
+import {useBrowserSession} from './app/useBrowserSession';
 import './styles/global.css';
 
 const convexUrl = import.meta.env.VITE_CONVEX_URL;
@@ -19,7 +20,7 @@ if (!root) throw new Error('MakerMesh root element is missing.');
 createRoot(root).render(
   <StrictMode>
     <ConvexAuthProvider client={convex}>
-      <SessionProvider storageKey="makermesh-demo-session-v1">
+      <SessionProvider storageKey="makermesh-demo-session-v1" useStorage={useBrowserSession}>
         <App />
       </SessionProvider>
     </ConvexAuthProvider>

@@ -1,12 +1,4 @@
-import {
-  ArrowRight,
-  CheckCircle2,
-  FileSearch,
-  Globe2,
-  LoaderCircle,
-  RotateCw,
-  Search,
-} from 'lucide-react';
+import {ArrowRight, CheckCircle2, FileSearch, Globe2, LoaderCircle, Search} from 'lucide-react';
 import {useRef, useState} from 'react';
 import {useNavigate} from 'react-router-dom';
 import {useDemo} from '@/app/useDemo';
@@ -28,7 +20,6 @@ export function ResearchPage() {
   } = useDemo();
   const [selectedEvidence, setSelectedEvidence] = useState<SourceEvidence | null>(null);
   const evidenceTriggerRef = useRef<HTMLButtonElement | null>(null);
-  const replayLabel = baselineMode === 'captured_live' ? 'captured-live' : 'fixture';
   const statusLabel =
     baselineMode === 'captured_live' ? 'Captured-live research' : 'Captured fixture';
   const startReplay = async () => {
@@ -41,12 +32,9 @@ export function ResearchPage() {
     <div className="workspace-page">
       <header className="page-heading-row">
         <div>
-          <p className="page-kicker">Focused research, not a broad directory scrape</p>
-          <h2>Market compilation</h2>
-          <p>
-            Follow discovery, evidence extraction, and entity resolution as separate stored
-            operations.
-          </p>
+          <p className="page-kicker">Explore the evidence</p>
+          <h2>Research & sources</h2>
+          <p>Inspect the source behind each capability. This market uses example records.</p>
         </div>
         <Button onClick={startReplay} disabled={!backendReady || !briefApproved || researchStarted}>
           {!briefApproved ? (
@@ -59,7 +47,7 @@ export function ResearchPage() {
             </>
           ) : (
             <>
-              <Search className="size-4" /> Start {replayLabel} replay
+              <Search className="size-4" /> Replay example research
             </>
           )}
         </Button>
@@ -120,9 +108,7 @@ export function ResearchPage() {
                 Every excerpt opens its evidence record.
               </p>
             </div>
-            <Button variant="quiet" size="sm">
-              <RotateCw className="size-3.5" /> Retry failed only
-            </Button>
+            <span className="text-xs text-[var(--muted)]">Example source collection</span>
           </div>
           <div className="divide-y divide-[var(--border)]">
             {research.sources.map((source) => (

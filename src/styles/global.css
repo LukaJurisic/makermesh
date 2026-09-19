@@ -3,6 +3,8 @@
 @import './landing.css';
 @import './workspace.css';
 @import './passport.css';
+@import './buyer-workspace.css';
+@import './buyer-research.css';
 
 * {
   box-sizing: border-box;

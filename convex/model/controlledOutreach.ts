@@ -10,7 +10,7 @@ export const CONTROLLED_ATLAS_NAME = 'Atlas Clay Studio — Demo Supplier';
 export const CONTROLLED_ATLAS_SUMMARY =
   'Fictional controlled-email participant for the MakerMesh demonstration.';
 export const CONTROLLED_ATLAS_VISUAL_PATH = '/images/espresso-cup-study.webp';
-export const CONTROLLED_TEMPLATE_VERSION = 'atlas-controlled-rfq.v1';
+export const CONTROLLED_TEMPLATE_VERSION = 'atlas-controlled-rfq.v2';
 export const CONTROLLED_RECIPIENT_SOURCE = 'Dedicated project-owned AgentMail demo-supplier inbox';
 export const CONTROLLED_LANGUAGE = 'fr';
 export const CONTROLLED_RECIPIENT_COUNT = 1;
@@ -115,8 +115,13 @@ export async function hashControlledDraftContent(input: {
   bodyLocalized: string;
   questionKeys: string[];
 }) {
+  const senderInboxId = env.AGENTMAIL_INBOX_ID?.trim();
+  if (!senderInboxId) throw new Error('Controlled sender inbox is not configured.');
+  const senderIdentity = configuredDemoSenderIdentityHashes();
   return sha256Hex(
     JSON.stringify({
+      senderInboxIdHash: await sha256Hex(senderInboxId),
+      ...senderIdentity,
       recipient: input.recipient,
       recipientSource: input.recipientSource,
       language: input.language,

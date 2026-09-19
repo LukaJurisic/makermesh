@@ -603,7 +603,11 @@ export const persistSupplierReply = internalMutation({
     await ctx.db.patch(operation._id, {
       status: 'completed',
       resultReference: messageId,
-      safeMetadata: {answerCount: result.answers.length, quoteParsed: Boolean(quote)},
+      safeMetadata: {
+        ...operation.safeMetadata,
+        answerCount: result.answers.length,
+        quoteParsed: Boolean(quote),
+      },
       updatedAt: now,
     });
     if (project.status === 'awaiting_replies') {

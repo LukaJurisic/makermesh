@@ -1,7 +1,7 @@
 import * as Dialog from '@radix-ui/react-dialog';
 import {X} from 'lucide-react';
-import type {PropsWithChildren, ReactNode} from 'react';
-import {AnimatePresence, motion} from 'motion/react';
+import {useRef, type PropsWithChildren, type ReactNode} from 'react';
+import {AnimatePresence, motion, useReducedMotion} from 'motion/react';
 import {Button} from './Button';
 
 interface DrawerProps extends PropsWithChildren {
@@ -22,6 +22,8 @@ export function Drawer({
   trigger,
   width = 'standard',
 }: DrawerProps) {
+  const reduceMotion = useReducedMotion();
+  const returnFocus = useRef<HTMLElement | null>(null);
   return (
     <Dialog.Root open={open} onOpenChange={onOpenChange}>
       {trigger && <Dialog.Trigger asChild>{trigger}</Dialog.Trigger>}
@@ -37,13 +39,25 @@ export function Drawer({
                 transition={{duration: 0.18}}
               />
             </Dialog.Overlay>
-            <Dialog.Content asChild>
+            <Dialog.Content
+              asChild
+              onOpenAutoFocus={() => {
+                returnFocus.current =
+                  document.activeElement instanceof HTMLElement ? document.activeElement : null;
+              }}
+              onCloseAutoFocus={(event) => {
+                if (returnFocus.current?.isConnected) {
+                  event.preventDefault();
+                  returnFocus.current.focus();
+                }
+              }}
+            >
               <motion.aside
                 className={`fixed inset-y-0 right-0 z-50 flex w-full flex-col border-l border-[var(--border)] bg-[var(--surface-raised)] shadow-[-24px_0_70px_rgba(29,29,26,0.16)] outline-none ${width === 'wide' ? 'max-w-[760px]' : 'max-w-[610px]'}`}
-                initial={{x: '100%'}}
+                initial={{x: reduceMotion ? 0 : '100%'}}
                 animate={{x: 0}}
-                exit={{x: '100%'}}
-                transition={{duration: 0.23, ease: [0.22, 1, 0.36, 1]}}
+                exit={{x: reduceMotion ? 0 : '100%'}}
+                transition={{duration: reduceMotion ? 0 : 0.23, ease: [0.22, 1, 0.36, 1]}}
               >
                 <header className="flex items-start justify-between border-b border-[var(--border)] px-6 py-5 sm:px-8">
                   <div>

@@ -9,7 +9,7 @@ const providerTone = {
 };
 
 export function SystemPulse({collapsed = false}: {collapsed?: boolean}) {
-  const {activity, baselineMode, captureProofEvents} = useDemo();
+  const {activity, baselineMode, captureProofEvents, controlledReply} = useDemo();
   if (collapsed) return null;
   return (
     <aside className="system-pulse" aria-label="System Pulse">
@@ -28,6 +28,24 @@ export function SystemPulse({collapsed = false}: {collapsed?: boolean}) {
             : 'Provider-shaped events stored for the visual prototype. Nothing here is live yet.'}
         </p>
       </header>
+      {controlledReply && (
+        <section
+          className="border-b border-[var(--border)] bg-[var(--teal-soft)]/35 px-5 py-4"
+          aria-label="Captured email proof"
+        >
+          <h3 className="text-xs font-semibold uppercase tracking-[0.08em] text-[var(--teal)]">
+            Controlled email proof
+          </h3>
+          <ol className="mt-3 space-y-3 text-xs leading-5 text-[var(--ink-soft)]">
+            <li>AgentMail · Approved RFQ sent</li>
+            <li>AgentMail · Controlled fictional reply received</li>
+            <li>OpenAI · Reply extracted with exact source evidence</li>
+          </ol>
+          <p className="mt-3 text-xs text-[var(--muted)]">
+            Inspect the original reply in Outreach or Compare.
+          </p>
+        </section>
+      )}
       {baselineMode === 'captured_live' && (
         <section className="border-b border-[var(--border)] bg-[var(--teal-soft)]/35 px-5 py-4">
           <h3 className="text-xs font-semibold uppercase tracking-[0.08em] text-[var(--teal)]">

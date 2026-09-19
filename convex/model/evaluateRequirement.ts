@@ -1,4 +1,5 @@
 import type {Doc} from '../_generated/dataModel';
+import {normalizeRequirementValue} from './normalizeRequirementValue';
 
 type EvaluationResult = {
   outcome: 'pass' | 'fail' | 'unknown' | 'not_applicable';
@@ -6,13 +7,13 @@ type EvaluationResult = {
 };
 
 export function evaluateClaimAgainstRequirement(
-  requirement: Doc<'requirements'>,
+  requirement: Pick<Doc<'requirements'>, 'key' | 'operator' | 'targetValue'>,
   claim: {
     normalizedValue: string | number | boolean | null;
   },
 ): EvaluationResult {
   const target = requirement.targetValue;
-  const value = claim.normalizedValue;
+  const value = normalizeRequirementValue(requirement.key, claim.normalizedValue);
   if (value === null) return {outcome: 'unknown', reasonCode: 'value_missing'};
   switch (requirement.operator) {
     case 'lte':
@@ -30,6 +31,8 @@ export function evaluateClaimAgainstRequirement(
           }
         : {outcome: 'unknown', reasonCode: 'numeric_value_missing'};
     case 'equals': {
+      if (typeof value !== typeof target)
+        return {outcome: 'unknown', reasonCode: 'value_type_mismatch'};
       const matches =
         typeof value === 'string' && typeof target === 'string'
           ? value.trim().toLocaleLowerCase('en-US') === target.trim().toLocaleLowerCase('en-US')

@@ -1,4 +1,5 @@
 import {useSessionId, useSessionMutation, useSessionQuery} from 'convex-helpers/react/sessions';
+import {useQuery} from 'convex/react';
 import {type PropsWithChildren, useCallback, useEffect, useMemo, useRef, useState} from 'react';
 import {api} from '../../convex/_generated/api';
 import {DEFAULT_RANKING_WEIGHTS} from '@/domain/comparison';
@@ -54,6 +55,7 @@ export function DemoProvider({children}: PropsWithChildren) {
   const creatingSession = useRef(false);
 
   const session = useSessionQuery(api.demo.getSession, {});
+  const controlledReply = useQuery(api.controlledReply.getPublished, {});
   const createSession = useSessionMutation(api.demo.createSession);
   const approveBriefMutation = useSessionMutation(api.demo.approveBrief);
   const startResearchMutation = useSessionMutation(api.demo.startResearchReplay);
@@ -169,6 +171,7 @@ export function DemoProvider({children}: PropsWithChildren) {
 
   const value = useMemo<DemoContextValue>(
     () => ({
+      controlledReply,
       briefApproved: state.briefApproved,
       researchStarted: state.researchStarted,
       outreachApproved: state.outreachApproved,
@@ -181,11 +184,12 @@ export function DemoProvider({children}: PropsWithChildren) {
       captureProofEvents,
       research,
       baselineMode: session?.baseline.sourceMode ?? (fallbackMode ? 'fallback' : 'fixture'),
-      baselineLabel:
-        session?.baseline.captureLabel ??
-        (fallbackMode
-          ? 'Captured fixture fallback — local visitor state; no provider calls.'
-          : 'Connecting to the Convex demo baseline…'),
+      baselineLabel: controlledReply
+        ? 'Research market and headline metrics are fictional fixtures. The separately labelled Atlas reply, quote, and comparison come from the captured project-owned email exchange; the supplier is fictional.'
+        : (session?.baseline.captureLabel ??
+          (fallbackMode
+            ? 'Captured fixture fallback — local visitor state; no provider calls.'
+            : 'Connecting to the Convex demo baseline…')),
       backendReady: Boolean(session) || fallbackMode,
       backendError,
       approveBrief: async () => {
@@ -268,6 +272,7 @@ export function DemoProvider({children}: PropsWithChildren) {
       backendError,
       captureProofEvents,
       execute,
+      controlledReply,
       fallbackMode,
       metrics,
       research,

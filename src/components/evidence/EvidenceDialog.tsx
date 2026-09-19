@@ -112,12 +112,16 @@ export function EvidenceDialog({
               <Button variant="secondary" disabled>
                 Fixture source
               </Button>
-            ) : (
+            ) : source.url ? (
               <Button asChild variant="secondary">
                 <a href={source.url} target="_blank" rel="noreferrer">
                   Open source <ExternalLink className="size-4" />
                 </a>
               </Button>
+            ) : (
+              <span className="text-xs text-[var(--muted)]">
+                Private mailbox · exact excerpt shown above
+              </span>
             )}
           </div>
         </Dialog.Content>
