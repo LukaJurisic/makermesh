@@ -116,6 +116,11 @@
         poster="/social/makermesh-og.png"
         aria-label="MakerMesh product demonstration"
       >
+        <!-- GitHub serves byte ranges, so viewers can scrub; the local copy is the fallback. -->
+        <source
+          src="https://raw.githubusercontent.com/LukaJurisic/makermesh/main/public/media/makermesh-demo.mp4"
+          type="video/mp4"
+        />
         <source src="/media/makermesh-demo.mp4" type="video/mp4" />
         Your browser does not support this player.
         <a href="/media/makermesh-demo.mp4">Download the video.</a>
