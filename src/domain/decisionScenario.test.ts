@@ -109,7 +109,9 @@ describe('evaluateDecisionScenario', () => {
       moqOutcome: 'pass',
       productCost: 18_000,
     });
-    expect(result.status === 'ready' && result.questions).toContain('reconfirm');
+    expect(result.status === 'ready' && result.questions).toContain(
+      'confirm production timing and price',
+    );
   });
 
   it('keeps missing commercial fields unknown', () => {
@@ -131,7 +133,7 @@ describe('evaluateDecisionScenario', () => {
     });
   });
 
-  it('requires exact source evidence and never invents a timing excerpt', () => {
+  it('requires exact source wording and never invents a timing excerpt', () => {
     const reply = makeReply({
       evaluations: [
         {
@@ -208,8 +210,8 @@ describe('formatDecisionBrief', () => {
     expect(result.status).toBe('ready');
     if (result.status !== 'ready') return;
     const brief = formatDecisionBrief(result);
-    expect(brief).toContain('Fictional supplier example');
-    expect(brief).toContain('Exact timing evidence:');
+    expect(brief).toContain('Fictional workshop · real email test');
+    expect(brief).toContain('Original wording:');
     expect(brief).toContain('\\[source\\]');
     expect(brief).not.toContain('Reply source.');
     expect(brief).toContain('draft');

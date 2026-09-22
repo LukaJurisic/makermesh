@@ -24,9 +24,7 @@ describe('captured reply comparison', () => {
       </MemoryRouter>,
     );
     expect(screen.getByText(/No captured email result is published/)).toBeInTheDocument();
-    expect(
-      screen.queryByRole('region', {name: 'Captured controlled email result'}),
-    ).not.toBeInTheDocument();
+    expect(screen.queryByRole('region', {name: 'Captured email result'})).not.toBeInTheDocument();
     state.reply = {
       sentAt: 1,
       receivedAt: 2,
@@ -57,16 +55,14 @@ describe('captured reply comparison', () => {
         <ComparePage />
       </MemoryRouter>,
     );
-    fireEvent.click(screen.getByText('Original brief comparison'));
+    fireEvent.click(screen.getByText('How the original quote compares'));
     const table = within(screen.getByRole('table'));
     expect(table.getByText('Atlas Clay Studio — Demo Supplier')).toBeInTheDocument();
     expect(screen.getAllByRole('row')).toHaveLength(2);
-    expect(table.getByText('More evidence needed')).toBeInTheDocument();
-    expect(screen.getByText('0/1 answerable')).toBeInTheDocument();
-    fireEvent.click(screen.getByRole('button', {name: 'Read supplier reply'}));
-    expect(
-      screen.getByRole('region', {name: 'Captured controlled email result'}),
-    ).toBeInTheDocument();
+    expect(table.getByText('More details needed')).toBeInTheDocument();
+    expect(screen.getByText('0/1 answered')).toBeInTheDocument();
+    fireEvent.click(screen.getByRole('button', {name: 'Read the reply'}));
+    expect(screen.getByRole('region', {name: 'Captured email result'})).toBeInTheDocument();
     expect(
       screen.getAllByText('2 requirements still unknown', {exact: false}).length,
     ).toBeGreaterThan(0);
@@ -76,9 +72,7 @@ describe('captured reply comparison', () => {
         <ComparePage />
       </MemoryRouter>,
     );
-    expect(
-      screen.queryByRole('region', {name: 'Captured controlled email result'}),
-    ).not.toBeInTheDocument();
+    expect(screen.queryByRole('region', {name: 'Captured email result'})).not.toBeInTheDocument();
     expect(screen.getByText(/No captured email result is published/)).toBeInTheDocument();
   });
 });

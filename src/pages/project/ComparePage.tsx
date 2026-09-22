@@ -1,4 +1,4 @@
-import {ArrowRight, FileSearch, SlidersHorizontal} from 'lucide-react';
+import {ArrowRight, SlidersHorizontal} from 'lucide-react';
 import {useMemo, useState} from 'react';
 import {Link} from 'react-router-dom';
 import {useDemo} from '@/app/useDemo';
@@ -14,7 +14,7 @@ import {useTrackProductEvent} from '@/app/useTrackProductEvent';
 
 const tierLabel = {
   eligible: 'Requirements met',
-  provisionally_unqualified: 'More evidence needed',
+  provisionally_unqualified: 'More details needed',
   hard_failure: 'Requirement not met',
 };
 export function ComparePage() {
@@ -48,16 +48,10 @@ export function ComparePage() {
     <div className="workspace-page">
       <header className="page-heading-row">
         <div>
-          <p className="page-kicker">Your sourcing decision</p>
-          <h2>Compare makers</h2>
-          <p>Production details first. Evidence behind every decision.</p>
+          <p className="quote-workshop-name">Atlas Clay Studio</p>
+          <p className="quote-workshop-detail">Espresso cups for Harbour Coffee Lab</p>
         </div>
-        {controlledReply ? (
-          <Button variant="secondary" onClick={() => setReplyOpen(true)}>
-            <FileSearch size={16} />
-            Read supplier reply
-          </Button>
-        ) : (
+        {!controlledReply && (
           <Button asChild variant="secondary">
             <Link to="/projects/harbour-coffee-lab/outreach">
               Review outreach
@@ -68,7 +62,9 @@ export function ComparePage() {
       </header>
       <DecisionScenario reply={controlledReply} onInspect={() => setReplyOpen(true)} />
       <details className="original-comparison" open={!controlledReply}>
-        <summary className="cursor-pointer py-4 font-semibold">Original brief comparison</summary>
+        <summary className="cursor-pointer py-4 font-semibold">
+          How the original quote compares
+        </summary>
         <p className="mb-4 text-sm text-[var(--muted)]">
           These results describe the original brief. What-if changes above do not revise the
           supplier’s quote or these recorded evaluations.
@@ -93,15 +89,15 @@ export function ComparePage() {
               <strong>
                 {unknowns.length
                   ? `${unknowns.length} ${unknowns.length === 1 ? 'requirement' : 'requirements'} still unknown`
-                  : 'All requirements have evidence'}
+                  : 'All requested details have a reply'}
               </strong>
               <p>
                 {unknowns.map((item) => item.requirementLabel).join(' · ') ||
-                  'Review the supporting evidence before deciding.'}
+                  'Read the original wording before deciding.'}
               </p>
             </div>
             <button onClick={() => setReplyOpen(true)}>
-              Inspect evidence
+              Read the reply
               <ArrowRight size={14} />
             </button>
           </div>
@@ -125,8 +121,9 @@ export function ComparePage() {
           <details>
             <summary>How comparison works</summary>
             <p className="mt-3 leading-6">
-              Requirements are evaluated first. Preference fit {weights.preferenceFit}%, evidence{' '}
-              {weights.evidenceCoverage}%, commercial completeness {weights.commercialCompleteness}
+              Requirements are evaluated first. Preference fit {weights.preferenceFit}%, answers
+              with sources {weights.evidenceCoverage}%, commercial completeness{' '}
+              {weights.commercialCompleteness}
               %, lead time {weights.leadTime}%. Unknowns earn no points. Price is excluded from
               ranking; currencies and quote bases are not assumed equivalent.
             </p>
@@ -141,7 +138,7 @@ export function ComparePage() {
                 <th scope="col">Production</th>
                 <th scope="col">Requirements</th>
                 <th scope="col">Preference fit</th>
-                <th scope="col">Evidence</th>
+                <th scope="col">Answers</th>
                 <th scope="col">
                   <span className="sr-only">Details</span>
                 </th>
@@ -191,14 +188,14 @@ export function ComparePage() {
                     <td>
                       <strong>{comparison.preferenceFit}%</strong>
                       <small>
-                        {comparison.knownPreferences}/{comparison.totalPreferences} answerable
+                        {comparison.knownPreferences}/{comparison.totalPreferences} answered
                       </small>
                     </td>
                     <td>
                       <strong>{comparison.evidenceCoverage}%</strong>
                       <small>
-                        {comparison.evidencedRequirements}/{comparison.applicableRequirements}{' '}
-                        evidenced
+                        {comparison.evidencedRequirements}/{comparison.applicableRequirements} with
+                        a source
                       </small>
                     </td>
                     <td>
@@ -245,12 +242,12 @@ export function ComparePage() {
                     </dd>
                   </div>
                   <div>
-                    <dt>Evidence</dt>
+                    <dt>Answers</dt>
                     <dd>{comparison.evidenceCoverage}%</dd>
                   </div>
                 </dl>
                 <button onClick={() => details(maker.id)}>
-                  Read quote & evidence
+                  Read quoted terms
                   <ArrowRight size={15} />
                 </button>
               </article>
@@ -265,8 +262,8 @@ export function ComparePage() {
       <Drawer
         open={replyOpen}
         onOpenChange={setReplyOpen}
-        title="Supplier reply & evidence"
-        description="Captured project-owned exchange with fictional Atlas Clay Studio."
+        title="Original reply & quoted terms"
+        description="A test email exchange with fictional Atlas Clay Studio."
         width="wide"
       >
         <div className="px-5">

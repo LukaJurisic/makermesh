@@ -106,13 +106,13 @@ export function BriefPage() {
       <div className="mt-8 grid gap-8 lg:grid-cols-2">
         <RequirementGroup
           title="Hard requirements"
-          description="A contradiction creates a hard failure. Missing evidence remains unknown."
+          description="A contradiction creates a hard failure. Missing source information remains unknown."
           requirements={hard}
           tone="hard"
         />
         <RequirementGroup
           title="Soft preferences"
-          description="Unknown preferences earn no points and remain visible in the denominator."
+          description="Unknown preferences earn no points and stay visible in the comparison."
           requirements={soft}
           tone="soft"
         />

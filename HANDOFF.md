@@ -1,7 +1,24 @@
 # MakerMesh continuation handoff
 
-Updated: 2026-09-19 EDT  
+Updated: 2026-09-22 EDT
+
 Purpose: review the existing work, then finish the sponsor loop and submission.
+
+## Latest: September 22 site refinement
+
+User explicitly requested the site first and video later, with natural buyer language instead
+of AI jargon. Homepage and working-page copy/layout are refreshed and hosted. Added the
+400-cup shortcut and local research-note export. Full check passes 126 tests; the 11 applicable
+E2E cases pass after correcting changed labels (5 intentional skips). Four core pages across
+four viewport sizes pass overflow/browser-error/axe checks. See
+[site refresh](docs/SITE_REFRESH_2026-09-22.md). Existing fonts, colors and imagery retained.
+
+No new email, paid research, backend update, public repository, social post or final submission.
+The previous 1:44.96 video remains available but is visually outdated. User wants to review
+the hosted site before the next video pass. Do not silently claim the old video is current.
+Source/video/social publication and registration/eligibility confirmation remain pending.
+
+Earlier sections below describe historical verification and previous designs.
 
 ## Current release — September 19
 

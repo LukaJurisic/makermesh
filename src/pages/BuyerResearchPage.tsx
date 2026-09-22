@@ -6,6 +6,7 @@ import type {Id} from '../../convex/_generated/dataModel';
 import {api} from '../../convex/_generated/api';
 import {Brand} from '@/components/brand/Logo';
 import {Button} from '@/components/ui/Button';
+import {formatResearchNotes} from '@/domain/researchBrief';
 
 export function BuyerResearchPage() {
   const {requestId} = useParams();
@@ -33,6 +34,8 @@ function ResearchRequest({requestId}: {requestId: Id<'buyerResearchRequests'>}) 
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState('');
   const [copied, setCopied] = useState('');
+  const [downloadState, setDownloadState] = useState<'idle' | 'downloaded' | 'failed'>('idle');
+  const [downloadText, setDownloadText] = useState('');
   if (request === null) return <MissingRequest />;
   if (!request)
     return (
@@ -40,14 +43,15 @@ function ResearchRequest({requestId}: {requestId: Id<'buyerResearchRequests'>}) 
         Loading your research request…
       </main>
     );
-  const {brief, status, results, input} = request;
+  const {brief, status, input} = request;
+  const results = request.results ?? [];
   const running = ['compiling', 'searching', 'reading', 'extracting'].includes(status);
   const labels = {
     compiling: 'Preparing your brief',
     review: 'Ready for your review',
     searching: 'Searching public sources',
     reading: 'Reading discovered pages',
-    extracting: 'Organizing source evidence',
+    extracting: 'Collecting useful details',
     complete: 'Research complete',
     failed: 'Research paused',
     out_of_scope: 'Outside this demo’s scope',
@@ -69,6 +73,25 @@ function ResearchRequest({requestId}: {requestId: Id<'buyerResearchRequests'>}) 
       setCopied(`Questions for ${name} copied.`);
     } catch {
       setCopied('Select the visible questions to copy them.');
+    }
+  };
+  const saveResearchNotes = () => {
+    if (status !== 'complete' || !brief) return;
+    const notes = formatResearchNotes({brief, input, results});
+    setDownloadText(notes);
+    try {
+      const blob = new Blob([notes], {type: 'text/markdown;charset=utf-8'});
+      const url = URL.createObjectURL(blob);
+      const anchor = document.createElement('a');
+      anchor.href = url;
+      anchor.download = 'makermesh-research-notes.md';
+      document.body.appendChild(anchor);
+      anchor.click();
+      anchor.remove();
+      window.setTimeout(() => URL.revokeObjectURL(url), 1000);
+      setDownloadState('downloaded');
+    } catch {
+      setDownloadState('failed');
     }
   };
   return (
@@ -203,13 +226,27 @@ function ResearchRequest({requestId}: {requestId: Id<'buyerResearchRequests'>}) 
                   {results.length} sourcing {results.length === 1 ? 'lead' : 'leads'} to explore
                 </h2>
                 <p>
-                  {request.sourceCount} public sources inspected;{' '}
-                  {results.filter((source) => source.locationExcerpt).length} include a Moroccan
-                  location statement. Confirm production capabilities directly.
+                  {request.sourceCount} pages checked. Ask each workshop to confirm the details
+                  before ordering.
                 </p>
               </div>
-              <span>No email sent</span>
+              <div>
+                <span>No email sent</span>
+                <Button type="button" onClick={saveResearchNotes}>
+                  {downloadState === 'downloaded' ? 'Download started' : 'Save research notes'}
+                </Button>
+              </div>
             </div>
+            {downloadState === 'failed' && downloadText && (
+              <section className="research-empty" aria-label="Research notes download fallback">
+                <h3>Your notes are ready to save.</h3>
+                <p>
+                  Your browser blocked the download. Select the full notes below and save them as a
+                  Markdown file.
+                </p>
+                <textarea readOnly value={downloadText} aria-label="Research notes" />
+              </section>
+            )}
             {!results.length && (
               <section className="research-empty">
                 <h3>No usable source pages were returned.</h3>
@@ -237,8 +274,8 @@ function ResearchRequest({requestId}: {requestId: Id<'buyerResearchRequests'>}) 
                       <div>
                         <p className="page-kicker">
                           {source.locationExcerpt
-                            ? 'Public source · location statement available'
-                            : 'Public source · location to confirm'}
+                            ? 'Website · location mentioned'
+                            : 'Website · ask about the location'}
                         </p>
                         <h3>{name}</h3>
                         <a href={source.url} target="_blank" rel="noreferrer">
@@ -260,7 +297,7 @@ function ResearchRequest({requestId}: {requestId: Id<'buyerResearchRequests'>}) 
                           <div className="research-excerpt">
                             <strong>Location statement</strong>
                             <blockquote>“{source.locationExcerpt}”</blockquote>
-                            <span>Public statement · confirm production location directly</span>
+                            <span>From this website. Ask the workshop to confirm.</span>
                           </div>
                         )}
                         {source.facts.length ? (
@@ -339,8 +376,8 @@ function ResearchRequest({requestId}: {requestId: Id<'buyerResearchRequests'>}) 
           </Link>
         </section>
         <footer className="research-private-note">
-          Private to this browser · expires after 48 hours. Public-source contact details are
-          redacted. Research never sends email, grades real suppliers, or certifies their claims.
+          Private to this browser for 48 hours. Download your notes to keep them. Check details with
+          each workshop before ordering; no messages are sent.
         </footer>
       </main>
     </div>

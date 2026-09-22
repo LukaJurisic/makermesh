@@ -36,9 +36,7 @@ export function MakersPage() {
         <div>
           <p className="page-kicker">Your maker shortlist</p>
           <h2>Find the right fit.</h2>
-          <p>
-            Explore capabilities, compare production details, and see what still needs an answer.
-          </p>
+          <p>Compare capabilities and production details, then see what still needs an answer.</p>
         </div>
         <span className="buyer-demo-label">Fictional demonstration makers</span>
       </header>
@@ -75,14 +73,14 @@ export function MakersPage() {
         {query || region !== 'all' || status !== 'all'
           ? ' matching your filters'
           : ' in this example project'}{' '}
-        · Select a maker to inspect its evidence
+        · Select a maker to read its sources
       </p>
       <div className="maker-directory">
         <div className="directory-head" aria-hidden="true">
           <span>Maker / location</span>
           <span>Minimum order</span>
           <span>Production time</span>
-          <span className="directory-evidence">Evidence</span>
+          <span className="directory-evidence">Sources</span>
           <span />
         </div>
         {filtered.map((maker) => (
@@ -101,7 +99,7 @@ export function MakersPage() {
                 <strong>{maker.name}</strong>
                 <small>{maker.location}</small>
                 <small>
-                  {maker.fixture ? 'Example maker record' : 'Captured reply · fictional supplier'}
+                  {maker.fixture ? 'Example maker record' : 'Original reply · fictional supplier'}
                 </small>
               </span>
             </span>
@@ -125,7 +123,7 @@ export function MakersPage() {
               </small>
             </span>
             <span className="directory-proof directory-evidence">
-              {maker.sources.length} evidence records
+              {maker.sources.length} source records
             </span>
             <ArrowUpRight size={18} className="directory-arrow" />
           </button>

@@ -28,7 +28,7 @@ export function MakerDetailDrawer({
         open={open}
         onOpenChange={onOpenChange}
         title={maker.name}
-        description="Fictional maker · production details and evidence for your request."
+        description="Fictional maker · production details and source notes for your request."
         width="wide"
       >
         <div className="relative h-40 overflow-hidden bg-[var(--surface)]">
@@ -42,7 +42,7 @@ export function MakerDetailDrawer({
               <FixtureBadge />
             ) : (
               <span className="rounded-md bg-[var(--surface-raised)] px-3 py-2 text-xs font-semibold">
-                Captured reply · fictional supplier
+                Original reply · fictional supplier
               </span>
             )}
           </div>
@@ -94,8 +94,8 @@ export function MakerDetailDrawer({
               {Object.entries({
                 fit: 'Requirements',
                 capabilities: 'Capabilities',
-                sources: 'Evidence',
-                quote: 'Quote & terms',
+                sources: 'Sources',
+                quote: 'Quoted terms',
                 messages: 'Messages',
               }).map(([tab, label]) => (
                 <Tabs.Trigger key={tab} value={tab} className="record-tab whitespace-nowrap">
@@ -140,7 +140,7 @@ export function MakerDetailDrawer({
                             );
                           }}
                         >
-                          <FileSearch className="size-3.5" /> Evidence
+                          <FileSearch className="size-3.5" /> View source
                         </Button>
                       )}
                     </div>
@@ -162,7 +162,7 @@ export function MakerDetailDrawer({
               </div>
               <p className="mt-6 text-xs leading-5 text-[var(--muted)]">
                 {maker.fixture
-                  ? 'These capabilities come from example evidence.'
+                  ? 'These capabilities come from example source notes.'
                   : 'These capabilities come from the captured fictional reply.'}{' '}
                 They are supplier statements, not independent verification.
               </p>
@@ -195,14 +195,14 @@ export function MakerDetailDrawer({
             <Tabs.Content value="messages" className="py-5 outline-none">
               <p className="mb-4 text-xs text-[var(--muted)]">
                 {maker.fixture
-                  ? 'Example email evidence · fictional supplier'
-                  : 'Original captured reply · fictional supplier. Mailbox addresses stay private.'}
+                  ? 'Example reply · fictional supplier'
+                  : 'Original reply · fictional supplier. Mailbox addresses stay private.'}
               </p>
               <p lang="fr" className="whitespace-pre-wrap text-sm leading-7 text-[var(--ink-soft)]">
                 {!maker.fixture && controlledReply
                   ? controlledReply.originalText
                   : (maker.sources.find((source) => source.sourceType === 'supplier_email')
-                      ?.excerpt ?? 'No email evidence is available for this maker.')}
+                      ?.excerpt ?? 'No original reply is available for this maker.')}
               </p>
             </Tabs.Content>
             <Tabs.Content value="quote" className="py-5 outline-none">

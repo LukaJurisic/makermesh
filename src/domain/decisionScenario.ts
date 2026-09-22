@@ -78,13 +78,11 @@ function questionDraft(
     typeof quote.productionMinDays === 'number' && typeof quote.productionMaxDays === 'number'
       ? `${quote.productionMinDays}–${quote.productionMaxDays}`
       : 'the quoted number of';
-  const quotedUnitPrice =
-    typeof quote.unitPrice === 'number' ? `${quote.unitPrice} ${quote.currency}` : 'the quoted';
   const timingQuestion =
     timingOutcome === 'fail'
-      ? `Your reply states production takes ${quotedRange} days after sample approval for ${quantity} cups. Can you confirm production within ${productionDays} days after sample approval for ${quantity} cups, and whether that changes the ${quotedUnitPrice} unit price?`
+      ? `Your reply says production takes ${quotedRange} days after sample approval for ${quantity} cups. Can you confirm whether you can make ${quantity} cups within ${productionDays} days, and share the unit price?`
       : timingOutcome === 'unknown'
-        ? `${quantityChanged ? 'Please reconfirm production capacity, timing and price' : 'Can you confirm production'} within ${productionDays} days after sample approval for ${quantity} cups.`
+        ? `Can you confirm production timing${quantityChanged ? ' and price' : ''} for ${quantity} cups within ${productionDays} days after sample approval?`
         : `Please confirm that production remains within ${productionDays} days after sample approval for ${quantity} cups.`;
   const moqQuestion =
     moqOutcome === 'fail' && typeof moq === 'number'
@@ -193,7 +191,7 @@ export function formatDecisionBrief(result: DecisionScenarioReady) {
         ? 'does not meet'
         : 'is unconfirmed for';
   const source = result.timingExcerpt
-    ? `\n\nExact timing evidence: “${escapeMarkdown(result.timingExcerpt)}”`
+    ? `\n\nOriginal wording: “${escapeMarkdown(result.timingExcerpt)}”`
     : '';
   const cost = result.productCost === null ? 'Unknown' : `${result.productCost} ${currency}`;
   const quotedRange =
@@ -211,9 +209,9 @@ export function formatDecisionBrief(result: DecisionScenarioReady) {
       ? `Sample: ${quote.samplePrice} ${currency}, quoted separately`
       : 'Sample: unknown';
   return [
-    '# MakerMesh sourcing decision brief',
+    '# MakerMesh order notes',
     '',
-    'Fictional supplier example · captured exchange',
+    'Fictional workshop · real email test',
     '',
     `- Quantity: ${result.quantity} cups${result.quantityChanged ? ' (changed from the original 200-cup quote)' : ''}`,
     `- Production limit: ${result.productionDays} days after sample approval`,
@@ -233,10 +231,10 @@ export function formatDecisionBrief(result: DecisionScenarioReady) {
     `- Received: ${new Date(result.receivedAt).toISOString()}`,
     source,
     '',
-    '## Questions to ask next',
+    '## Questions for the workshop',
     '',
     escapeMarkdown(result.questions),
     '',
-    'This is a draft for clarification. It is not a sent message, delivery promise, or purchasing authorization.',
+    'These notes are a draft for clarification. They are not a sent message, delivery promise, or purchasing authorization.',
   ].join('\n');
 }

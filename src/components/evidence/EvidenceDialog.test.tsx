@@ -45,7 +45,7 @@ describe('EvidenceDialog', () => {
     render(<Harness />);
     const trigger = screen.getByRole('button', {name: 'View evidence'});
     await user.click(trigger);
-    expect(screen.getByRole('button', {name: 'Close evidence'})).toHaveFocus();
+    expect(screen.getByRole('button', {name: 'Close source'})).toHaveFocus();
 
     await user.keyboard('{Escape}');
     await waitFor(() => expect(trigger).toHaveFocus());

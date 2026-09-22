@@ -13,9 +13,23 @@
 - **Auth:** Convex Auth
 - **AI models:** gpt-5.6-luna (live Responses API brief compilation exercised)
 - **Started:** 2026-08-29T14:07:45.2228690Z
-- **Last updated:** 2026-09-19
+- **Last updated:** 2026-09-22
 
 ## Log
+
+### 2026-09-22 — buyer-facing site refinement
+
+Rebuilt the homepage around a concrete café order and simplified navigation, quoted terms,
+source descriptions and questions. Added a 400-cup shortcut to demonstrate why an altered
+order needs supplier reconfirmation. Completed private research can now be downloaded as
+notes with the buyer's request, source links/dates, original wording and every confirmation
+question. Public website statements are never treated as confirmation of the exact order.
+
+Frontend deployed to the existing development site. Full check passes 126 tests; all 11
+applicable E2E cases pass across the run and corrected-label rerun, with 5 intentional skips.
+Four pages at four viewports pass overflow and automated accessibility checks. No new email
+or paid provider request. The prior video needs updating to match this site; video work is
+deferred until after the user reviews the site. Submission/publication steps remain pending.
 
 ### 2026-09-19 — interactive purchasing decision
 

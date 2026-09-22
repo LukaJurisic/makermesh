@@ -7,12 +7,32 @@ clay, ink, and quiet operational density without marketplace kitsch.
 
 ## Content plan
 
-1. Landing hero: unmistakable brand, demand-first promise, two actions, one live compilation visual.
-2. Support: start with demand, ask only what is missing, preserve the evidence.
-3. Detail: command-centre preview showing research, questions, and source-backed claims.
-4. Final action: a premium Mesh Passport preview and demo entry.
+1. Landing: a clear ceramics task, one large workshop illustration, and a request action.
+2. Process: describe the order, explore workshops, and make sense of a reply.
+3. Example: the Harbour café order, with price and timing in ordinary buyer language.
+4. Final action: start a request. Project/integration details belong in the optional drawer.
 
 Application surfaces begin with working context and status—not marketing banners.
+
+## September 22 refinement
+
+The user explicitly requested a more natural product and rejected technical words such as
+“evidence” in customer-facing copy. Use “original wording,” “quoted terms,” “sources,” and
+“what to ask” where they accurately describe the task. Keep internal model names unchanged.
+Avoid abstract promises, repeated eyebrow labels, feature manifestos and decorative metrics.
+
+The homepage pairs plain copy with an unboxed workshop image, then a short process and one
+worked order. Keep Geist and Instrument Serif, the paper/clay/teal palette, and current
+licensed/generated imagery. Images are illustrations, not supplier documentation. Desktop
+uses two columns; mobile presents the request before the image and stacks the example.
+Functional pages show one main heading, readable field labels and a compact original reply.
+The example boundary stays explicit; simpler wording must never imply a real supplier offer.
+
+Safe choices: familiar request/action labels, visible quoted terms, current font/color tokens.
+Deliberate departures: fewer feature sections and technical explanations; a product-first
+homepage rather than a judge-facing integration tour. This gains clarity at the cost of less
+immediate technical detail, which remains available in About this demo and the build log.
+Preview through the running app; the optional gstack image designer is unavailable.
 
 ## Interaction thesis
 

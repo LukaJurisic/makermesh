@@ -25,8 +25,8 @@ export function PassportPage() {
       </div>
       <ControlledReplyPanel />
       <p className="mx-auto my-4 max-w-3xl px-5 text-sm leading-6 text-[var(--muted)]">
-        The dossier below is a fictional design preview with fixed fixture history. It is separate
-        from any captured email evidence shown above.
+        This sample workshop profile uses fictional information. The original email reply is shown
+        separately above.
       </p>
       <article className="passport-dossier">
         <header className="passport-cover">
@@ -36,7 +36,7 @@ export function PassportPage() {
           />
           <div className="passport-cover-shade" />
           <div className="passport-cover-copy">
-            <p>MakerMesh capability dossier · MM–001</p>
+            <p>Workshop profile · example</p>
             <h2>
               Atlas Clay
               <br />
@@ -136,7 +136,7 @@ export function PassportPage() {
           <section className="passport-timeline">
             <div className="flex items-end justify-between gap-4">
               <div>
-                <p className="section-kicker">Evidence history</p>
+                <p className="section-kicker">Source history</p>
                 <h3>What changed, and when</h3>
               </div>
               <span className="flex items-center gap-1.5 text-xs text-[var(--muted)]">
@@ -177,7 +177,7 @@ export function PassportPage() {
             </div>
             <ShareMenu
               label="Share demonstration preview"
-              summary="We described 200 custom espresso cups. MakerMesh compiled fragmented web evidence into a Moroccan maker network, found 13 unanswered requirements, and structured the first fictional supplier reply."
+              summary="An example café order: 200 ceramic cups, the workshop’s reply, and the questions still to ask."
               onShare={() => void trackEvent('passport_shared')}
             />
           </footer>

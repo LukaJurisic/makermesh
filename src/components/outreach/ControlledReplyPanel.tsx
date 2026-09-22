@@ -6,15 +6,15 @@ export function ControlledReplyPanel() {
   return (
     <section
       className="my-6 rounded-xl border border-[var(--border)] bg-[var(--surface-raised)] p-5"
-      aria-label="Captured controlled email result"
+      aria-label="Captured email result"
     >
-      <p className="page-kicker">Real email exchange · fictional supplier</p>
+      <p className="page-kicker">Example workshop · reply from our test inbox</p>
       <h3 className="mt-2 text-xl font-semibold text-[var(--ink)]">
-        Atlas replied. Here is the evidence.
+        Atlas replied. Here is the original wording.
       </h3>
       <p className="mt-2 text-sm leading-6 text-[var(--ink-soft)]">
-        A captured reply from a project-owned inbox. Atlas is fictional; these supplier statements
-        are not independent verification or a real supplier endorsement.
+        Atlas is a fictional workshop. We sent and received this reply through our own test inboxes;
+        it is not an offer from a real supplier.
       </p>
       <p role="status" className="mt-3 text-sm text-[var(--teal)]">
         Received and extracted ·{' '}
@@ -81,7 +81,7 @@ export function ControlledReplyPanel() {
       )}
       <details className="mt-4 border-t border-[var(--border)] pt-4">
         <summary className="cursor-pointer py-2 font-semibold text-[var(--ink)]">
-          Read the original French reply and extracted evidence
+          Read the original reply and quoted terms
         </summary>
         <p className="mt-3 whitespace-pre-wrap text-sm leading-7 text-[var(--ink-soft)]" lang="fr">
           {reply.originalText}

@@ -32,9 +32,9 @@ export function ResearchPage() {
     <div className="workspace-page">
       <header className="page-heading-row">
         <div>
-          <p className="page-kicker">Explore the evidence</p>
+          <p className="page-kicker">Explore the sources</p>
           <h2>Research & sources</h2>
-          <p>Inspect the source behind each capability. This market uses example records.</p>
+          <p>Read what each source says about a capability. This market uses example records.</p>
         </div>
         <Button onClick={startReplay} disabled={!backendReady || !briefApproved || researchStarted}>
           {!briefApproved ? (
@@ -75,7 +75,7 @@ export function ResearchPage() {
             ['Sources available', metrics.sources],
             ['Sources analyzed', metrics.sources],
             ['Candidates', metrics.makers],
-            ['Claims retained', metrics.claims],
+            ['Statements kept', metrics.claims],
           ].map(([label, value]) => (
             <div key={label} className="p-5">
               <p className="text-[28px] font-semibold tabular-nums tracking-[-0.04em] text-[var(--ink)]">
@@ -105,7 +105,7 @@ export function ResearchPage() {
             <div>
               <h3 className="text-lg font-semibold text-[var(--ink)]">Sources</h3>
               <p className="mt-1 text-xs text-[var(--muted)]">
-                Every excerpt opens its evidence record.
+                Every excerpt opens its source record.
               </p>
             </div>
             <span className="text-xs text-[var(--muted)]">Example source collection</span>
@@ -145,9 +145,9 @@ export function ResearchPage() {
 
         <section>
           <div className="border-b border-[var(--border-strong)] pb-4">
-            <h3 className="text-lg font-semibold text-[var(--ink)]">Progressive discovery</h3>
+            <h3 className="text-lg font-semibold text-[var(--ink)]">Makers found</h3>
             <p className="mt-1 text-xs text-[var(--muted)]">
-              Entity aliases are merged before qualification.
+              Names are grouped before we compare them.
             </p>
           </div>
           <ol className="divide-y divide-[var(--border)]">

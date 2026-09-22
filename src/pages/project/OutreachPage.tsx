@@ -103,7 +103,7 @@ export function OutreachPage() {
             <div>
               <h3 className="text-lg font-semibold text-[var(--ink)]">Focused questions</h3>
               <p className="mt-1 text-xs text-[var(--muted)]">
-                Generated from unresolved keys, then edited by the buyer.
+                Based on missing answers, then edited by the buyer.
               </p>
             </div>
             <span className="text-sm font-semibold tabular-nums text-[var(--unknown)]">
@@ -121,7 +121,7 @@ export function OutreachPage() {
                     {question}
                   </p>
                   <p className="mt-1 text-xs text-[var(--muted)]">
-                    Could affect commercial completeness
+                    Still needed for a buying decision
                   </p>
                 </div>
                 <span className="text-xs text-[var(--muted)]">Draft question</span>

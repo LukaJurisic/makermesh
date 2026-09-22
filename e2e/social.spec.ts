@@ -10,6 +10,8 @@ test('generates the MakerMesh Open Graph image', async ({page}) => {
       [...document.images].map((image) => (image.complete ? Promise.resolve() : image.decode())),
     );
   });
-  await expect(page.getByRole('heading', {name: 'A market appears when you ask.'})).toBeVisible();
+  await expect(
+    page.getByRole('heading', {name: 'Find a workshop for your café’s next cups.'}),
+  ).toBeVisible();
   await page.screenshot({path: 'public/social/makermesh-og.png'});
 });

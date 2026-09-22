@@ -18,10 +18,12 @@ type DecisionScenarioProps = {
   onInspect: () => void;
 };
 
-function statusLabel(status: DecisionScenarioReady['timingOutcome']) {
-  if (status === 'pass') return 'Timing meets this requirement';
-  if (status === 'fail') return 'Timing requirement not met';
-  return 'Timing commitment is unknown';
+function statusLabel(status: DecisionScenarioReady['timingOutcome'], quantityChanged: boolean) {
+  if (status === 'pass') return 'Fits your production window';
+  if (status === 'fail') return 'Ask about a faster turnaround';
+  return quantityChanged
+    ? 'Confirm the timing for this quantity'
+    : 'Production timing not confirmed';
 }
 
 function formatCost(ready: DecisionScenarioReady) {
@@ -103,8 +105,8 @@ export function DecisionScenario({reply, onInspect}: DecisionScenarioProps) {
       data-testid="decision-scenario"
     >
       <header className="decision-scenario__header">
-        <p className="page-kicker">Captured exchange · fictional supplier</p>
-        <h2 id="decision-scenario-title">Does this quote fit your production window?</h2>
+        <p className="page-kicker">Example workshop · reply from our test inbox</p>
+        <h2 id="decision-scenario-title">Will this order work for you?</h2>
         <p className="decision-scenario__context">
           {ORIGINAL_QUANTITY} cups · original brief limit: {ORIGINAL_DAYS} production days
         </p>
@@ -142,7 +144,15 @@ export function DecisionScenario({reply, onInspect}: DecisionScenarioProps) {
               onClick={() => updateDays(SHORT_DAYS)}
               disabled={controlsDisabled}
             >
-              Try a 30-day limit
+              Try 30 days
+            </button>
+            <button
+              type="button"
+              className="decision-scenario__button decision-scenario__button--primary"
+              onClick={() => updateQuantity('400')}
+              disabled={controlsDisabled}
+            >
+              Try 400 cups
             </button>
             <button
               type="button"
@@ -159,7 +169,7 @@ export function DecisionScenario({reply, onInspect}: DecisionScenarioProps) {
         </section>
 
         {result.status === 'loading' && (
-          <p className="decision-scenario__state">Loading captured reply…</p>
+          <p className="decision-scenario__state">Loading the reply…</p>
         )}
         {result.status === 'unavailable' && (
           <p className="decision-scenario__state">Captured reply unavailable.</p>
@@ -171,32 +181,31 @@ export function DecisionScenario({reply, onInspect}: DecisionScenarioProps) {
               className={`decision-scenario__consequence decision-scenario__consequence--${ready.timingOutcome}`}
               aria-live="polite"
             >
-              <p className="decision-scenario__eyebrow">Decision consequence</p>
-              <h3>{statusLabel(ready.timingOutcome)}</h3>
+              <p className="decision-scenario__eyebrow">Order fit</p>
+              <h3>{statusLabel(ready.timingOutcome, ready.quantityChanged)}</h3>
               <p>
                 {ready.timingOutcome === 'pass'
                   ? `The quoted range fits your ${ready.productionDays}-day limit.`
                   : ready.timingOutcome === 'fail'
-                    ? `The quoted range extends beyond your ${ready.productionDays}-day limit and needs a revised supplier commitment.`
-                    : 'The captured reply does not support a timing verdict for this requirement.'}
+                    ? `The quoted range runs past your ${ready.productionDays}-day limit.`
+                    : ready.quantityChanged
+                      ? `The reply does not confirm timing for ${ready.quantity} cups.`
+                      : 'Production timing not confirmed.'}
               </p>
             </section>
 
-            <section
-              className="decision-scenario__evidence"
-              aria-labelledby="decision-evidence-title"
-            >
+            <section className="decision-scenario__evidence" aria-labelledby="decision-quote-title">
               <div className="decision-scenario__section-heading">
                 <div>
-                  <p className="decision-scenario__eyebrow">Evidence</p>
-                  <h3 id="decision-evidence-title">What the supplier actually said</h3>
+                  <p className="decision-scenario__eyebrow">Quoted terms</p>
+                  <h3 id="decision-quote-title">What the supplier wrote</h3>
                 </div>
                 <button
                   type="button"
                   className="decision-scenario__text-button"
                   onClick={onInspect}
                 >
-                  Read full reply
+                  Read original reply
                 </button>
               </div>
               {ready.timingExcerpt ? (
@@ -292,11 +301,7 @@ export function DecisionScenario({reply, onInspect}: DecisionScenarioProps) {
               aria-labelledby="decision-questions-title"
             >
               <p className="decision-scenario__eyebrow">Next action</p>
-              <h3 id="decision-questions-title">
-                {ready.timingOutcome === 'pass'
-                  ? 'Confirm what remains unknown.'
-                  : 'Ask for a revised commitment.'}
-              </h3>
+              <h3 id="decision-questions-title">Questions for the workshop</h3>
               <p className="decision-scenario__question-copy">
                 {questions || 'No clarification draft is available for this reply.'}
               </p>
@@ -313,9 +318,7 @@ export function DecisionScenario({reply, onInspect}: DecisionScenarioProps) {
                   className="decision-scenario__button decision-scenario__button--secondary"
                   onClick={downloadBrief}
                 >
-                  {downloadState === 'downloaded'
-                    ? 'Download requested'
-                    : 'Download decision brief'}
+                  {downloadState === 'downloaded' ? 'Download requested' : 'Save order notes'}
                 </button>
               </div>
               {(copyState === 'failed' || downloadState === 'failed') && (
@@ -328,7 +331,7 @@ export function DecisionScenario({reply, onInspect}: DecisionScenarioProps) {
                   className="decision-scenario__export-fallback"
                   readOnly
                   value={briefText}
-                  aria-label="Decision brief text"
+                  aria-label="Order notes text"
                 />
               )}
             </section>

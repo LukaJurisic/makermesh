@@ -58,15 +58,11 @@ describe('DecisionScenario', () => {
     const user = userEvent.setup();
     render(<DecisionScenario reply={makeReply()} onInspect={vi.fn()} />);
 
-    expect(screen.getByText('Timing meets this requirement')).toBeInTheDocument();
-    await user.click(screen.getByRole('button', {name: 'Try a 30-day limit'}));
+    expect(screen.getByText('Fits your production window')).toBeInTheDocument();
+    await user.click(screen.getByRole('button', {name: 'Try 30 days'}));
 
-    expect(screen.getByText('Timing requirement not met')).toBeInTheDocument();
-    expect(
-      screen.getByText(
-        'The quoted range extends beyond your 30-day limit and needs a revised supplier commitment.',
-      ),
-    ).toBeInTheDocument();
+    expect(screen.getByText('Ask about a faster turnaround')).toBeInTheDocument();
+    expect(screen.getByText('The quoted range runs past your 30-day limit.')).toBeInTheDocument();
     expect(screen.getByText(timingExcerpt, {exact: false})).toBeInTheDocument();
   });
 
@@ -76,14 +72,28 @@ describe('DecisionScenario', () => {
 
     const quantity = document.querySelector('#decision-quantity') as HTMLInputElement;
     fireEvent.change(quantity, {target: {value: '250'}});
-    await user.click(screen.getByRole('button', {name: 'Try a 30-day limit'}));
+    await user.click(screen.getByRole('button', {name: 'Try 30 days'}));
 
-    expect(screen.getByText('Timing commitment is unknown')).toBeInTheDocument();
+    expect(screen.getByText('Confirm the timing for this quantity')).toBeInTheDocument();
     expect(screen.getByText('A revised quote is needed.')).toBeInTheDocument();
     expect(screen.getByText(/requested quantity has changed/)).toBeInTheDocument();
     expect(
-      screen.getByText(/production capacity, timing and price within 30 days.*250 cups/i),
+      screen.getByText(/production timing and price for 250 cups within 30 days/i),
     ).toBeInTheDocument();
+  });
+
+  it('tries 400 cups without changing the current production window', async () => {
+    const user = userEvent.setup();
+    render(<DecisionScenario reply={makeReply()} onInspect={vi.fn()} />);
+
+    await user.click(screen.getByRole('button', {name: 'Try 30 days'}));
+    await user.click(screen.getByRole('button', {name: 'Try 400 cups'}));
+
+    expect(screen.getByLabelText('Maximum production days after sample approval')).toHaveValue(
+      '30',
+    );
+    expect(screen.getByLabelText('Requested quantity')).toHaveValue('400');
+    expect(screen.getByText('Confirm the timing for this quantity')).toBeInTheDocument();
   });
 
   it('suppresses the dependent result and download while input is invalid', async () => {
@@ -95,7 +105,7 @@ describe('DecisionScenario', () => {
 
     expect(screen.getByText('Use a whole number from 1 to 365.')).toBeInTheDocument();
     expect(screen.queryByText('Decision consequence')).not.toBeInTheDocument();
-    expect(screen.queryByRole('button', {name: 'Download decision brief'})).not.toBeInTheDocument();
+    expect(screen.queryByRole('button', {name: 'Save order notes'})).not.toBeInTheDocument();
   });
 
   it('keeps the quantity input available while invalid and recovers when corrected', async () => {
@@ -112,7 +122,7 @@ describe('DecisionScenario', () => {
     await user.clear(recoveredQuantity);
     await user.type(recoveredQuantity, '200');
 
-    expect(screen.getByText('Timing meets this requirement')).toBeInTheDocument();
+    expect(screen.getByText('Fits your production window')).toBeInTheDocument();
     expect(screen.queryByText('Use a whole number from 1 to 100000.')).not.toBeInTheDocument();
   });
 
@@ -120,7 +130,7 @@ describe('DecisionScenario', () => {
     const user = userEvent.setup();
     render(<DecisionScenario reply={makeReply()} onInspect={vi.fn()} />);
 
-    await user.click(screen.getByRole('button', {name: 'Try a 30-day limit'}));
+    await user.click(screen.getByRole('button', {name: 'Try 30 days'}));
     const quantity = document.querySelector('#decision-quantity') as HTMLInputElement;
     fireEvent.change(quantity, {target: {value: '250'}});
     await user.click(screen.getByRole('button', {name: 'Reset to original brief'}));
@@ -129,7 +139,7 @@ describe('DecisionScenario', () => {
     expect(screen.getByLabelText('Maximum production days after sample approval')).toHaveValue(
       '42',
     );
-    expect(screen.getByText('Timing meets this requirement')).toBeInTheDocument();
+    expect(screen.getByText('Fits your production window')).toBeInTheDocument();
     expect(screen.queryByText('A revised quote is needed.')).not.toBeInTheDocument();
   });
 
@@ -137,13 +147,13 @@ describe('DecisionScenario', () => {
     const onInspect = vi.fn();
     const {rerender} = render(<DecisionScenario reply={makeReply()} onInspect={onInspect} />);
 
-    expect(screen.getByText('Confirm what remains unknown.')).toBeInTheDocument();
-    expect(screen.getByRole('button', {name: 'Download decision brief'})).toBeInTheDocument();
+    expect(screen.getByText('Questions for the workshop')).toBeInTheDocument();
+    expect(screen.getByRole('button', {name: 'Save order notes'})).toBeInTheDocument();
     rerender(<DecisionScenario reply={null} onInspect={onInspect} />);
 
     expect(screen.getByText('Captured reply unavailable.')).toBeInTheDocument();
-    expect(screen.queryByText('Confirm what remains unknown.')).not.toBeInTheDocument();
-    expect(screen.queryByRole('button', {name: 'Download decision brief'})).not.toBeInTheDocument();
+    expect(screen.queryByText('Questions for the workshop')).not.toBeInTheDocument();
+    expect(screen.queryByRole('button', {name: 'Save order notes'})).not.toBeInTheDocument();
     expect(screen.queryByText(timingExcerpt, {exact: false})).not.toBeInTheDocument();
   });
 
@@ -158,7 +168,7 @@ describe('DecisionScenario', () => {
     await waitFor(() => expect(screen.getByRole('status')).toHaveTextContent('browser blocked'));
     expect(writeText).toHaveBeenCalledOnce();
 
-    await user.click(screen.getByRole('button', {name: 'Read full reply'}));
+    await user.click(screen.getByRole('button', {name: 'Read original reply'}));
     expect(onInspect).toHaveBeenCalledOnce();
   });
 
@@ -169,11 +179,11 @@ describe('DecisionScenario', () => {
     });
     render(<DecisionScenario reply={makeReply()} onInspect={vi.fn()} />);
 
-    await user.click(screen.getByRole('button', {name: 'Download decision brief'}));
+    await user.click(screen.getByRole('button', {name: 'Save order notes'}));
 
     await waitFor(() => expect(screen.getByRole('status')).toHaveTextContent('browser blocked'));
-    const brief = screen.getByRole('textbox', {name: 'Decision brief text'}) as HTMLTextAreaElement;
-    expect(brief.value).toContain('# MakerMesh sourcing decision brief');
+    const brief = screen.getByRole('textbox', {name: 'Order notes text'}) as HTMLTextAreaElement;
+    expect(brief.value).toContain('# MakerMesh order notes');
     expect(brief.value).toContain(timingExcerpt);
     expect(brief.value).toContain('not a sent message');
   });

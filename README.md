@@ -2,6 +2,9 @@
 
 **A market appears when you ask.**
 
+September 22: the [buyer-facing site refresh](docs/SITE_REFRESH_2026-09-22.md) is deployed,
+including a 400-cup scenario shortcut and downloadable notes for private custom research.
+
 MakerMesh turns a custom-production request into a temporary, evidence-backed maker
 network. It discovers fragmented public supplier footprints, preserves source evidence,
 finds the questions the web cannot answer, prepares buyer-approved outreach, and turns

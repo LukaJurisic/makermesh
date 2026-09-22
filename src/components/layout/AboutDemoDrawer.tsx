@@ -15,7 +15,7 @@ export function AboutDemoDrawer({
       open={open}
       onOpenChange={onOpenChange}
       title="About this demo"
-      description="A fictional sourcing project, with transparent evidence of what actually ran."
+      description="A fictional sourcing project, with a clear account of what actually ran."
     >
       <div className="demo-about">
         <section className="p-6 sm:p-8">
@@ -23,8 +23,8 @@ export function AboutDemoDrawer({
           <h3 className="mt-3 font-serif text-3xl">200 cups. One sourcing journey.</h3>
           <p className="mt-4 text-sm leading-7 text-[var(--ink-soft)]">
             The café, makers, and product imagery are fictional. You can review the brief, explore
-            example makers, rehearse an approval, and inspect the evidence. Demo buttons do not send
-            email.
+            example makers, rehearse an approval, and read the original sources. Demo buttons do not
+            send email.
           </p>
           <p className="mt-3 text-sm leading-7 text-[var(--ink-soft)]">
             {controlledReply
@@ -33,7 +33,7 @@ export function AboutDemoDrawer({
           </p>
           <details className="mt-5 border-y border-[var(--border)] py-4">
             <summary className="cursor-pointer text-sm font-semibold">
-              Data and research provenance
+              Where the information comes from
             </summary>
             <p className="mt-3 text-sm leading-6 text-[var(--muted)]">{baselineLabel}</p>
             <p className="mt-3 text-sm text-[var(--muted)]">

@@ -26,15 +26,15 @@ export function OutreachDrawer({
     <Drawer
       open={open}
       onOpenChange={onOpenChange}
-      title="Approve controlled outreach"
-      description="Review the recipient, provenance, exact questions, and both message versions before any send can be queued."
+      title="Review your message"
+      description="Check the recipient and read the English and French versions. This example does not send email."
       width="wide"
     >
       <div className="px-6 py-6 sm:px-8">
         <div className="flex flex-wrap items-center gap-2">
           <FixtureBadge />
           <span className="rounded-full bg-[var(--teal-soft)] px-2.5 py-1 text-xs font-semibold text-[var(--teal)]">
-            Allowlisted recipient only
+            Test inbox only
           </span>
         </div>
 
@@ -59,11 +59,7 @@ export function OutreachDrawer({
           </div>
           <div className="mt-5 flex items-start gap-3 rounded-xl bg-[var(--ochre-soft)] p-4 text-sm leading-6 text-[var(--warning)]">
             <AlertTriangle className="mt-0.5 size-5 shrink-0" />
-            <p>
-              This visual prototype cannot send email. The live integration will require operator
-              authentication, a stored approval timestamp, an idempotency key, and the server-side
-              allowlist.
-            </p>
+            <p>Practice reviewing a message here. No email is sent from this example.</p>
           </div>
         </section>
 

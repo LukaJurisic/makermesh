@@ -22,12 +22,12 @@ import {useTrackProductEvent} from '@/app/useTrackProductEvent';
 import {AboutDemoDrawer} from './AboutDemoDrawer';
 
 const stages: Array<{id: ProjectStage; label: string; icon: typeof FileText}> = [
-  {id: 'brief', label: 'Brief', icon: FileText},
-  {id: 'research', label: 'Research', icon: Search},
-  {id: 'makers', label: 'Makers', icon: Users},
-  {id: 'outreach', label: 'Outreach', icon: Mail},
-  {id: 'compare', label: 'Compare', icon: Scale},
-  {id: 'passport', label: 'Passport', icon: BookOpen},
+  {id: 'brief', label: 'Order', icon: FileText},
+  {id: 'research', label: 'Sources', icon: Search},
+  {id: 'makers', label: 'Workshops', icon: Users},
+  {id: 'outreach', label: 'Messages', icon: Mail},
+  {id: 'compare', label: 'Quote', icon: Scale},
+  {id: 'passport', label: 'Profile', icon: BookOpen},
 ];
 
 export function AppShell() {
@@ -71,7 +71,7 @@ export function AppShell() {
       className={mobile ? 'stage-tabs buyer-mobile-nav' : 'buyer-stage-nav'}
       aria-label="Project stages"
     >
-      {stages.map((stage, index) => {
+      {stages.map((stage) => {
         const Icon = stage.icon;
         const complete =
           (stage.id === 'brief' && briefApproved) || (stage.id === 'research' && researchStarted);
@@ -84,9 +84,7 @@ export function AppShell() {
           >
             <Icon size={17} />
             <span>{stage.label}</span>
-            <span className="stage-position">
-              {complete ? <Check size={14} /> : String(index + 1).padStart(2, '0')}
-            </span>
+            <span className="stage-position">{complete ? <Check size={14} /> : null}</span>
           </NavLink>
         );
       })}
@@ -95,7 +93,7 @@ export function AppShell() {
   const reset = async () => {
     await resetDemo();
     navigate(href('brief'));
-    setNotice('Demo reset. Published evidence remains available.');
+    setNotice('Example reset. The original reply is still available.');
   };
   const share = async () => {
     try {
@@ -113,10 +111,10 @@ export function AppShell() {
             <Brand inverse />
           </div>
           <Link to="/" className="buyer-back">
-            <ArrowLeft size={15} /> Back to MakerMesh
+            <ArrowLeft size={15} /> Home
           </Link>
           <div className="buyer-project">
-            <span className="buyer-overline">Sourcing project</span>
+            <span className="buyer-overline">Your example order</span>
             <img
               src="/images/espresso-cup-study.webp"
               alt="Illustrative cups for the fictional café"
@@ -136,7 +134,7 @@ export function AppShell() {
             <button onClick={() => void reset()}>
               <RotateCcw size={16} /> Reset this demo
             </button>
-            <span>Fictional buyer and makers</span>
+            <span>Example café order</span>
           </div>
         </aside>
       )}
@@ -148,7 +146,7 @@ export function AppShell() {
             <h1>{stages.find((s) => s.id === active)?.label}</h1>
           </div>
           <div className="buyer-header-actions">
-            <span className="buyer-demo-label">Demo project</span>
+            <span className="buyer-demo-label">Example order</span>
             <Button
               variant="quiet"
               size="icon"
@@ -163,13 +161,14 @@ export function AppShell() {
           </div>
         </header>
         {navigation(true)}
-        <div className="buyer-disclosure">
+        <div className="buyer-disclosure" hidden={active === 'compare'}>
           <span className="buyer-status-dot" />
           <span>
-            Fictional makers · {controlledReply ? 'Captured Atlas reply available' : 'Example data'}
+            Example order · fictional workshops ·{' '}
+            {controlledReply ? 'Atlas has replied' : 'Example data'}
           </span>
           <button onClick={() => setAboutOpen(true)}>
-            How this demo works <ArrowRight size={13} />
+            About this example <ArrowRight size={13} />
           </button>
         </div>
         {backendError && (

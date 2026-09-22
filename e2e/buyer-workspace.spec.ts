@@ -32,6 +32,6 @@ test('maker search and filters narrow the directory and can be cleared', async (
     page.getByRole('button', {name: 'Open Atlas Clay Studio', exact: true}),
   ).toBeVisible();
   await page.getByRole('button', {name: 'Open Atlas Clay Studio', exact: true}).click();
-  await page.getByRole('tab', {name: 'Quote & terms'}).click();
+  await page.getByRole('tab', {name: 'Quoted terms'}).click();
   await expect(page.getByText('72 MAD', {exact: true}).last()).toBeVisible();
 });

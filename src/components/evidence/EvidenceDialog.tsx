@@ -47,17 +47,17 @@ export function EvidenceDialog({
             <div>
               <div className="mb-3 flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.1em] text-[var(--teal)]">
                 <FileSearch className="size-4" />
-                Evidence record
+                Source record
               </div>
               <Dialog.Title className="text-2xl font-semibold tracking-[-0.03em] text-[var(--ink)]">
                 {source.title}
               </Dialog.Title>
               <Dialog.Description className="mt-2 text-sm text-[var(--muted)]">
-                Exact supporting language retained with its source and observation time.
+                Original wording with its source and observation date.
               </Dialog.Description>
             </div>
             <Dialog.Close asChild>
-              <Button size="icon" variant="quiet" aria-label="Close evidence">
+              <Button size="icon" variant="quiet" aria-label="Close source">
                 <X className="size-5" />
               </Button>
             </Dialog.Close>
@@ -70,7 +70,7 @@ export function EvidenceDialog({
           <dl className="mt-7 grid gap-4 border-y border-[var(--border)] py-5 text-sm sm:grid-cols-2">
             <div>
               <dt className="text-xs font-semibold uppercase tracking-[0.08em] text-[var(--muted)]">
-                Evidence state
+                What the source says
               </dt>
               <dd className="mt-1 font-medium text-[var(--ink)]">
                 {source.evidenceState === 'supplier_claimed'
@@ -106,11 +106,11 @@ export function EvidenceDialog({
 
           <div className="mt-6 flex items-center justify-between gap-4">
             <p className="text-xs leading-5 text-[var(--muted)]">
-              An AI extraction is not itself evidence. This excerpt is the supporting record.
+              A summary is not the original source. The wording above is the record.
             </p>
             {source.fixture ? (
               <Button variant="secondary" disabled>
-                Fixture source
+                Example source
               </Button>
             ) : source.url ? (
               <Button asChild variant="secondary">
