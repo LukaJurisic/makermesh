@@ -4,6 +4,17 @@ Updated: 2026-09-22 EDT
 
 Purpose: review the existing work, then finish the sponsor loop and submission.
 
+## Latest video — September22
+
+A new Hyperframes video is rendered and verified:90seconds,1080p30fps,music and text,
+70seconds of real current app footage. Local artifact:
+`artifacts/launch-video.local/makermesh/renders/MakerMesh-launch.mp4`.
+See [video release](docs/VIDEO_RELEASE_2026-09-22.md). This supersedes the older recordings.
+One bounded real custom research run was made for fresh video capture; no new emails.
+Music requires the suppliedCCBYattribution in the closingframe and posting description.
+Public hosting and final submission still pending. User's optional narration question
+was unanswered; this cut follows brag's music/text default and contains no voiceover.
+
 ## Latest: September 22 site refinement
 
 User explicitly requested the site first and video later, with natural buyer language instead

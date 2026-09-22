@@ -40,7 +40,7 @@
 - [x] Root `hackathon.md` reflects current repository evidence.
 - [x] README names only integrations that were exercised and labels pending work.
 - [x] September 19 captioned walkthrough exists (1:44.96, no voiceover).
-- [ ] Update the walkthrough to match the September 22 site after the user reviews the site.
+- [x] Hyperframes replacement matches the September22 site:90seconds,1080p30fps,music/text,verified local MP4.
 - [ ] Walkthrough approved for public hosting and its real URL added to the build log.
 - [x] Social preview, share card, LinkedIn composer, X composer, and copy summary are ready.
 - [ ] Build is shared with required sponsor tags.
