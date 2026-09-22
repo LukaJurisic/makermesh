@@ -3,7 +3,7 @@ import {expect, test} from '@playwright/test';
 test('judge can inspect the complete espresso-cup story', async ({page}) => {
   await page.goto('/');
   await expect(
-    page.getByRole('heading', {name: 'Find a workshop for your café’s next cups.'}),
+    page.getByRole('heading', {name: 'The quote says 30 days. Read the small print.'}),
   ).toBeVisible();
   await page.getByRole('link', {name: 'See a café order', exact: true}).click();
   await expect(page.getByRole('heading', {name: 'Will this order work for you?'})).toBeVisible();

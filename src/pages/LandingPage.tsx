@@ -1,4 +1,4 @@
-import {ArrowRight} from 'lucide-react';
+import {ArrowRight, Check, Copy} from 'lucide-react';
 import {useState} from 'react';
 import {useQuery} from 'convex/react';
 import {Link} from 'react-router-dom';
@@ -9,96 +9,143 @@ import {QUOTE_INBOX_ADDRESS} from '@/pages/quoteInboxAddress';
 import {api} from '../../convex/_generated/api';
 import '@/styles/site-refresh.css';
 
+const CAFE_ORDER = '/projects/harbour-coffee-lab/compare';
+
+// Sentences are copied verbatim from the captured Atlas reply (convex/model/controlledReply.ts).
+const annotations = [
+  {
+    label: 'Price',
+    note: '72 MAD a cup at the workshop door. Freight, customs and duties are yours.',
+  },
+  {label: 'Lead time', note: 'The 30 days start after you approve the sample, not when you order.'},
+  {label: 'Not confirmed', note: 'Export packaging is still open. Ask before paying a deposit.'},
+];
+
 export function LandingPage() {
   useTrackProductEvent('landing_viewed');
   const [aboutOpen, setAboutOpen] = useState(false);
   const quoteInbox = useQuery(api.quoteInbox.status);
+  const inboxOpen = Boolean(quoteInbox?.enabled);
   return (
     <div className="maker-home">
       <header className="maker-home-nav">
         <Brand />
         <nav aria-label="Main navigation">
-          <a href="#how-it-works">How it works</a>
-          <Link to="/projects/harbour-coffee-lab/compare">See an example</Link>
+          <a href="#ways-in">How it works</a>
+          <Link to={CAFE_ORDER}>See the café order</Link>
         </nav>
         <Link to="/compose" className="home-nav-action">
           Start a request <ArrowRight size={16} />
         </Link>
       </header>
       <main>
-        <section className="home-intro">
-          <div className="home-intro-copy">
-            <p className="home-category">Ceramics · Morocco</p>
-            <h1>Find a workshop for your café’s next cups.</h1>
+        <section className="quote-hero" aria-labelledby="hero-title">
+          <div className="quote-hero-copy">
+            <p className="home-kicker">For cafés ordering custom ceramics</p>
+            <h1 id="hero-title">
+              The quote says 30 days. <em>Read the small print.</em>
+            </h1>
             <p className="home-lede">
-              Tell us what you want made. We’ll find Moroccan workshops, show you what they say
-              about themselves, and list what you still need to ask before you order.
+              MakerMesh reads a workshop’s reply sentence by sentence, shows you what it actually
+              commits to, and drafts what to ask before you pay.
             </p>
             <div className="home-actions">
-              <Link className="home-primary" to="/compose">
-                Start a request <ArrowRight size={18} />
-              </Link>
-              <Link className="home-text-link" to="/projects/harbour-coffee-lab/compare">
-                See a café order <ArrowRight size={16} />
+              <Link className="home-primary" to={CAFE_ORDER}>
+                See the café order <ArrowRight size={18} />
               </Link>
             </div>
-            <p className="home-small">
-              Start with your own request, or try the example. No account needed.
-            </p>
+            {inboxOpen && <InboxAddress />}
           </div>
-          <figure className="home-photo">
-            <img
-              src="/images/maker-hands-hero.webp"
-              alt="Illustration of a potter shaping a ceramic cup"
-              fetchPriority="high"
-            />
+
+          <figure className="quote-letter" aria-label="A workshop reply, annotated">
+            <div className="quote-letter-row">
+              <p className="quote-letter-meta">
+                From Atlas Clay Studio · Re: 200 tasses à espresso
+              </p>
+            </div>
+            <div className="quote-letter-row">
+              <p>
+                Nous pouvons produire les 200 tasses artisanales en céramique pour Harbour Coffee
+                Lab.{' '}
+                <mark>
+                  Le prix produit est de 72 MAD par tasse, base EXW; le fret, les douanes, les taxes
+                  et les droits sont exclus.
+                </mark>
+              </p>
+              <Annotation index={0} />
+            </div>
+            <div className="quote-letter-row">
+              <p>
+                Un échantillon de préproduction avec le logo est disponible pour 650 MAD.{' '}
+                <mark>La production prend 30 à 35 jours après validation de l’échantillon.</mark>
+              </p>
+              <Annotation index={1} />
+            </div>
+            <div className="quote-letter-row">
+              <p>
+                L’expédition n’est pas incluse.{' '}
+                <mark>L’emballage pour le transport international reste à confirmer.</mark>
+              </p>
+              <Annotation index={2} />
+            </div>
+            <div className="quote-letter-row">
+              <p className="quote-letter-sign">Atlas Clay Studio</p>
+            </div>
             <figcaption>
-              <span>Handmade in small workshops.</span>
+              Fictional café and workshop. The reply is a real email sent between our own test
+              inboxes.
             </figcaption>
           </figure>
         </section>
-        <section id="how-it-works" className="home-process">
-          <div className="home-process-intro">
-            <p className="home-category">From idea to enquiry</p>
-            <h2>
-              Start with the cups.
-              <br />
-              Work through the details.
-            </h2>
+
+        <section id="ways-in" className="ways-in" aria-labelledby="ways-in-title">
+          <div className="ways-in-intro">
+            <p className="home-kicker">Three ways in</p>
+            <h2 id="ways-in-title">Start from where your order is.</h2>
           </div>
-          <ol>
-            <li>
-              <span>01</span>
-              <div>
-                <h3>Describe your order</h3>
+          <ol className="ways-in-list">
+            {inboxOpen && (
+              <li>
+                <span className="ways-in-number">01</span>
+                <h3>You already have a quote</h3>
                 <p>
-                  How many, which shape, what finish? Add your budget and where the order needs to
-                  go.
+                  Email it to <strong>{QUOTE_INBOX_ADDRESS}</strong>. In about a minute you get each
+                  term in the supplier’s own words, what they left out, and the questions to send
+                  back.
                 </p>
-              </div>
+                <a
+                  className="ways-in-action"
+                  href={`mailto:${QUOTE_INBOX_ADDRESS}?subject=${encodeURIComponent('Quote to check')}`}
+                >
+                  Email a quote <ArrowRight size={16} />
+                </a>
+              </li>
+            )}
+            <li>
+              <span className="ways-in-number">{inboxOpen ? '02' : '01'}</span>
+              <h3>You want to see how it works</h3>
+              <p>
+                Open a café’s order for 200 espresso cups. Ask for it in 30 days, or double it, and
+                see which parts of the quote no longer hold.
+              </p>
+              <Link className="ways-in-action" to={CAFE_ORDER}>
+                See a café order <ArrowRight size={16} />
+              </Link>
             </li>
             <li>
-              <span>02</span>
-              <div>
-                <h3>Explore workshops</h3>
-                <p>
-                  Read what their websites say, open the original pages, and save the questions you
-                  still need answered.
-                </p>
-              </div>
-            </li>
-            <li>
-              <span>03</span>
-              <div>
-                <h3>Check the quote</h3>
-                <p>
-                  Line a workshop’s reply up against your order. See what changes if you need the
-                  cups sooner, and what to ask before you commit.
-                </p>
-              </div>
+              <span className="ways-in-number">{inboxOpen ? '03' : '02'}</span>
+              <h3>You’re still looking for a workshop</h3>
+              <p>
+                Describe what you want made. We search Moroccan workshops’ own websites and list
+                what each says, with the questions still to ask.
+              </p>
+              <Link className="ways-in-action" to="/compose">
+                Start a request <ArrowRight size={16} />
+              </Link>
             </li>
           </ol>
         </section>
+
         <section className="home-order">
           <div className="home-order-image">
             <img
@@ -108,7 +155,7 @@ export function LandingPage() {
             />
           </div>
           <div className="home-order-copy">
-            <p className="home-category">An order for Harbour Coffee Lab</p>
+            <p className="home-kicker">An order for Harbour Coffee Lab</p>
             <h2>
               200 cups.
               <br />A few things to work out.
@@ -117,45 +164,10 @@ export function LandingPage() {
               The workshop quoted 72 MAD a cup and 30–35 days after sample approval. What if you
               need production finished in 30 days? Or want 400 cups instead?
             </p>
-            <Link className="home-primary" to="/projects/harbour-coffee-lab/compare">
+            <Link className="home-primary" to={CAFE_ORDER}>
               Open the café order <ArrowRight size={18} />
             </Link>
-            <p className="home-small">
-              The café and workshop are made up. The reply is a real email between our own test
-              inboxes.
-            </p>
           </div>
-        </section>
-        {quoteInbox?.enabled && (
-          <section className="home-finish home-quote-inbox" aria-labelledby="quote-inbox-title">
-            <div>
-              <p className="home-category">Already have a quote?</p>
-              <h2 id="quote-inbox-title">Forward it to us.</h2>
-              <p>
-                Send any supplier quote to <strong>{QUOTE_INBOX_ADDRESS}</strong>. Within a minute
-                you’ll get an email back with what it actually commits to, each point quoted from
-                the supplier, and what to ask before you pay.
-              </p>
-              <p className="home-small">
-                We read the email text, not attachments. Everything is deleted after 48 hours.
-              </p>
-            </div>
-            <a
-              className="home-primary"
-              href={`mailto:${QUOTE_INBOX_ADDRESS}?subject=${encodeURIComponent('Quote to check')}`}
-            >
-              Email a quote <ArrowRight size={18} />
-            </a>
-          </section>
-        )}
-        <section className="home-finish">
-          <div>
-            <h2>What would you like made?</h2>
-            <p>Cups, plates, bowls. Start with what you have in mind.</p>
-          </div>
-          <Link className="home-primary" to="/compose">
-            Start a request <ArrowRight size={18} />
-          </Link>
         </section>
       </main>
       <footer className="home-footer">
@@ -164,6 +176,49 @@ export function LandingPage() {
         <button onClick={() => setAboutOpen(true)}>About this project</button>
       </footer>
       <AboutDemoDrawer open={aboutOpen} onOpenChange={setAboutOpen} />
+    </div>
+  );
+}
+
+function Annotation({index}: {index: number}) {
+  const a = annotations[index]!;
+  return (
+    <aside className="quote-note">
+      <strong>{a.label}</strong>
+      <span>{a.note}</span>
+    </aside>
+  );
+}
+
+function InboxAddress() {
+  const [copied, setCopied] = useState(false);
+  const copy = async () => {
+    try {
+      await navigator.clipboard.writeText(QUOTE_INBOX_ADDRESS);
+      setCopied(true);
+      window.setTimeout(() => setCopied(false), 2000);
+    } catch {
+      setCopied(false);
+    }
+  };
+  return (
+    <div className="inbox-address">
+      <p className="inbox-address-label" id="inbox-address-label">
+        Have a quote of your own? Email it to
+      </p>
+      <div className="inbox-address-field">
+        <a
+          href={`mailto:${QUOTE_INBOX_ADDRESS}?subject=${encodeURIComponent('Quote to check')}`}
+          aria-describedby="inbox-address-label"
+        >
+          {QUOTE_INBOX_ADDRESS}
+        </a>
+        <button type="button" onClick={() => void copy()} aria-live="polite">
+          {copied ? <Check size={15} /> : <Copy size={15} />}
+          {copied ? 'Copied' : 'Copy'}
+        </button>
+      </div>
+      <p className="home-small">Reply in about a minute. Text only; deleted after 48 hours.</p>
     </div>
   );
 }

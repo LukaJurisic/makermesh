@@ -24,7 +24,7 @@ for (const viewport of viewports) {
     await page.goto('/');
     await settle(page);
     await expect(
-      page.getByRole('heading', {name: 'Find a workshop for your café’s next cups.'}),
+      page.getByRole('heading', {name: 'The quote says 30 days. Read the small print.'}),
     ).toBeVisible();
     await page.screenshot({
       path: `artifacts/screenshots/${viewport.name}-landing.png`,

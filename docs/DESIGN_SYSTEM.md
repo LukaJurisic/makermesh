@@ -34,6 +34,17 @@ homepage rather than a judge-facing integration tour. This gains clarity at the 
 immediate technical detail, which remains available in About this demo and the build log.
 Preview through the running app; the optional gstack image designer is unavailable.
 
+## September 22 landing redesign
+
+The hero is now the product's artifact: the captured Atlas reply set as a letter, with its
+real sentences highlighted and margin notes explaining what each commits to. Headline: "The
+quote says 30 days. Read the small print." The quote inbox address sits under the primary
+action with a copy button (shown only while the inbox is switched on). Below it, one
+"Three ways in" ledger replaces the process list and both closing CTA bands. Highlights sweep
+in once on load (staggered 0.5s); reduced motion shows the final state. On phones each note
+drops beneath its paragraph inside the letter. Chosen over a says/means ledger hero and an
+inbox-first hero after a competitor review of the All Gas entries.
+
 ## Interaction thesis
 
 - The landing compilation line assembles once as the visitor enters.
