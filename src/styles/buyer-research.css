@@ -318,3 +318,16 @@
     padding: 20px;
   }
 }
+
+.quote-term-excerpt {
+  padding: 18px 26px 22px;
+  border-top: 0;
+}
+.quote-term-excerpt blockquote {
+  margin: 10px 0 0;
+  padding-left: 16px;
+  border-left: 2px solid var(--terracotta-contrast);
+  font-size: 16px;
+  line-height: 1.6;
+  color: var(--ink);
+}

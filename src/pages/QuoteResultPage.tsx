@@ -69,8 +69,8 @@ function QuoteResult({token}: {token: string}) {
                 : 'What this quote commits to'}
             </h1>
             <p className="mt-4 max-w-2xl text-sm leading-7 text-[var(--muted)]">
-              {quote.subject ? `“${quote.subject}”. ` : ''}Every term below is quoted word for word
-              from your email. Anything not quoted is not a commitment.
+              Every term below is quoted word for word from your email. Anything not quoted is not a
+              commitment.
             </p>
           </div>
           <span className="research-live-status" role="status">
@@ -116,7 +116,7 @@ function QuoteResult({token}: {token: string}) {
                       </h3>
                     </div>
                   </div>
-                  <div className="research-excerpt">
+                  <div className="research-excerpt quote-term-excerpt">
                     <strong>What the supplier wrote</strong>
                     <blockquote>“{term.excerpt}”</blockquote>
                   </div>

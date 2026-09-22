@@ -3,7 +3,7 @@
 **Know what a ceramics workshop actually committed to before you order.**
 
 - **Live app:** https://disciplined-ladybug-82.convex.site (no sign-up needed)
-- **Demo video (90 s):** https://disciplined-ladybug-82.convex.site/demo.html
+- **Demo video (1:45):** https://disciplined-ladybug-82.convex.site/demo.html
 - **Repo:** https://github.com/LukaJurisic/makermesh
 - **Submission:** https://vibeapps.dev/s/makermesh · **Post:** https://x.com/LukaJurisic_bw/status/2102402306956308834
 
