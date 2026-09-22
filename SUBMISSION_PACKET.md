@@ -6,9 +6,9 @@ Prepared September 22, 2026. **Draft; do not submit until the checklist is compl
 
 - Project: **MakerMesh**
 - Tagline: **A market appears when you ask.**
-- Repository: <https://github.com/LukaJurisic/makermesh> — currently private.
+- Repository: <https://github.com/LukaJurisic/makermesh> — public.
 - Live development app: <https://disciplined-ladybug-82.convex.site>.
-- Video: verified local Hyperframes MP4,90seconds,1920×1080 at30fps,music and on-screen text,no voiceover. Public hosting pending; include music attribution from the video project.
+- Video: <https://disciplined-ladybug-82.convex.site/demo.html> — 90-second Hyperframes MP4, 1920×1080, music attribution on the page.
 - Form: <https://vibeapps.dev/judging/convex-all-gas-hackathon-openai/submit>.
 - Deadline: before September 22, 2026, 12:00 PM PDT / 3:00 PM Toronto EDT.
 

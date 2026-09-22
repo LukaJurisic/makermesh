@@ -4,8 +4,8 @@
 - **Event:** Convex All Gas Hackathon sponsored by OpenAI, Firecrawl, and AgentMail
 - **What it does:** Compiles a sourcing brief into an evidence-backed maker network, identifies unanswered requirements, and structures buyer-approved supplier replies.
 - **Live app:** https://disciplined-ladybug-82.convex.site — custom research plus a labelled captured-email demonstration, on the development deployment
-- **Repo:** https://github.com/LukaJurisic/makermesh (private; publication pending)
-- **Demo video:** pending recording and publication
+- **Repo:** https://github.com/LukaJurisic/makermesh (public)
+- **Demo video:** https://disciplined-ladybug-82.convex.site/demo.html (90-second Hyperframes MP4; direct file: https://disciplined-ladybug-82.convex.site/media/makermesh-demo.mp4)
 - **Frontend:** Convex static hosting
 - **Convex deployment:** development — disciplined-ladybug-82 (production not deployed)
 - **Components:** @convex-dev/rate-limiter, @convex-dev/workflow, @firecrawl/firecrawl-convex, @agentmail/convex, @convex-dev/static-hosting
@@ -16,6 +16,13 @@
 - **Last updated:** 2026-09-22
 
 ## Log
+
+### 2026-09-22 — public release
+
+Made the repository public and published the 90-second Hyperframes video on the Convex
+static site with music attribution. Verified isolated playback (1920×1080, 90 s). Luma
+registration confirmed by the entrant. Feature freeze in effect; remaining steps are the
+sponsor-tagged social post and the VibeApps submission.
 
 ### 2026-09-22 — buyer-facing site refinement
 

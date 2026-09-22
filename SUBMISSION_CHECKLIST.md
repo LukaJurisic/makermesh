@@ -2,11 +2,11 @@
 
 ## Eligibility and administration
 
-- [ ] Luka confirms Luma registration.
+- [x] Luka confirms Luma registration.
 - [ ] Luka confirms entrant eligibility and team identity.
 - [x] New independent repository started after August 25, 2026.
 - [x] Root `hackathon.md` exists and distinguishes fixtures from live execution.
-- [ ] Public repository is `LukaJurisic/makermesh`.
+- [x] Public repository is `LukaJurisic/makermesh`.
 
 ## Product and sponsor loop
 
@@ -41,7 +41,7 @@
 - [x] README names only integrations that were exercised and labels pending work.
 - [x] September 19 captioned walkthrough exists (1:44.96, no voiceover).
 - [x] Hyperframes replacement matches the September22 site:90seconds,1080p30fps,music/text,verified local MP4.
-- [ ] Walkthrough approved for public hosting and its real URL added to the build log.
+- [x] Walkthrough approved for public hosting and its real URL added to the build log.
 - [x] Social preview, share card, LinkedIn composer, X composer, and copy summary are ready.
 - [ ] Build is shared with required sponsor tags.
 - [ ] Vibeapps submission is completed before September 22, 2026 at 12:00 PM PT.
