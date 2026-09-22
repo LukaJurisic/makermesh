@@ -1,29 +1,95 @@
-# Hackathon log
+# MakerMesh
 
-- **Project:** MakerMesh
-- **Event:** Convex All Gas Hackathon sponsored by OpenAI, Firecrawl, and AgentMail
-- **What it does:** Compiles a sourcing brief into an evidence-backed maker network, identifies unanswered requirements, and structures buyer-approved supplier replies.
-- **Live app:** https://disciplined-ladybug-82.convex.site — custom research plus a labelled captured-email demonstration, on the development deployment
-- **Repo:** https://github.com/LukaJurisic/makermesh (public)
-- **Submission:** https://vibeapps.dev/s/makermesh (VibeApps, submitted 2026-09-22 ~10:15 ET)
-- **Social post:** https://x.com/LukaJurisic_bw/status/2102402306956308834
-- **Demo video:** https://disciplined-ladybug-82.convex.site/demo.html (90-second Hyperframes MP4; direct file: https://disciplined-ladybug-82.convex.site/media/makermesh-demo.mp4)
-- **Frontend:** Convex static hosting
-- **Convex deployment:** development — disciplined-ladybug-82 (production not deployed)
-- **Components:** @convex-dev/rate-limiter, @convex-dev/workflow, @firecrawl/firecrawl-convex, @agentmail/convex, @convex-dev/static-hosting
-- **Convex features:** schema, tables, indexes, queries, mutations, actions, HTTP actions, scheduled functions, crons, realtime queries
-- **Auth:** Convex Auth
-- **AI models:** gpt-5.6-luna (live Responses API brief compilation exercised)
-- **Started:** 2026-08-29T14:07:45.2228690Z
+**Know what a ceramics workshop actually committed to before you order.**
+
+- **Live app:** https://disciplined-ladybug-82.convex.site (no sign-up needed)
+- **Demo video (90 s):** https://disciplined-ladybug-82.convex.site/demo.html
+- **Repo:** https://github.com/LukaJurisic/makermesh
+- **Submission:** https://vibeapps.dev/s/makermesh · **Post:** https://x.com/LukaJurisic_bw/status/2102402306956308834
+
+## The problem
+
+A café wants 200 custom espresso cups from a small workshop in Morocco. The quote comes back
+in French: 72 MAD a cup, EXW, and "La production prend 30 à 35 jours après validation de
+l'échantillon." The price looks fine. What's easy to miss is that the 30–35 days only start
+_after_ the sample is approved, that shipping is excluded, and that packaging is still "à
+confirmer". It's easy to order on those assumptions and only find out when the cups are late
+or the invoice is bigger.
+
+MakerMesh finds workshops, reads what they actually say, emails them once you approve the message, and shows the buyer
+exactly which promises are backed by a sentence, which aren't, and what to ask next.
+
+## Try it in 60 seconds
+
+1. Open the app and click **See a café order**. The quote is a real email that went through
+   AgentMail and back. The café and workshop are fictional: we wrote the workshop's reply
+   ourselves and sent it between our own inboxes, then MakerMesh processed it like any other.
+2. Click **Try 30 days**. The requirement fails, and MakerMesh shows the exact
+   French sentence that explains why ("after sample approval").
+3. Click **Try 400 cups**. MakerMesh won't invent a new price: a changed order needs the workshop
+   to confirm again, so it drafts that question instead.
+4. Click **Copy questions** or **Save order notes** to take away a Markdown brief with the
+   quote in its original currency, the exclusions and the open questions.
+5. Optional: click **Start a request** and describe your own order. OpenAI turns it into a
+   brief you approve, then Firecrawl searches real public workshop sites in English and French.
+   Each finding links to the exact source sentence. Runs are limited per visitor and per day to
+   protect API budgets.
+
+## What each sponsor does in the product
+
+| Sponsor       | Real work it does                                                                                                                                                                                                                                                                                                                               |
+| ------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Convex**    | The whole backend. Durable research workflow, reactive queries that update every screen as results land, mutations with state guards, HTTP actions for the signed AgentMail webhook, scheduled functions and crons (48-hour cleanup of private research), Convex Auth, per-visitor and global rate limits, and static hosting for the frontend. |
+| **OpenAI**    | Turns a plain-language request into a structured sourcing brief (Responses API, strict structured output). Extracts the quote from the workshop's French reply. Every extracted fact must quote a sentence that actually appears in the source, or it is rejected.                                                                              |
+| **Firecrawl** | Searches and reads real public workshop websites in two languages inside a durable Convex workflow, so the buyer sees what each workshop says about itself, with links and dates.                                                                                                                                                               |
+| **AgentMail** | Gives the project its own inbox. Sent the bilingual request for quote and received the French reply through a signed webhook; OpenAI extraction and the comparison run on that received message.                                                                                                                                                |
+
+**Why visitors can't send email:** a send goes to a real inbox, so MakerMesh only sends after
+the buyer approves the exact recipient, sender and wording. The approval is tied to hashes of
+those three, so an edited draft or a swapped sender invalidates it. On the public demo, sending is
+switched off, and the café example shows the round trip it completed.
+
+## Convex depth
+
+- **Components:** @convex-dev/workflow, @convex-dev/rate-limiter, @firecrawl/firecrawl-convex,
+  @agentmail/convex, @convex-dev/static-hosting
+- **Features:** schema and indexes, queries, mutations, actions, HTTP actions, scheduled
+  functions, crons, realtime subscriptions, Convex Auth
+- **Design choices:** research results are private to the browser that asked for them and expire
+  after 48 hours. Usage allowance is decremented atomically. Workflow steps are idempotent and
+  resume after failure.
+
+## Honest limits
+
+- The café, the Atlas workshop and its quote are fictional; we wrote the reply. The email
+  round trip through AgentMail was real, between our own test inboxes. Real workshops found by research are shown as leads with their own words,
+  never scored or ranked publicly.
+- This runs on a Convex development deployment (`disciplined-ladybug-82`).
+- Research is Moroccan ceramics only for now; the approach generalises to any sourcing request.
+
+## Quality
+
+126 unit, Convex and UI tests; Playwright end-to-end tests (11 pass, 5 intentionally skipped);
+no automated WCAG A/AA violations on four routes; layouts checked at four viewport sizes.
+
+## Stack
+
+React, Vite and TypeScript on Convex static hosting. Convex backend. OpenAI `gpt-5.6-luna` via
+the Responses API. Firecrawl and AgentMail through their official Convex components.
+
+- **Started:** 2026-08-29 (first commit; hackathon kicked off 2026-08-25)
 - **Last updated:** 2026-09-22
 
-## Log
+## Build log
+
+Dated entries, newest first. Early entries record the build as it happened; where they say a
+provider was not yet configured or a step was pending, later entries supersede them.
 
 ### 2026-09-22 — public release
 
 Made the repository public and published the 90-second Hyperframes video on the Convex
 static site with music attribution. Verified isolated playback (1920×1080, 90 s). Luma
-registration confirmed by the entrant. Feature freeze in effect. Entrant confirmed solo, 18+, Ontario. VibeApps entry submitted
+registration and eligibility confirmed (solo, 18+, Ontario). VibeApps entry submitted
 and verified live at https://vibeapps.dev/s/makermesh with the AllGasHackathonSubmission tag.
 Sponsor-tagged X post published and linked from the entry: https://x.com/LukaJurisic_bw/status/2102402306956308834.
 
@@ -38,8 +104,7 @@ question. Public website statements are never treated as confirmation of the exa
 Frontend deployed to the existing development site. Full check passes 126 tests; all 11
 applicable E2E cases pass across the run and corrected-label rerun, with 5 intentional skips.
 Four pages at four viewports pass overflow and automated accessibility checks. No new email
-or paid provider request. The prior video needs updating to match this site; video work is
-deferred until after the user reviews the site. Submission/publication steps remain pending.
+or paid provider request.
 
 ### 2026-09-19 — interactive purchasing decision
 
