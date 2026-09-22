@@ -43,7 +43,7 @@
 - [x] Hyperframes replacement matches the September22 site:90seconds,1080p30fps,music/text,verified local MP4.
 - [x] Walkthrough approved for public hosting and its real URL added to the build log.
 - [x] Social preview, share card, LinkedIn composer, X composer, and copy summary are ready.
-- [ ] Build is shared with required sponsor tags.
+- [x] Build is shared with required sponsor tags: https://x.com/LukaJurisic_bw/status/2102402306956308834
 - [x] Vibeapps submission completed September 22, 2026 ~10:15 AM ET: https://vibeapps.dev/s/makermesh
 
 ## Internal freeze
