@@ -3,6 +3,7 @@ import {CalendarClock, ExternalLink, FileSearch, X} from 'lucide-react';
 import {useEffect, type RefObject} from 'react';
 import {Button} from '@/components/ui/Button';
 import type {SourceEvidence} from '@/domain/types';
+import {sourceDomain, sourceTitle} from '@/lib/sourceDisplay';
 import {useDemo} from '@/app/useDemo';
 
 export function EvidenceDialog({
@@ -50,7 +51,7 @@ export function EvidenceDialog({
                 Source record
               </div>
               <Dialog.Title className="text-2xl font-semibold tracking-[-0.03em] text-[var(--ink)]">
-                {source.title}
+                {sourceTitle(source)}
               </Dialog.Title>
               <Dialog.Description className="mt-2 text-sm text-[var(--muted)]">
                 Original wording with its source and observation date.
@@ -93,14 +94,14 @@ export function EvidenceDialog({
                 Source type
               </dt>
               <dd className="mt-1 font-medium text-[var(--ink)]">
-                {source.fixture ? 'Demonstration fixture' : source.sourceType.replace('_', ' ')}
+                {source.fixture ? 'Example record' : source.sourceType.replace('_', ' ')}
               </dd>
             </div>
             <div>
               <dt className="text-xs font-semibold uppercase tracking-[0.08em] text-[var(--muted)]">
                 Domain
               </dt>
-              <dd className="mt-1 font-medium text-[var(--ink)]">{source.domain}</dd>
+              <dd className="mt-1 font-medium text-[var(--ink)]">{sourceDomain(source)}</dd>
             </div>
           </dl>
 

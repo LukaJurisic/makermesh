@@ -30,7 +30,7 @@
   --radius-lg: 12px;
   --rail: #1c211e;
   --font-sans: 'Geist Variable', 'Segoe UI', sans-serif;
-  --font-serif: 'Instrument Serif', Georgia, serif;
+  --font-serif: 'Newsreader Variable', Georgia, serif;
   color: var(--ink);
   background: var(--canvas);
   font-family: var(--font-sans);

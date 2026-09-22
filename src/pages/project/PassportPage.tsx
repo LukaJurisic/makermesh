@@ -7,7 +7,6 @@ import {
   LockKeyhole,
   MapPin,
   PackageCheck,
-  Sparkles,
 } from 'lucide-react';
 import {ShareMenu} from '@/components/sharing/ShareMenu';
 import {demoMakers} from '@/data/demo';
@@ -21,7 +20,7 @@ export function PassportPage() {
   return (
     <div className="passport-page-shell">
       <div className="passport-warning">
-        <Sparkles className="size-4" /> Demonstration profile — not a real supplier endorsement.
+        Demonstration profile — not a real supplier endorsement.
       </div>
       <ControlledReplyPanel />
       <p className="mx-auto my-4 max-w-3xl px-5 text-sm leading-6 text-[var(--muted)]">
@@ -172,7 +171,7 @@ export function PassportPage() {
             <div>
               <p className="text-sm font-semibold text-[var(--ink)]">Source categories</p>
               <p className="mt-1 text-xs text-[var(--muted)]">
-                Controlled email · Demonstration fixture · Buyer-approved brief
+                Controlled email · Example record · Buyer-approved brief
               </p>
             </div>
             <ShareMenu

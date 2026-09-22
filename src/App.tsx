@@ -8,6 +8,9 @@ const AppShell = lazy(() =>
 const LandingPage = lazy(() =>
   import('@/pages/LandingPage').then((module) => ({default: module.LandingPage})),
 );
+const LandingV3 = lazy(() =>
+  import('@/pages/v3/LandingV3').then((module) => ({default: module.LandingV3})),
+);
 const ComposerPage = lazy(() =>
   import('@/pages/ComposerPage').then((module) => ({default: module.ComposerPage})),
 );
@@ -58,7 +61,9 @@ function loadRoute(children: ReactNode) {
 }
 
 const router = createBrowserRouter([
-  {path: '/', element: loadRoute(<LandingPage />)},
+  {path: '/', element: loadRoute(<LandingV3 />)},
+  {path: '/v2', element: loadRoute(<LandingPage />)},
+  {path: '/v3', element: <Navigate to="/" replace />},
   {path: '/compose', element: loadRoute(<ComposerPage />)},
   {path: '/research/:requestId', element: loadRoute(<BuyerResearchPage />)},
   {path: '/q/:token', element: loadRoute(<QuoteResultPage />)},

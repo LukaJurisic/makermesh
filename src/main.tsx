@@ -1,6 +1,6 @@
 import '@fontsource-variable/geist';
-import '@fontsource/instrument-serif/400.css';
-import '@fontsource/instrument-serif/400-italic.css';
+import '@fontsource-variable/newsreader/opsz.css';
+import '@fontsource-variable/newsreader/opsz-italic.css';
 import {ConvexAuthProvider} from '@convex-dev/auth/react';
 import {SessionProvider} from 'convex-helpers/react/sessions';
 import {ConvexReactClient} from 'convex/react';

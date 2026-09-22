@@ -24,15 +24,17 @@
 
 ## Typography
 
-- **Display:** Instrument Serif 400. Hero 52–92px, line-height 0.96, tracking −3.5%.
-- **Section headings:** Instrument Serif 400, 34–52px, line-height 1.06, tracking −2.5%.
-- **Voice:** Instrument Serif italic in clay, 16px and up only. Used for MakerMesh's plain-English
+- **Display:** Newsreader Variable ~380, optical sizing on (`--font-serif`, loaded in
+  `src/main.tsx`). Landing hero 42–64px, line-height 1.04, tracking −2.5%, ink only (no italic
+  accent line). Headings use `text-wrap: balance`.
+- **Section headings:** Newsreader ~380, 34–52px, line-height 1.06, tracking −2.5%.
+- **Voice:** Newsreader italic in clay, 16px and up only. Used for MakerMesh's plain-English
   reading of a supplier sentence (margin notes, "what it means"). Never for supplier text.
 - **Body:** Geist Variable 400, 16–18px, line-height 1.65.
 - **UI and labels:** Geist 550–600. Caps labels 12px, tracking +10%.
 - **Figures:** Geist 550 with `font-variant-numeric: tabular-nums` for prices, quantities, days.
 - **Minimum size:** 12px anywhere; 13px for metadata and captions.
-- **Loading:** self-hosted `@fontsource-variable/geist` and `@fontsource/instrument-serif`
+- **Loading:** self-hosted `@fontsource-variable/geist` and `@fontsource-variable/newsreader`
   (see `src/main.tsx`).
 
 ## Color
@@ -89,4 +91,8 @@ Tokens live in `src/styles/tokens.css`.
 | 2026-09-22 | Annotation is the signature component | Verbatim supplier words + margin note is the product's trust signal; used on landing and quote pages |
 | 2026-09-22 | Clay italic serif as MakerMesh's voice | Separates the supplier's words from MakerMesh's reading at a glance |
 | 2026-09-22 | Radius scale 4/8/12, 12px text minimum, shadows only on overlays | Audit found 11 radii, 9–11px text and content drop shadows; all eroded "crafted, trustworthy" |
+| 2026-09-22 | Landing display face → Newsreader; hero headline ink-only | User flagged Instrument Serif + clay italic accent line as AI-slop; Newsreader reads as a printed guide. Scoped to the landing so app pages are untouched |
+| 2026-09-22 | Below-hero sections share the hero's 1440/5%/0.9–1.1 grid; photos become captioned plates | Left edges jumped between 1440 and 1280 frames; gradient-overlay captions and floating crops read as stock |
+| 2026-09-22 | Newsreader everywhere; example sources shown as "example source n" / "Example record"; numbered lists use plain numerals | App-page deslop pass: one display face site-wide, no build-time fixture names or .invalid domains in the UI, no tinted number circles, no content shadow on the Profile card |
+| 2026-09-22 | Homepage is the v3 "Thrown" page (`src/pages/v3/`); v2 kept at `/v2` | A scroll-driven three.js cup is thrown and fired while the French reply is read sentence by sentence; motion stays in the ink vocabulary (highlight sweep, drawn ink band, drawn route line). Reduced motion stops the wheel |
 | 2026-09-22 | Skipped paper grain texture | Least trust gain for the most risk this close to the deadline; revisit later |

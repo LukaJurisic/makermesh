@@ -171,7 +171,7 @@ function RequirementGroup({
         {requirements.map((requirement, index) => (
           <li key={requirement.key} className="grid grid-cols-[28px_1fr_auto] gap-3 py-4">
             <span
-              className={`flex size-7 items-center justify-center rounded-full text-xs font-semibold ${tone === 'hard' ? 'bg-[var(--terracotta-soft)] text-[var(--terracotta)]' : 'bg-[var(--teal-soft)] text-[var(--teal)]'}`}
+              className="w-6 shrink-0 pt-0.5 text-xs tabular-nums text-[var(--muted)]"
             >
               {index + 1}
             </span>

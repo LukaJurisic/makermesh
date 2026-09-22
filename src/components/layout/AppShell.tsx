@@ -155,7 +155,12 @@ export function AppShell() {
             >
               <Share2 size={17} />
             </Button>
-            <Button variant="secondary" size="sm" onClick={() => setAboutOpen(true)}>
+            <Button
+              variant="secondary"
+              size="sm"
+              className="text-sm"
+              onClick={() => setAboutOpen(true)}
+            >
               About this demo
             </Button>
           </div>

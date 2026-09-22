@@ -93,3 +93,10 @@ a {
     transition-duration: 0.01ms !important;
   }
 }
+
+/* Headings never leave a one-word last line. */
+h1,
+h2,
+h3 {
+  text-wrap: balance;
+}

@@ -1,3 +1,4 @@
+import {sourceTitle} from '@/lib/sourceDisplay';
 import * as Tabs from '@radix-ui/react-tabs';
 import {ExternalLink, FileSearch, Languages, MapPin, ShieldQuestion} from 'lucide-react';
 import {useRef, useState} from 'react';
@@ -181,7 +182,7 @@ export function MakerDetailDrawer({
                     className="source-row w-full text-left"
                   >
                     <div>
-                      <p className="text-sm font-semibold text-[var(--ink)]">{item.title}</p>
+                      <p className="text-sm font-semibold text-[var(--ink)]">{sourceTitle(item)}</p>
                       <p className="mt-1 line-clamp-2 text-xs leading-5 text-[var(--muted)]">
                         {item.excerpt}
                       </p>

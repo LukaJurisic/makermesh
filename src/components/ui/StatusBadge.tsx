@@ -1,4 +1,4 @@
-import {AlertTriangle, Check, CircleHelp, Minus, Radio, X} from 'lucide-react';
+import {Check, CircleHelp, Minus, Radio, X} from 'lucide-react';
 import type {RequirementOutcome} from '@/domain/types';
 import {cn} from '@/lib/cn';
 
@@ -38,9 +38,8 @@ export function StatusBadge({
 
 export function FixtureBadge() {
   return (
-    <span className="inline-flex items-center gap-1.5 rounded-full bg-[var(--ochre-soft)] px-2.5 py-1 text-xs font-semibold uppercase tracking-[0.08em] text-[var(--warning)]">
-      <AlertTriangle className="size-3" aria-hidden="true" />
-      Demonstration fixture
+    <span className="inline-flex items-center rounded-full border border-[var(--border-strong)] px-2.5 py-1 text-xs font-medium text-[var(--muted)]">
+      Example record
     </span>
   );
 }

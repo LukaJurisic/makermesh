@@ -1,4 +1,5 @@
-import {ArrowRight, CheckCircle2, FileSearch, Globe2, LoaderCircle, Search} from 'lucide-react';
+import {sourceDomain, sourceTitle} from '@/lib/sourceDisplay';
+import {ArrowRight, CheckCircle2, FileSearch, LoaderCircle, Search} from 'lucide-react';
 import {useRef, useState} from 'react';
 import {useNavigate} from 'react-router-dom';
 import {useDemo} from '@/app/useDemo';
@@ -70,7 +71,7 @@ export function ResearchPage() {
             {researchStarted ? `${statusLabel} complete` : 'Ready to replay'}
           </span>
         </div>
-        <div className="grid divide-y divide-[var(--border)] sm:grid-cols-4 sm:divide-x sm:divide-y-0">
+        <div className="grid grid-cols-2 divide-[var(--border)] sm:grid-cols-4 sm:divide-x">
           {[
             ['Sources available', metrics.sources],
             ['Sources analyzed', metrics.sources],
@@ -121,20 +122,17 @@ export function ResearchPage() {
                 }}
                 className="source-row w-full text-left"
               >
-                <span className="flex size-9 shrink-0 items-center justify-center rounded-lg bg-[var(--surface)] text-[var(--teal)]">
-                  <Globe2 className="size-4" />
-                </span>
                 <div className="min-w-0 flex-1">
                   <div className="flex flex-wrap items-center gap-2">
                     <p className="truncate text-sm font-semibold text-[var(--ink)]">
-                      {source.title}
+                      {sourceTitle(source)}
                     </p>
-                    <span className="rounded-full bg-[var(--ochre-soft)] px-2 py-0.5 text-xs font-semibold uppercase tracking-[0.08em] text-[var(--warning)]">
-                      {source.fixture ? 'Fixture' : 'Captured live'}
-                    </span>
+                    {!source.fixture && (
+                      <span className="text-xs font-medium text-[var(--teal)]">Captured live</span>
+                    )}
                   </div>
                   <p className="mt-1 truncate text-xs text-[var(--muted)]">
-                    {source.maker} · {source.domain}
+                    {source.maker} · {sourceDomain(source)}
                   </p>
                 </div>
                 <FileSearch className="size-4 text-[var(--muted)]" />
@@ -153,7 +151,7 @@ export function ResearchPage() {
           <ol className="divide-y divide-[var(--border)]">
             {research.makers.map((maker, index) => (
               <li key={maker.slug} className="flex items-center gap-3 py-3.5">
-                <span className="flex size-8 items-center justify-center rounded-full bg-[var(--teal-soft)] text-xs font-semibold tabular-nums text-[var(--teal)]">
+                <span className="w-6 shrink-0 text-xs tabular-nums text-[var(--muted)]">
                   {String(index + 1).padStart(2, '0')}
                 </span>
                 <div className="min-w-0 flex-1">

@@ -1,5 +1,7 @@
 /* Buyer-first refresh: ceramics photography, clear tasks, and quiet document-like pages. */
 .maker-home {
+  /* Landing-only display face; app pages keep Instrument Serif. */
+  --font-serif: 'Newsreader Variable', Georgia, serif;
   color: var(--ink);
   background: var(--surface);
 }
@@ -329,16 +331,16 @@
   padding: 76px 5% 96px;
 }
 .quote-hero h1 {
-  font: clamp(50px, 5.4vw, 86px)/0.98 var(--font-serif);
-  letter-spacing: -0.035em;
-  font-weight: 400;
+  font: clamp(44px, 4.45vw, 64px)/1.04 var(--font-serif);
+  letter-spacing: -0.025em;
+  font-weight: 380;
   margin: 0;
 }
-.quote-hero h1 em {
+.quote-hero h1 .hero-nowrap {
+  white-space: nowrap;
+}
+.quote-hero h1 .hero-line {
   display: block;
-  color: var(--terracotta-contrast);
-  font-style: italic;
-  margin-top: 0.06em;
 }
 .quote-hero .home-lede {
   max-width: 470px;
@@ -396,45 +398,111 @@
   margin-top: 10px;
 }
 
+/* Below the hero: the same 1440 frame, 5% gutters and 0.9/1.1 columns as the hero,
+   so every section hangs off one grid. Photos are captioned plates, not overlays. */
+.home-example,
+.ways-in {
+  max-width: 1440px;
+  margin: auto;
+  padding: 112px 5%;
+  display: grid;
+  grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+  gap: 64px;
+}
 .ways-in {
   border-top: 1px solid var(--border);
-  max-width: 1280px;
-  margin: auto;
-  padding: 96px 5%;
-  display: grid;
-  grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr);
-  gap: 72px;
+  padding-top: 96px;
+  scroll-margin-top: 24px;
 }
+.home-example h2,
 .ways-in h2 {
-  font: clamp(34px, 3.6vw, 52px)/1.06 var(--font-serif);
-  letter-spacing: -0.025em;
+  font: clamp(34px, 3.4vw, 50px)/1.06 var(--font-serif);
+  letter-spacing: -0.022em;
   font-weight: 400;
   margin: 0;
+  max-width: 560px;
+  text-wrap: balance;
 }
-.ways-in-photo {
-  position: relative;
-  margin: 36px 0 0;
-  aspect-ratio: 4 / 5;
-  overflow: hidden;
-  background: #d4c3ab;
+.home-body {
+  font-size: 17px;
+  line-height: 1.65;
+  color: var(--ink-soft);
+  max-width: 460px;
+  margin: 22px 0 0;
 }
-.ways-in-photo img {
+.what-if {
+  margin: 36px 0 40px;
+  border-top: 2px solid var(--ink);
+  max-width: 520px;
+}
+.what-if > div {
+  padding: 20px 0 22px;
+  border-bottom: 1px solid var(--border);
+}
+.what-if dt {
+  font: 24px/1.2 var(--font-serif);
+  letter-spacing: -0.01em;
+}
+.what-if dd {
+  margin: 10px 0 0;
+  display: grid;
+  grid-template-columns: 124px minmax(0, 1fr);
+  gap: 16px;
+  align-items: baseline;
+}
+.what-if dd strong {
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+.what-if-fail {
+  color: var(--danger);
+}
+.what-if-open {
+  color: var(--unknown);
+}
+.what-if dd span {
+  font: italic 18px/1.35 var(--font-serif);
+  color: var(--terracotta-contrast);
+}
+.home-plate {
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+.home-plate img {
+  flex: 1;
+  min-height: 0;
   width: 100%;
-  height: 100%;
   object-fit: cover;
-  object-position: 68% center;
+  background: #d4c3ab;
+  border-radius: var(--radius-sm);
 }
-.ways-in-photo figcaption {
-  position: absolute;
-  inset: auto 0 0;
-  padding: 40px 22px 18px;
-  background: linear-gradient(transparent, #171811aa);
-  color: #fff;
+.home-plate figcaption {
+  margin-top: 12px;
   font-size: 13px;
+  line-height: 1.5;
+  color: var(--muted);
+}
+.home-plate figcaption span {
+  margin-right: 10px;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ink);
+}
+.home-plate--cups img {
+  object-position: 52% 80%;
+}
+.home-plate--potter img {
+  object-position: 62% 60%;
 }
 .ways-in-list {
   list-style: none;
-  margin: 0;
+  margin: 36px 0 0;
   padding: 0;
   border-top: 2px solid var(--ink);
 }
@@ -442,7 +510,7 @@
   display: grid;
   grid-template-columns: 44px minmax(0, 1fr);
   column-gap: 16px;
-  padding: 26px 0 28px;
+  padding: 24px 0 26px;
   border-bottom: 1px solid var(--border);
 }
 .ways-in-number {
@@ -492,25 +560,46 @@
   .quote-hero-copy {
     max-width: 640px;
   }
+  .home-example,
+  .ways-in {
+    grid-template-columns: 1fr;
+    gap: 40px;
+  }
+  .home-example-copy,
+  .ways-in-body {
+    max-width: 640px;
+  }
+  .ways-in-body {
+    order: -1;
+  }
+  .home-plate img {
+    flex: none;
+  }
+  .home-plate--cups img {
+    aspect-ratio: 4 / 3;
+  }
+  .home-plate--potter img {
+    aspect-ratio: 3 / 2;
+    object-position: 50% 50%;
+  }
 }
 @media (max-width: 700px) {
   .quote-hero {
     padding: 40px 6% 64px;
   }
   .quote-hero h1 {
-    font-size: 48px;
+    font-size: 42px;
   }
+  .home-example,
   .ways-in {
-    grid-template-columns: 1fr;
-    gap: 28px;
     padding: 64px 6%;
   }
   .ways-in-list li {
     grid-template-columns: 34px minmax(0, 1fr);
   }
-  .ways-in-photo {
-    aspect-ratio: 4 / 3;
-    margin-top: 24px;
+  .what-if dd {
+    grid-template-columns: 1fr;
+    gap: 6px;
   }
   .inbox-address-field a {
     font-size: 16px;

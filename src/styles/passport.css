@@ -24,7 +24,6 @@
   border: 1px solid var(--border-strong);
   border-radius: var(--radius-lg);
   background: var(--surface-raised);
-  box-shadow: 0 32px 90px rgba(29, 29, 26, 0.13);
 }
 
 .passport-cover {
