@@ -27,12 +27,12 @@ export function LandingPage() {
             <p className="home-category">Ceramics · Morocco</p>
             <h1>Find a workshop for your café’s next cups.</h1>
             <p className="home-lede">
-              Describe what you want made, explore Moroccan workshops, and know what to ask before
-              placing an order.
+              Tell us what you want made. We’ll find Moroccan workshops, show you what they say
+              about themselves, and list what you still need to ask before you order.
             </p>
             <div className="home-actions">
               <Link className="home-primary" to="/compose">
-                Find a workshop <ArrowRight size={18} />
+                Start a request <ArrowRight size={18} />
               </Link>
               <Link className="home-text-link" to="/projects/harbour-coffee-lab/compare">
                 See a café order <ArrowRight size={16} />
@@ -49,7 +49,7 @@ export function LandingPage() {
               fetchPriority="high"
             />
             <figcaption>
-              <span>Made by hand. Made for daily use.</span>
+              <span>Handmade in small workshops.</span>
             </figcaption>
           </figure>
         </section>
@@ -86,10 +86,10 @@ export function LandingPage() {
             <li>
               <span>03</span>
               <div>
-                <h3>Make sense of a reply</h3>
+                <h3>Check the quote</h3>
                 <p>
-                  Try the café example to check a quote against an order and see what changes when
-                  you need it sooner.
+                  Line a workshop’s reply up against your order. See what changes if you need the
+                  cups sooner, and what to ask before you commit.
                 </p>
               </div>
             </li>
@@ -114,10 +114,11 @@ export function LandingPage() {
               need production finished in 30 days? Or want 400 cups instead?
             </p>
             <Link className="home-primary" to="/projects/harbour-coffee-lab/compare">
-              Try the order <ArrowRight size={18} />
+              Open the café order <ArrowRight size={18} />
             </Link>
             <p className="home-small">
-              Fictional café and workshop, using a reply from our test inbox.
+              The café and workshop are made up. The reply is a real email between our own test
+              inboxes.
             </p>
           </div>
         </section>
@@ -127,13 +128,13 @@ export function LandingPage() {
             <p>Cups, plates, bowls. Start with what you have in mind.</p>
           </div>
           <Link className="home-primary" to="/compose">
-            Start your request <ArrowRight size={18} />
+            Start a request <ArrowRight size={18} />
           </Link>
         </section>
       </main>
       <footer className="home-footer">
         <Brand />
-        <p>A market appears when you ask.</p>
+        <p>Sourcing help for cafés buying handmade ceramics.</p>
         <button onClick={() => setAboutOpen(true)}>About this project</button>
       </footer>
       <AboutDemoDrawer open={aboutOpen} onOpenChange={setAboutOpen} />
