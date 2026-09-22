@@ -23,6 +23,11 @@
   --unknown: #67635c;
   --unknown-on-dark: #c9c3b8;
   --focus: #246a63;
+  --paper: #fffdf8;
+  --mark: rgb(184 95 67 / 0.24);
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
   --rail: #1c211e;
   --font-sans: 'Geist Variable', 'Segoe UI', sans-serif;
   --font-serif: 'Instrument Serif', Georgia, serif;

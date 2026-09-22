@@ -5,6 +5,7 @@
 @import './passport.css';
 @import './buyer-workspace.css';
 @import './buyer-research.css';
+@import './annotation.css';
 @import './site-refresh.css';
 
 * {
@@ -64,7 +65,7 @@ a {
   min-height: 40px;
   padding: 0 10px;
   align-items: center;
-  border-radius: 8px;
+  border-radius: var(--radius-md);
   color: var(--ink-soft);
   font-size: 12px;
   font-weight: 600;

@@ -1,5 +1,7 @@
 # MakerMesh design system
 
+> Superseded for tokens, scale and components by the root [DESIGN.md](../DESIGN.md). This file keeps the history and rationale.
+
 ## Visual thesis
 
 A sun-warmed editorial field guide meets a precise sourcing instrument: tactile paper,

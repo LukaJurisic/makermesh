@@ -99,7 +99,7 @@ export function ResearchPage() {
         </div>
       </section>
 
-      <div className="mt-8 grid gap-8 xl:grid-cols-[minmax(0,1.25fr)_minmax(300px,0.75fr)]">
+      <div className="mt-8 grid grid-cols-1 gap-8 xl:grid-cols-[minmax(0,1.25fr)_minmax(300px,0.75fr)] [&>*]:min-w-0">
         <section>
           <div className="flex items-end justify-between border-b border-[var(--border-strong)] pb-4">
             <div>
@@ -129,7 +129,7 @@ export function ResearchPage() {
                     <p className="truncate text-sm font-semibold text-[var(--ink)]">
                       {source.title}
                     </p>
-                    <span className="rounded-full bg-[var(--ochre-soft)] px-2 py-0.5 text-[10px] font-semibold uppercase tracking-[0.08em] text-[var(--warning)]">
+                    <span className="rounded-full bg-[var(--ochre-soft)] px-2 py-0.5 text-xs font-semibold uppercase tracking-[0.08em] text-[var(--warning)]">
                       {source.fixture ? 'Fixture' : 'Captured live'}
                     </span>
                   </div>

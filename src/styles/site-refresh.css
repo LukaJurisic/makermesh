@@ -78,7 +78,7 @@
   padding: 14px 22px;
   background: var(--terracotta-contrast);
   color: #fff;
-  border-radius: 5px;
+  border-radius: var(--radius-sm);
   font-size: 15px;
   font-weight: 550;
   text-decoration: none;
@@ -358,7 +358,7 @@
   display: flex;
   align-items: stretch;
   border: 1.5px solid var(--ink);
-  border-radius: 6px;
+  border-radius: var(--radius-sm);
   background: var(--surface-raised);
   overflow: hidden;
 }
@@ -394,112 +394,6 @@
 }
 .inbox-address .home-small {
   margin-top: 10px;
-}
-
-.quote-letter {
-  margin: 0;
-  font-size: 15px;
-  line-height: 1.75;
-  color: #2d2b27;
-}
-.quote-letter-row {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) 210px;
-}
-.quote-letter-row > p {
-  margin: 0;
-  padding: 0 34px 14px;
-  background: #fffdf8;
-  border-inline: 1px solid var(--border-strong);
-}
-.quote-letter-row:first-child > p {
-  padding-top: 26px;
-  border-top: 1px solid var(--border-strong);
-}
-.quote-letter-row:nth-last-child(2) > p {
-  padding-bottom: 28px;
-  border-bottom: 1px solid var(--border-strong);
-}
-.quote-letter-meta {
-  font-size: 12px;
-  color: var(--muted);
-}
-.quote-letter-meta::after {
-  content: '';
-  display: block;
-  height: 1px;
-  background: var(--border);
-  margin-top: 12px;
-}
-.quote-letter-sign {
-  font-family: var(--font-serif);
-  font-size: 20px;
-}
-.quote-letter mark {
-  color: inherit;
-  background-color: transparent;
-  padding: 0 1px;
-  background-image: linear-gradient(rgb(184 95 67 / 0.24), rgb(184 95 67 / 0.24));
-  background-repeat: no-repeat;
-  background-position: 0 70%;
-  background-size: 0% 72%;
-  animation: quote-mark-in 0.8s cubic-bezier(0.2, 0.7, 0.2, 1) forwards;
-  animation-delay: calc(0.55s + var(--row-i, 0) * 0.5s);
-}
-.quote-letter-row:nth-child(2) {
-  --row-i: 0;
-}
-.quote-letter-row:nth-child(3) {
-  --row-i: 1;
-}
-.quote-letter-row:nth-child(4) {
-  --row-i: 2;
-}
-.quote-note {
-  position: relative;
-  align-self: start;
-  padding: 2px 0 0 30px;
-  font-size: 14px;
-  line-height: 1.45;
-  color: var(--ink);
-  opacity: 0;
-  transform: translateX(-6px);
-  animation: quote-note-in 0.45s ease-out forwards;
-  animation-delay: calc(0.95s + var(--row-i, 0) * 0.5s);
-}
-.quote-note::before {
-  content: '';
-  position: absolute;
-  left: 0;
-  top: 12px;
-  width: 20px;
-  height: 1px;
-  background: var(--terracotta-contrast);
-}
-.quote-note strong {
-  display: block;
-  font-size: 11px;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: var(--terracotta-contrast);
-  margin-bottom: 3px;
-}
-.quote-letter figcaption {
-  margin-top: 14px;
-  font-size: 12px;
-  color: var(--muted);
-  max-width: calc(100% - 210px);
-}
-@keyframes quote-mark-in {
-  to {
-    background-size: 100% 72%;
-  }
-}
-@keyframes quote-note-in {
-  to {
-    opacity: 1;
-    transform: none;
-  }
 }
 
 .ways-in {
@@ -606,29 +500,6 @@
   .quote-hero h1 {
     font-size: 48px;
   }
-  .quote-letter-row {
-    grid-template-columns: 1fr;
-  }
-  .quote-letter-row > p {
-    padding: 0 20px 12px;
-  }
-  .quote-letter-row:first-child > p {
-    padding-top: 20px;
-  }
-  .quote-note {
-    padding: 0 20px 16px 38px;
-    background: #fffdf8;
-    border-inline: 1px solid var(--border-strong);
-    transform: none;
-  }
-  .quote-note::before {
-    left: 20px;
-    top: 9px;
-    width: 10px;
-  }
-  .quote-letter figcaption {
-    max-width: none;
-  }
   .ways-in {
     grid-template-columns: 1fr;
     gap: 28px;
@@ -646,15 +517,6 @@
   }
 }
 @media (prefers-reduced-motion: reduce) {
-  .quote-letter mark {
-    animation: none;
-    background-size: 100% 72%;
-  }
-  .quote-note {
-    animation: none;
-    opacity: 1;
-    transform: none;
-  }
 }
 
 /* Working pages read like an order notebook, not a status dashboard. */
@@ -716,12 +578,12 @@
   font-size: 22px;
   width: 130px;
   background: var(--surface);
-  border-radius: 5px;
+  border-radius: var(--radius-sm);
 }
 .buyer-shell .decision-scenario__button {
   font-size: 14px;
   font-weight: 500;
-  border-radius: 5px;
+  border-radius: var(--radius-sm);
 }
 .buyer-shell .decision-scenario__consequence {
   border-top: 1px solid var(--border-strong);

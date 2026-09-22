@@ -32,7 +32,7 @@ export function Brand({inverse = false, compact = false}: {inverse?: boolean; co
     <Link
       to="/"
       className={cn(
-        'inline-flex items-center gap-2.5 rounded-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--focus)]',
+        'inline-flex items-center gap-2.5 rounded focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--focus)]',
         inverse ? 'text-white' : 'text-[var(--ink)]',
       )}
       aria-label="MakerMesh home"

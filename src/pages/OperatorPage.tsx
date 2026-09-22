@@ -69,7 +69,7 @@ export function OperatorPage() {
           </ul>
         </section>
 
-        <section className="rounded-2xl border border-white/12 bg-white/[0.055] p-6 shadow-2xl backdrop-blur sm:p-8">
+        <section className="rounded-xl border border-white/12 bg-white/[0.055] p-6 shadow-2xl backdrop-blur sm:p-8">
           {isLoading ? (
             <p className="text-sm text-white/60">Checking the signed session…</p>
           ) : isAuthenticated && operator ? (
@@ -129,7 +129,7 @@ export function OperatorPage() {
               >
                 {submitting ? 'Verifying…' : 'Continue with signed session'}
               </Button>
-              <p className="mt-4 text-[11px] leading-5 text-white/38">
+              <p className="mt-4 text-xs leading-5 text-white/38">
                 No default code is shipped. Configuration remains locked until the project owner
                 sets a verifier in Convex.
               </p>

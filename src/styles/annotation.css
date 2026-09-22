@@ -1,0 +1,155 @@
+/* Annotation: verbatim supplier words, highlighted, with a margin note in MakerMesh's voice. See DESIGN.md. */
+.quote-letter {
+  margin: 0;
+  font-size: 15px;
+  line-height: 1.75;
+  color: #2d2b27;
+}
+.quote-letter-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 210px;
+}
+.quote-letter-row > p {
+  margin: 0;
+  padding: 0 34px 14px;
+  background: var(--paper);
+  border-inline: 1px solid var(--border-strong);
+}
+.quote-letter-row:first-child > p {
+  padding-top: 26px;
+  border-top: 1px solid var(--border-strong);
+}
+.quote-letter-row:has(+ figcaption) > p,
+.quote-letter-row:last-child > p {
+  padding-bottom: 28px;
+  border-bottom: 1px solid var(--border-strong);
+}
+.quote-letter-meta {
+  font-size: 12px;
+  color: var(--muted);
+}
+.quote-letter-meta::after {
+  content: '';
+  display: block;
+  height: 1px;
+  background: var(--border);
+  margin-top: 12px;
+}
+.quote-letter-sign {
+  font-family: var(--font-serif);
+  font-size: 20px;
+}
+.quote-letter mark {
+  color: inherit;
+  background-color: transparent;
+  padding: 0 1px;
+  background-image: linear-gradient(var(--mark), var(--mark));
+  background-repeat: no-repeat;
+  background-position: 0 70%;
+  background-size: 0% 72%;
+  animation: quote-mark-in 0.8s cubic-bezier(0.2, 0.7, 0.2, 1) forwards;
+  animation-delay: calc(0.55s + var(--row-i, 0) * 0.5s);
+}
+.quote-letter-row:nth-child(2) {
+  --row-i: 0;
+}
+.quote-letter-row:nth-child(3) {
+  --row-i: 1;
+}
+.quote-letter-row:nth-child(4) {
+  --row-i: 2;
+}
+.quote-note {
+  position: relative;
+  align-self: start;
+  padding: 2px 0 0 30px;
+  opacity: 0;
+  transform: translateX(-6px);
+  animation: quote-note-in 0.45s ease-out forwards;
+  animation-delay: calc(0.95s + var(--row-i, 0) * 0.5s);
+}
+.quote-note::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 12px;
+  width: 20px;
+  height: 1px;
+  background: var(--terracotta-contrast);
+}
+.quote-note span {
+  display: block;
+  font: italic 18px/1.3 var(--font-serif);
+  color: var(--terracotta-contrast);
+}
+.quote-note strong {
+  display: block;
+  font-size: 12px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--terracotta-contrast);
+  margin-bottom: 3px;
+}
+.quote-letter figcaption {
+  margin-top: 14px;
+  font-size: 12px;
+  color: var(--muted);
+  max-width: calc(100% - 210px);
+}
+@keyframes quote-mark-in {
+  to {
+    background-size: 100% 72%;
+  }
+}
+@keyframes quote-note-in {
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@media (max-width: 700px) {
+  .quote-letter-row {
+    grid-template-columns: 1fr;
+  }
+  .quote-letter-row > p {
+    padding: 0 20px 12px;
+  }
+  .quote-letter-row:first-child > p {
+    padding-top: 20px;
+  }
+  .quote-note {
+    padding: 0 20px 16px 38px;
+    background: var(--paper);
+    border-inline: 1px solid var(--border-strong);
+    transform: none;
+  }
+  .quote-note::before {
+    left: 20px;
+    top: 11px;
+    width: 10px;
+  }
+  .quote-letter figcaption {
+    max-width: none;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .quote-letter mark {
+    animation: none;
+    background-size: 100% 72%;
+  }
+  .quote-note {
+    animation: none;
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.quote-result-letter {
+  margin-top: 36px;
+}
+@media (min-width: 701px) {
+  .quote-result-letter .quote-letter-row {
+    grid-template-columns: minmax(0, 1fr) 300px;
+  }
+}

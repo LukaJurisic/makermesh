@@ -1,5 +1,5 @@
 import {Check, Copy, LoaderCircle} from 'lucide-react';
-import {useState} from 'react';
+import {useState, type CSSProperties} from 'react';
 import {Link, useParams} from 'react-router-dom';
 import {useQuery} from 'convex/react';
 import {api} from '../../convex/_generated/api';
@@ -101,28 +101,32 @@ function QuoteResult({token}: {token: string}) {
 
         {result?.isQuote && (
           <>
-            <div className="research-source-list">
+            <figure className="quote-letter quote-result-letter" aria-label="Your quote, annotated">
+              <div className="quote-letter-row">
+                <p className="quote-letter-meta">What the supplier wrote, word for word</p>
+              </div>
               {result.terms.map((term, index) => (
-                <article key={`${term.kind}-${index}`} className="research-source-record">
-                  <div className="research-source-heading">
-                    <span className="research-source-number">
-                      {String(index + 1).padStart(2, '0')}
+                <div
+                  key={`${term.kind}-${index}`}
+                  className="quote-letter-row"
+                  style={{'--row-i': index} as CSSProperties}
+                >
+                  <p>
+                    <mark>{term.excerpt}</mark>
+                  </p>
+                  <aside className="quote-note">
+                    <strong>{term.label}</strong>
+                    <span>
+                      {term.value}
+                      {term.condition ? ` · ${term.condition}` : ''}
                     </span>
-                    <div>
-                      <p className="page-kicker">{term.label}</p>
-                      <h3>
-                        {term.value}
-                        {term.condition ? ` · ${term.condition}` : ''}
-                      </h3>
-                    </div>
-                  </div>
-                  <div className="research-excerpt quote-term-excerpt">
-                    <strong>What the supplier wrote</strong>
-                    <blockquote>“{term.excerpt}”</blockquote>
-                  </div>
-                </article>
+                  </aside>
+                </div>
               ))}
-            </div>
+              <div className="quote-letter-row">
+                <p className="quote-letter-sign">{result.supplierName ?? 'The supplier'}</p>
+              </div>
+            </figure>
 
             {result.notStated.length > 0 && (
               <section className="research-empty" aria-labelledby="not-stated">

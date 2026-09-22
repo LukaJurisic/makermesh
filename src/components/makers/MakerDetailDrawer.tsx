@@ -41,7 +41,7 @@ export function MakerDetailDrawer({
             {maker.fixture ? (
               <FixtureBadge />
             ) : (
-              <span className="rounded-md bg-[var(--surface-raised)] px-3 py-2 text-xs font-semibold">
+              <span className="rounded bg-[var(--surface-raised)] px-3 py-2 text-xs font-semibold">
                 Original reply · fictional supplier
               </span>
             )}
@@ -117,7 +117,7 @@ export function MakerDetailDrawer({
                           {evaluation.requirementLabel}
                         </p>
                         {evaluation.type === 'hard' && (
-                          <span className="text-[10px] font-semibold uppercase tracking-[0.1em] text-[var(--terracotta)]">
+                          <span className="text-xs font-semibold uppercase tracking-[0.1em] text-[var(--terracotta)]">
                             Hard
                           </span>
                         )}

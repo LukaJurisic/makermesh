@@ -80,7 +80,7 @@ export function OutreachPage() {
               className="h-40 w-full object-cover"
             />
             <div className="p-5">
-              <span className="text-[10px] font-semibold uppercase tracking-[0.1em] text-[var(--terracotta)]">
+              <span className="text-xs font-semibold uppercase tracking-[0.1em] text-[var(--terracotta)]">
                 Selected fictional supplier
               </span>
               <h3 className="mt-2 text-xl font-semibold text-[var(--ink)]">{atlas.name}</h3>

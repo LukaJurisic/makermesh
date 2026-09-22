@@ -77,7 +77,7 @@ export function OutreachDrawer({
                   key={item}
                   type="button"
                   onClick={() => setLanguage(item)}
-                  className={`rounded-md px-3 py-1.5 text-xs font-semibold capitalize transition-colors ${language === item ? 'bg-white text-[var(--ink)] shadow-sm' : 'text-[var(--muted)]'}`}
+                  className={`rounded px-3 py-1.5 text-xs font-semibold capitalize transition-colors ${language === item ? 'bg-white text-[var(--ink)] shadow-sm' : 'text-[var(--muted)]'}`}
                 >
                   {item}
                 </button>
@@ -188,7 +188,7 @@ export function DeliveryTimeline() {
               className={`h-1 rounded-full ${item.complete ? 'bg-[var(--teal)]' : 'bg-[var(--border)]'}`}
             />
             <p
-              className={`mt-2 text-[10px] font-semibold ${item.complete ? 'text-[var(--teal)]' : 'text-[var(--muted)]'}`}
+              className={`mt-2 text-xs font-semibold ${item.complete ? 'text-[var(--teal)]' : 'text-[var(--muted)]'}`}
             >
               {item.label}
             </p>

@@ -161,7 +161,7 @@
 .brief-summary {
   padding: 22px;
   border: 1px solid var(--border);
-  border-radius: 12px;
+  border-radius: var(--radius-lg);
   background: var(--surface-raised);
 }
 
@@ -216,7 +216,7 @@
 .maker-card {
   overflow: hidden;
   border: 1px solid var(--border);
-  border-radius: 12px;
+  border-radius: var(--radius-lg);
   background: var(--surface-raised);
   transition:
     border-color 180ms ease,
@@ -226,7 +226,7 @@
 
 .maker-card:hover {
   border-color: var(--border-strong);
-  box-shadow: 0 16px 40px rgba(29, 29, 26, 0.08);
+  border-color: var(--border-strong);
   transform: translateY(-2px);
 }
 
@@ -256,7 +256,7 @@
   border-radius: 999px;
   background: rgba(28, 33, 30, 0.88);
   color: white;
-  font-size: 9px;
+  font-size: 12px;
   font-weight: 700;
   letter-spacing: 0.08em;
   text-transform: uppercase;
@@ -287,7 +287,7 @@
 .comparison-table-wrap {
   overflow-x: auto;
   border: 1px solid var(--border);
-  border-radius: 12px;
+  border-radius: var(--radius-lg);
   background: var(--surface-raised);
 }
 
@@ -311,7 +311,7 @@
   top: 0;
   background: var(--surface);
   color: var(--muted);
-  font-size: 10px;
+  font-size: 12px;
   font-weight: 700;
   letter-spacing: 0.05em;
   text-transform: uppercase;
@@ -327,7 +327,7 @@
   display: block;
   margin-top: 3px;
   color: var(--muted);
-  font-size: 10px;
+  font-size: 12px;
   font-weight: 400;
 }
 
@@ -341,7 +341,7 @@
   max-width: 135px;
   padding: 5px 8px;
   border-radius: 999px;
-  font-size: 10px;
+  font-size: 12px;
   font-weight: 700;
   line-height: 1.25;
 }

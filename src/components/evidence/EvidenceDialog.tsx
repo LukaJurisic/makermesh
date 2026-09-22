@@ -35,7 +35,7 @@ export function EvidenceDialog({
       <Dialog.Portal>
         <Dialog.Overlay className="fixed inset-0 z-[60] bg-[#15130f]/45 backdrop-blur-[2px]" />
         <Dialog.Content
-          className="fixed left-1/2 top-1/2 z-[70] max-h-[85vh] w-[calc(100%-2rem)] max-w-[680px] -translate-x-1/2 -translate-y-1/2 overflow-y-auto rounded-2xl border border-[var(--border)] bg-[var(--surface-raised)] p-6 shadow-[0_30px_90px_rgba(29,29,26,0.24)] outline-none sm:p-8"
+          className="fixed left-1/2 top-1/2 z-[70] max-h-[85vh] w-[calc(100%-2rem)] max-w-[680px] -translate-x-1/2 -translate-y-1/2 overflow-y-auto rounded-xl border border-[var(--border)] bg-[var(--surface-raised)] p-6 shadow-[0_30px_90px_rgba(29,29,26,0.24)] outline-none sm:p-8"
           onCloseAutoFocus={(event) => {
             const returnTarget = returnFocusRef?.current;
             if (!returnTarget) return;

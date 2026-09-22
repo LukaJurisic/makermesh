@@ -11,7 +11,7 @@
   align-items: center;
   justify-content: center;
   border: 1px solid #dbc79d;
-  border-radius: 10px;
+  border-radius: var(--radius-md);
   background: var(--ochre-soft);
   color: var(--warning);
   font-size: 12px;
@@ -22,7 +22,7 @@
 .passport-dossier {
   overflow: hidden;
   border: 1px solid var(--border-strong);
-  border-radius: 16px;
+  border-radius: var(--radius-lg);
   background: var(--surface-raised);
   box-shadow: 0 32px 90px rgba(29, 29, 26, 0.13);
 }
@@ -65,7 +65,7 @@
 .passport-cover-copy > p {
   margin: 0 0 15px;
   color: rgba(255, 255, 255, 0.62);
-  font-size: 10px;
+  font-size: 12px;
   font-weight: 700;
   letter-spacing: 0.12em;
   text-transform: uppercase;
@@ -89,10 +89,10 @@
   padding: 10px 12px;
   align-items: center;
   border: 1px solid rgba(255, 255, 255, 0.24);
-  border-radius: 10px;
+  border-radius: var(--radius-md);
   background: rgba(20, 25, 22, 0.65);
   color: rgba(255, 255, 255, 0.72);
-  font-size: 10px;
+  font-size: 12px;
   line-height: 1.45;
   gap: 9px;
   backdrop-filter: blur(10px);
@@ -100,7 +100,7 @@
 
 .passport-consent strong {
   color: white;
-  font-size: 11px;
+  font-size: 12px;
 }
 
 .passport-content {
@@ -149,7 +149,7 @@
 
 .passport-facts dt {
   color: var(--muted);
-  font-size: 11px;
+  font-size: 12px;
 }
 
 .passport-facts dd {
@@ -164,7 +164,7 @@
   display: block;
   margin-top: 5px;
   color: var(--teal);
-  font-size: 10px;
+  font-size: 12px;
   font-weight: 600;
 }
 
@@ -228,7 +228,7 @@
 
 .passport-timeline li > span {
   color: var(--muted);
-  font-size: 11px;
+  font-size: 12px;
   font-variant-numeric: tabular-nums;
 }
 

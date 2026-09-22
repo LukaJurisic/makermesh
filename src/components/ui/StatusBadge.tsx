@@ -38,7 +38,7 @@ export function StatusBadge({
 
 export function FixtureBadge() {
   return (
-    <span className="inline-flex items-center gap-1.5 rounded-full bg-[var(--ochre-soft)] px-2.5 py-1 text-[11px] font-semibold uppercase tracking-[0.08em] text-[var(--warning)]">
+    <span className="inline-flex items-center gap-1.5 rounded-full bg-[var(--ochre-soft)] px-2.5 py-1 text-xs font-semibold uppercase tracking-[0.08em] text-[var(--warning)]">
       <AlertTriangle className="size-3" aria-hidden="true" />
       Demonstration fixture
     </span>
@@ -47,7 +47,7 @@ export function FixtureBadge() {
 
 export function CapturedResearchBadge() {
   return (
-    <span className="inline-flex items-center gap-1.5 rounded-full bg-[var(--teal-soft)] px-2.5 py-1 text-[11px] font-semibold uppercase tracking-[0.08em] text-[var(--teal)]">
+    <span className="inline-flex items-center gap-1.5 rounded-full bg-[var(--teal-soft)] px-2.5 py-1 text-xs font-semibold uppercase tracking-[0.08em] text-[var(--teal)]">
       <Radio className="size-3" aria-hidden="true" />
       Live research proof · fixture market
     </span>

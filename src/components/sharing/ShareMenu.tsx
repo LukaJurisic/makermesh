@@ -48,9 +48,7 @@ export function ShareMenu({summary, label = 'Share preview', onShare}: ShareMenu
             }
             className="share-menu-item"
           >
-            <span className="flex size-4 items-center justify-center text-[10px] font-bold">
-              in
-            </span>{' '}
+            <span className="flex size-4 items-center justify-center text-xs font-bold">in</span>{' '}
             Share on LinkedIn
           </DropdownMenu.Item>
           <DropdownMenu.Item
@@ -65,7 +63,7 @@ export function ShareMenu({summary, label = 'Share preview', onShare}: ShareMenu
             Share on X
           </DropdownMenu.Item>
           <DropdownMenu.Separator className="my-1 h-px bg-[var(--border)]" />
-          <p className="px-2 py-1.5 text-[10px] leading-4 text-[var(--muted)]">
+          <p className="px-2 py-1.5 text-xs leading-4 text-[var(--muted)]">
             Opens a prefilled composer. MakerMesh never posts automatically.
           </p>
         </DropdownMenu.Content>

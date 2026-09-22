@@ -18,7 +18,7 @@ export function SystemPulse({collapsed = false}: {collapsed?: boolean}) {
           <h2 className="flex items-center gap-2 text-sm font-semibold text-[var(--ink)]">
             <Radio className="size-4 text-[var(--teal)]" /> System Pulse
           </h2>
-          <span className="rounded-full bg-[var(--ochre-soft)] px-2 py-1 text-[10px] font-semibold uppercase tracking-[0.08em] text-[var(--warning)]">
+          <span className="rounded-full bg-[var(--ochre-soft)] px-2 py-1 text-xs font-semibold uppercase tracking-[0.08em] text-[var(--warning)]">
             {baselineMode === 'captured_live' ? 'Live research proof' : 'Fixture replay'}
           </span>
         </div>
@@ -68,7 +68,7 @@ export function SystemPulse({collapsed = false}: {collapsed?: boolean}) {
         </section>
       )}
       {baselineMode === 'captured_live' && (
-        <p className="border-b border-[var(--border)] px-5 py-3 text-[10px] font-semibold uppercase tracking-[0.08em] text-[var(--muted)]">
+        <p className="border-b border-[var(--border)] px-5 py-3 text-xs font-semibold uppercase tracking-[0.08em] text-[var(--muted)]">
           Fictional fixture market data
         </p>
       )}
@@ -87,13 +87,13 @@ export function SystemPulse({collapsed = false}: {collapsed?: boolean}) {
               <div className="min-w-0 flex-1">
                 <div className="flex items-center justify-between gap-2">
                   <span className="text-xs font-semibold text-[var(--ink)]">{event.provider}</span>
-                  <time className="text-[11px] tabular-nums text-[var(--muted)]">
+                  <time className="text-xs tabular-nums text-[var(--muted)]">
                     {event.occurredAt}
                   </time>
                 </div>
                 <p className="mt-1 text-xs leading-5 text-[var(--ink-soft)]">{event.label}</p>
                 {event.latency && (
-                  <span className="mt-1.5 inline-block text-[10px] uppercase tracking-[0.08em] text-[var(--muted)]">
+                  <span className="mt-1.5 inline-block text-xs uppercase tracking-[0.08em] text-[var(--muted)]">
                     Safe latency {event.latency}
                   </span>
                 )}

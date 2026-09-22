@@ -21,7 +21,7 @@
   padding: 8px 24px 25px;
 }
 .buyer-overline {
-  font-size: 10px;
+  font-size: 12px;
   letter-spacing: 0.14em;
   text-transform: uppercase;
   color: #ffffff8c;
@@ -30,7 +30,7 @@
   height: 86px;
   width: 100%;
   object-fit: cover;
-  border-radius: 8px;
+  border-radius: var(--radius-md);
   margin: 14px 0;
 }
 .buyer-project h2 {
@@ -52,7 +52,7 @@
   align-items: center;
   gap: 12px;
   padding: 13px 14px;
-  border-radius: 8px;
+  border-radius: var(--radius-md);
   color: #ffffffad;
   font-size: 13px;
   transition:
@@ -69,7 +69,7 @@
 }
 .stage-position {
   margin-left: auto;
-  font-size: 10px;
+  font-size: 12px;
   color: #ffffffb3;
 }
 .buyer-rail-footer {
@@ -92,7 +92,7 @@
 .buyer-rail-footer > span {
   display: block;
   margin-top: 12px;
-  font-size: 10px;
+  font-size: 12px;
   color: #ffffff80;
 }
 .buyer-header {
@@ -121,7 +121,7 @@
   gap: 12px;
 }
 .buyer-demo-label {
-  font-size: 11px;
+  font-size: 12px;
   color: var(--muted);
 }
 .buyer-disclosure {
@@ -131,7 +131,7 @@
   gap: 8px;
   padding: 9px 36px;
   border-bottom: 1px solid var(--border);
-  font-size: 11px;
+  font-size: 12px;
   color: var(--muted);
   background: var(--surface);
 }
@@ -172,7 +172,7 @@
 .buyer-next small {
   text-transform: uppercase;
   letter-spacing: 0.1em;
-  font-size: 10px;
+  font-size: 12px;
   color: var(--muted);
 }
 .buyer-next a {
@@ -235,7 +235,7 @@
   height: 43px;
   width: 100%;
   border: 1px solid var(--border);
-  border-radius: 8px;
+  border-radius: var(--radius-md);
   padding: 0 14px 0 40px;
   background: var(--surface-raised);
   font-size: 13px;
@@ -245,7 +245,7 @@
   padding: 0 30px 0 12px;
   border: 1px solid var(--border);
   background: var(--surface);
-  border-radius: 8px;
+  border-radius: var(--radius-md);
   font-size: 12px;
 }
 .maker-count {
@@ -266,7 +266,7 @@
 .directory-head {
   padding: 14px 16px;
   color: var(--muted);
-  font-size: 10px;
+  font-size: 12px;
   letter-spacing: 0.06em;
   text-transform: uppercase;
   border-bottom: 1px solid var(--border);
@@ -293,7 +293,7 @@
   height: 64px;
   width: 64px;
   object-fit: cover;
-  border-radius: 8px;
+  border-radius: var(--radius-md);
   flex: none;
 }
 .directory-identity strong {
@@ -316,7 +316,7 @@
   display: block;
   margin-top: 5px;
   color: var(--muted);
-  font-size: 11px;
+  font-size: 12px;
 }
 .directory-fact .mobile-label {
   display: none;
@@ -492,7 +492,7 @@
   }
   .buyer-disclosure {
     padding: 9px 18px;
-    font-size: 10px;
+    font-size: 12px;
     flex-wrap: wrap;
   }
   .buyer-disclosure button {
@@ -512,7 +512,7 @@
     margin-bottom: 3px;
   }
   .buyer-next a {
-    font-size: 11px;
+    font-size: 12px;
     margin-top: 4px;
   }
   .buyer-shell .workspace-page {
@@ -553,7 +553,7 @@
   .directory-fact .mobile-label {
     display: block;
     margin: 0 0 4px;
-    font-size: 10px;
+    font-size: 12px;
     color: var(--muted);
   }
   .directory-identity img {
@@ -613,14 +613,14 @@
   min-width: 40px;
   min-height: 40px;
   border: 1px solid var(--border);
-  border-radius: 8px;
+  border-radius: var(--radius-md);
   background: var(--surface);
   cursor: pointer;
 }
 .comparison-mobile-record {
   padding: 20px;
   border: 1px solid var(--border);
-  border-radius: 12px;
+  border-radius: var(--radius-lg);
   background: var(--surface-raised);
 }
 .comparison-mobile-record h3 {
@@ -639,7 +639,7 @@
   margin: 20px 0;
 }
 .comparison-mobile-record dt {
-  font-size: 11px;
+  font-size: 12px;
   color: var(--muted);
 }
 .comparison-mobile-record dd {
@@ -692,7 +692,7 @@
 }
 @media (max-width: 640px) {
   .landing-demo-note {
-    font-size: 11px;
+    font-size: 12px;
     align-items: flex-start;
     bottom: 22px;
   }
@@ -709,7 +709,7 @@
 .buyer-comparison-table td small {
   display: block;
   margin-top: 5px;
-  font-size: 11px;
+  font-size: 12px;
   color: var(--muted);
 }
 .buyer-comparison-table td {
@@ -746,7 +746,7 @@
   margin: 24px 0;
 }
 .reply-impact dt {
-  font-size: 11px;
+  font-size: 12px;
   color: var(--muted);
 }
 .reply-impact dd {
@@ -771,7 +771,7 @@
   font-size: 14px;
 }
 .reply-impact-note {
-  font-size: 11px;
+  font-size: 12px;
   line-height: 1.7;
   color: var(--muted);
   max-width: 800px;
