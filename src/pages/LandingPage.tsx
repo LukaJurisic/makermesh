@@ -102,6 +102,14 @@ export function LandingPage() {
           <div className="ways-in-intro">
             <p className="home-kicker">Three ways in</p>
             <h2 id="ways-in-title">Start from where your order is.</h2>
+            <figure className="ways-in-photo">
+              <img
+                src="/images/maker-hands-hero.webp"
+                alt="Illustration of a potter shaping a ceramic cup"
+                loading="lazy"
+              />
+              <figcaption>Handmade in small workshops.</figcaption>
+            </figure>
           </div>
           <ol className="ways-in-list">
             {inboxOpen && (

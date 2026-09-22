@@ -517,6 +517,27 @@
   font-weight: 400;
   margin: 0;
 }
+.ways-in-photo {
+  position: relative;
+  margin: 36px 0 0;
+  aspect-ratio: 4 / 5;
+  overflow: hidden;
+  background: #d4c3ab;
+}
+.ways-in-photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 68% center;
+}
+.ways-in-photo figcaption {
+  position: absolute;
+  inset: auto 0 0;
+  padding: 40px 22px 18px;
+  background: linear-gradient(transparent, #171811aa);
+  color: #fff;
+  font-size: 13px;
+}
 .ways-in-list {
   list-style: none;
   margin: 0;
@@ -615,6 +636,10 @@
   }
   .ways-in-list li {
     grid-template-columns: 34px minmax(0, 1fr);
+  }
+  .ways-in-photo {
+    aspect-ratio: 4 / 3;
+    margin-top: 24px;
   }
   .inbox-address-field a {
     font-size: 16px;
