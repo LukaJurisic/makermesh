@@ -16,4 +16,11 @@ crons.interval(
   {},
 );
 
+crons.interval(
+  'delete forwarded quotes after 48 hours',
+  {hours: 1},
+  internal.quoteInbox.cleanupExpired,
+  {},
+);
+
 export default crons;

@@ -28,6 +28,7 @@ import {
   transitionProject,
 } from './model/projectState';
 import {requireOperator} from './model/requireOperator';
+import {receiveForwardedQuote} from './quoteInbox';
 
 const INBOUND_OPERATION_LEASE_MS = 2 * 60 * 1000;
 const inboundExtractionLimiter = new RateLimiter(components.rateLimiter, {
@@ -299,6 +300,8 @@ export const onMessageReceived = internalMutation({
   args: {message: v.any(), thread: v.any(), eventId: v.string()},
   returns: v.null(),
   handler: async (ctx, args) => {
+    // New conversations (not replies on a supplier thread) go to the forwarded-quote reader.
+    if (await receiveForwardedQuote(ctx, args.message)) return null;
     const message = inboundMessageSchema.safeParse(args.message);
     if (!message.success || args.eventId.length < 8 || args.eventId.length > 180) return null;
     const configuredInboxId = env.AGENTMAIL_INBOX_ID;

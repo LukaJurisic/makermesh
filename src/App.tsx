@@ -11,6 +11,9 @@ const LandingPage = lazy(() =>
 const ComposerPage = lazy(() =>
   import('@/pages/ComposerPage').then((module) => ({default: module.ComposerPage})),
 );
+const QuoteResultPage = lazy(() =>
+  import('@/pages/QuoteResultPage').then((module) => ({default: module.QuoteResultPage})),
+);
 const BuyerResearchPage = lazy(() =>
   import('@/pages/BuyerResearchPage').then((module) => ({default: module.BuyerResearchPage})),
 );
@@ -58,6 +61,7 @@ const router = createBrowserRouter([
   {path: '/', element: loadRoute(<LandingPage />)},
   {path: '/compose', element: loadRoute(<ComposerPage />)},
   {path: '/research/:requestId', element: loadRoute(<BuyerResearchPage />)},
+  {path: '/q/:token', element: loadRoute(<QuoteResultPage />)},
   {path: '/operator', element: loadRoute(<OperatorPage />)},
   {path: '/share-card', element: loadRoute(<ShareCardPage />)},
   {path: '/demo', element: <Navigate to="/projects/harbour-coffee-lab/brief" replace />},

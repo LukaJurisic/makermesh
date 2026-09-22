@@ -2,6 +2,7 @@ import {authTables} from '@convex-dev/auth/server';
 import {defineSchema, defineTable} from 'convex/server';
 import {v} from 'convex/values';
 import {researchInput, researchBrief, researchState, researchSource} from './model/buyerResearch';
+import {quoteResult, quoteStatus} from './model/quoteInbox';
 import {
   claimStatusValidator,
   captureEventValidator,
@@ -581,4 +582,32 @@ export default defineSchema({
     .index('by_key', ['key'])
     .index('by_subjectKey', ['subjectKey'])
     .index('by_expiresAt', ['expiresAt']),
+
+  // Quotes that anyone forwarded to the project inbox. Private by unguessable token and
+  // deleted after 48 hours; the sender address is stored only as a hash.
+  forwardedQuotes: defineTable({
+    agentMailInboxId: v.string(),
+    agentMailThreadId: v.string(),
+    agentMailMessageId: v.string(),
+    senderHash: v.string(),
+    subject: v.string(),
+    body: v.string(),
+    status: quoteStatus,
+    accessToken: v.optional(v.string()),
+    result: v.optional(quoteResult),
+    error: v.optional(v.string()),
+    repliedAt: v.optional(v.number()),
+    createdAt: v.number(),
+    updatedAt: v.number(),
+    expiresAt: v.number(),
+  })
+    .index('by_accessToken', ['accessToken'])
+    .index('by_agentMailInboxId_and_agentMailThreadId', ['agentMailInboxId', 'agentMailThreadId'])
+    .index('by_expiresAt', ['expiresAt']),
+
+  quoteInboxSettings: defineTable({
+    key: v.literal('public'),
+    enabled: v.boolean(),
+    updatedAt: v.number(),
+  }).index('by_key', ['key']),
 });

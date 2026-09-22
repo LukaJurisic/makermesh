@@ -39,6 +39,7 @@ import type * as model_operatorVerifier from "../model/operatorVerifier.js";
 import type * as model_outreachState from "../model/outreachState.js";
 import type * as model_projectState from "../model/projectState.js";
 import type * as model_publicDemoResearch from "../model/publicDemoResearch.js";
+import type * as model_quoteInbox from "../model/quoteInbox.js";
 import type * as model_replyScope from "../model/replyScope.js";
 import type * as model_requireOperator from "../model/requireOperator.js";
 import type * as model_validators from "../model/validators.js";
@@ -46,6 +47,8 @@ import type * as openaiActions from "../openaiActions.js";
 import type * as openaiStore from "../openaiStore.js";
 import type * as operatorAuth from "../operatorAuth.js";
 import type * as projects from "../projects.js";
+import type * as quoteInbox from "../quoteInbox.js";
+import type * as quoteInboxActions from "../quoteInboxActions.js";
 import type * as researchFirecrawl from "../researchFirecrawl.js";
 import type * as seed from "../seed.js";
 
@@ -87,6 +90,7 @@ declare const fullApi: ApiFromModules<{
   "model/outreachState": typeof model_outreachState;
   "model/projectState": typeof model_projectState;
   "model/publicDemoResearch": typeof model_publicDemoResearch;
+  "model/quoteInbox": typeof model_quoteInbox;
   "model/replyScope": typeof model_replyScope;
   "model/requireOperator": typeof model_requireOperator;
   "model/validators": typeof model_validators;
@@ -94,6 +98,8 @@ declare const fullApi: ApiFromModules<{
   openaiStore: typeof openaiStore;
   operatorAuth: typeof operatorAuth;
   projects: typeof projects;
+  quoteInbox: typeof quoteInbox;
+  quoteInboxActions: typeof quoteInboxActions;
   researchFirecrawl: typeof researchFirecrawl;
   seed: typeof seed;
 }>;

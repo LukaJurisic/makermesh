@@ -1,14 +1,18 @@
 import {ArrowRight} from 'lucide-react';
 import {useState} from 'react';
+import {useQuery} from 'convex/react';
 import {Link} from 'react-router-dom';
 import {Brand} from '@/components/brand/Logo';
 import {AboutDemoDrawer} from '@/components/layout/AboutDemoDrawer';
 import {useTrackProductEvent} from '@/app/useTrackProductEvent';
+import {QUOTE_INBOX_ADDRESS} from '@/pages/quoteInboxAddress';
+import {api} from '../../convex/_generated/api';
 import '@/styles/site-refresh.css';
 
 export function LandingPage() {
   useTrackProductEvent('landing_viewed');
   const [aboutOpen, setAboutOpen] = useState(false);
+  const quoteInbox = useQuery(api.quoteInbox.status);
   return (
     <div className="maker-home">
       <header className="maker-home-nav">
@@ -122,6 +126,28 @@ export function LandingPage() {
             </p>
           </div>
         </section>
+        {quoteInbox?.enabled && (
+          <section className="home-finish home-quote-inbox" aria-labelledby="quote-inbox-title">
+            <div>
+              <p className="home-category">Already have a quote?</p>
+              <h2 id="quote-inbox-title">Forward it to us.</h2>
+              <p>
+                Send any supplier quote to <strong>{QUOTE_INBOX_ADDRESS}</strong>. Within a minute
+                you’ll get an email back with what it actually commits to, each point quoted from
+                the supplier, and what to ask before you pay.
+              </p>
+              <p className="home-small">
+                We read the email text, not attachments. Everything is deleted after 48 hours.
+              </p>
+            </div>
+            <a
+              className="home-primary"
+              href={`mailto:${QUOTE_INBOX_ADDRESS}?subject=${encodeURIComponent('Quote to check')}`}
+            >
+              Email a quote <ArrowRight size={18} />
+            </a>
+          </section>
+        )}
         <section className="home-finish">
           <div>
             <h2>What would you like made?</h2>
