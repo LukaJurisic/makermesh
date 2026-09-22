@@ -5,6 +5,7 @@
 - **What it does:** Compiles a sourcing brief into an evidence-backed maker network, identifies unanswered requirements, and structures buyer-approved supplier replies.
 - **Live app:** https://disciplined-ladybug-82.convex.site — custom research plus a labelled captured-email demonstration, on the development deployment
 - **Repo:** https://github.com/LukaJurisic/makermesh (public)
+- **Submission:** https://vibeapps.dev/s/makermesh (VibeApps, submitted 2026-09-22 ~10:15 ET)
 - **Demo video:** https://disciplined-ladybug-82.convex.site/demo.html (90-second Hyperframes MP4; direct file: https://disciplined-ladybug-82.convex.site/media/makermesh-demo.mp4)
 - **Frontend:** Convex static hosting
 - **Convex deployment:** development — disciplined-ladybug-82 (production not deployed)
@@ -21,8 +22,9 @@
 
 Made the repository public and published the 90-second Hyperframes video on the Convex
 static site with music attribution. Verified isolated playback (1920×1080, 90 s). Luma
-registration confirmed by the entrant. Feature freeze in effect; remaining steps are the
-sponsor-tagged social post and the VibeApps submission.
+registration confirmed by the entrant. Feature freeze in effect. Entrant confirmed solo, 18+, Ontario. VibeApps entry submitted
+and verified live at https://vibeapps.dev/s/makermesh with the AllGasHackathonSubmission tag.
+Only the sponsor-tagged social post remains.
 
 ### 2026-09-22 — buyer-facing site refinement
 

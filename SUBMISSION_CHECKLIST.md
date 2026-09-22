@@ -3,7 +3,7 @@
 ## Eligibility and administration
 
 - [x] Luka confirms Luma registration.
-- [ ] Luka confirms entrant eligibility and team identity.
+- [x] Luka confirms entrant eligibility and team identity (solo, 18+, Ontario).
 - [x] New independent repository started after August 25, 2026.
 - [x] Root `hackathon.md` exists and distinguishes fixtures from live execution.
 - [x] Public repository is `LukaJurisic/makermesh`.
@@ -44,7 +44,7 @@
 - [x] Walkthrough approved for public hosting and its real URL added to the build log.
 - [x] Social preview, share card, LinkedIn composer, X composer, and copy summary are ready.
 - [ ] Build is shared with required sponsor tags.
-- [ ] Vibeapps submission is completed before September 22, 2026 at 12:00 PM PT.
+- [x] Vibeapps submission completed September 22, 2026 ~10:15 AM ET: https://vibeapps.dev/s/makermesh
 
 ## Internal freeze
 

@@ -1,6 +1,6 @@
 # MakerMesh submission packet
 
-Prepared September 22, 2026. **Draft; do not submit until the checklist is complete.**
+Prepared September 22, 2026. **Submitted:** <https://vibeapps.dev/s/makermesh> (September 22, 2026).
 
 ## Submission fields
 
