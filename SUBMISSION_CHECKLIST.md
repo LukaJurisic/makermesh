@@ -24,7 +24,7 @@
 
 ## Quality
 
-- [x] Root and Convex type checking, linting, formatting, 126 unit/Convex/UI tests, and build pass. Last E2E run: 11 passed, 5 intentional skips.
+- [x] Root and Convex type checking, linting, formatting, 138 unit/Convex/UI tests, and build pass. Last E2E run: 11 passed, 5 intentional skips.
 - [x] Interactive captured-quote scenario, clarification draft, Markdown export, missing-evidence and invalid-input handling verified.
 - [x] Four real custom requests completed; deployed request revision and cross-session denial verified.
 - [x] Automated axe A/AA checks pass on four deployed routes without violations.

@@ -19,7 +19,15 @@ or the invoice is bigger.
 MakerMesh finds workshops, reads what they actually say, emails them once you approve the message, and shows the buyer
 exactly which promises are backed by a sentence, which aren't, and what to ask next.
 
-## Try it in 60 seconds
+## Try it with your own quote
+
+Email any supplier quote to **makermesh@agentmail.to** (paste or forward it into the body).
+Within about a minute, MakerMesh replies from that inbox with what the quote actually commits
+to, each point quoted word for word from the email, what it never states (shipping, payment
+terms, how long it's valid…), and the questions to send back. The reply links to a private page
+that updates live through a Convex query. Text only for now; attachments aren't read.
+
+## Or try the café example in 60 seconds
 
 1. Open the app and click **See a café order**. The quote is a real email that went through
    AgentMail and back. The café and workshop are fictional: we wrote the workshop's reply
@@ -42,12 +50,14 @@ exactly which promises are backed by a sentence, which aren't, and what to ask n
 | **Convex**    | The whole backend. Durable research workflow, reactive queries that update every screen as results land, mutations with state guards, HTTP actions for the signed AgentMail webhook, scheduled functions and crons (48-hour cleanup of private research), Convex Auth, per-visitor and global rate limits, and static hosting for the frontend. |
 | **OpenAI**    | Turns a plain-language request into a structured sourcing brief (Responses API, strict structured output). Extracts the quote from the workshop's French reply. Every extracted fact must quote a sentence that actually appears in the source, or it is rejected.                                                                              |
 | **Firecrawl** | Searches and reads real public workshop websites in two languages inside a durable Convex workflow, so the buyer sees what each workshop says about itself, with links and dates.                                                                                                                                                               |
-| **AgentMail** | Gives the project its own inbox. Sent the bilingual request for quote and received the French reply through a signed webhook; OpenAI extraction and the comparison run on that received message.                                                                                                                                                |
+| **AgentMail** | Gives the project its own inbox, in both directions. Anyone can email a quote to makermesh@agentmail.to: the signed webhook hands it to Convex, OpenAI reads it, and AgentMail replies on the same thread. It also sent the bilingual request for quote in the café example and received the French reply that comparison runs on.              |
 
-**Why visitors can't send email:** a send goes to a real inbox, so MakerMesh only sends after
-the buyer approves the exact recipient, sender and wording. The approval is tied to hashes of
-those three, so an edited draft or a swapped sender invalidates it. On the public demo, sending is
-switched off, and the café example shows the round trip it completed.
+**What visitors can and can't send:** anyone can email a quote _to_ MakerMesh and get one reply
+back. MakerMesh never emails a supplier on a visitor's behalf: outbound requests for quote only
+go after the buyer approves the exact recipient, sender and wording, tied together by hashes, and
+that path is switched off on the public demo. The quote reader replies only to the sender, once
+per thread, never to auto-replies or bounces, with limits of 3 an hour per sender and 40 a day
+overall. It can be switched off without a redeploy.
 
 ## Convex depth
 
@@ -55,6 +65,9 @@ switched off, and the café example shows the round trip it completed.
   @agentmail/convex, @convex-dev/static-hosting
 - **Features:** schema and indexes, queries, mutations, actions, HTTP actions, scheduled
   functions, crons, realtime subscriptions, Convex Auth
+- **Quote inbox:** webhook → mutation (dedupe, loop guards, rate limits) → scheduled action
+  (OpenAI with sentence-index citations) → mutation that saves and queues the AgentMail reply
+  → reactive query behind an unguessable token. Deleted by a cron after 48 hours.
 - **Design choices:** research results are private to the browser that asked for them and expire
   after 48 hours. Usage allowance is decremented atomically. Workflow steps are idempotent and
   resume after failure.
@@ -69,7 +82,7 @@ switched off, and the café example shows the round trip it completed.
 
 ## Quality
 
-126 unit, Convex and UI tests; Playwright end-to-end tests (11 pass, 5 intentionally skipped);
+138 unit, Convex and UI tests; Playwright end-to-end tests (11 pass, 5 intentionally skipped);
 no automated WCAG A/AA violations on four routes; layouts checked at four viewport sizes.
 
 ## Stack
@@ -84,6 +97,16 @@ the Responses API. Firecrawl and AgentMail through their official Convex compone
 
 Dated entries, newest first. Early entries record the build as it happened; where they say a
 provider was not yet configured or a step was pending, later entries supersede them.
+
+### 2026-09-22 — email-a-quote inbox
+
+Added a quote reader to the existing AgentMail inbox (the plan's three-inbox limit ruled out a
+new one). New conversations that are not replies on a supplier thread are deduplicated, checked
+for auto-replies and our own inboxes, rate limited, stored with a hashed sender, and read by
+OpenAI using numbered sentences so every excerpt is verbatim. One reply goes back on the same
+thread with a private link. Verified live with a real email from the entrant's own mailbox:
+five terms extracted with exact excerpts, shipping and validity reported as not stated, reply
+sent. 12 new tests; 138 total pass.
 
 ### 2026-09-22 — public release
 
